@@ -1,4 +1,4 @@
-package site.pnpl.sayana
+package site.pnpl.mira
 
 import org.junit.Test
 

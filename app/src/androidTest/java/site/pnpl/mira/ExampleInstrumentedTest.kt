@@ -1,4 +1,4 @@
-package site.pnpl.sayana
+package site.pnpl.mira
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,7 +1,8 @@
-package site.pnpl.sayana.view.main
+package site.pnpl.mira.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import site.pnpl.sayana.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -11,5 +12,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
+            return@setOnItemSelectedListener true
+        }
+
+        binding.lottie.setOnClickListener {
+            binding.lottie.playAnimation()
+        }
     }
+
 }
