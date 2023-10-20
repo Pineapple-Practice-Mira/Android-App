@@ -1,7 +1,38 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.Sayana" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.Mira" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Mira" parent="Base.Theme.Mira" />
+
+    <style name="WixMadeforDisplayMedium" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/wix_madefor_display_medium</item>
+    </style>
+
+    <style name="WixMadeforDisplayBold" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/wix_madefor_display_bold</item>
+    </style>
+    <style name="WixMadeforDisplayRegular" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/wix_madefor_display_regular</item>
+    </style>
+
+    <style name="Links" parent="WixMadeforDisplayMedium">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TitleBold18" parent="WixMadeforDisplayBold">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="Body14" parent="WixMadeforDisplayRegular">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 </resources>
