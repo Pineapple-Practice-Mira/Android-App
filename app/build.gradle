@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -47,4 +48,7 @@ dependencies {
 
     //Lottie animation
     implementation 'com.airbnb.android:lottie:6.0.0'
+
+    //CircleIndicator for ViewPager
+    implementation 'me.relex:circleindicator:2.1.6'
 }
