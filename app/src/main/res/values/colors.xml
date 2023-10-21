@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#6E78D1</color>
-    <color name="primary_deep">#525FC9</color>
-    <color name="secondary">#FFC468</color>
-    <color name="third">#E7253E</color>
-    <color name="light_grey">#F2F2F2</color>
-    <color name="dark_grey">#CFD0DA</color>
-    <color name="black">#2D2D2D</color>
+    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <color name="primary">#6E78D1</color>
     <color name="dark">#2D2D2D</color>
 </resources>
