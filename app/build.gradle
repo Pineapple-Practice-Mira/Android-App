@@ -51,4 +51,8 @@ dependencies {
 
     //CircleIndicator for ViewPager
     implementation 'me.relex:circleindicator:2.1.6'
+
+    //Fragment navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
 }

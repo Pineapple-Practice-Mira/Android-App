@@ -29,7 +29,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textAlignment">center</item>
     </style>
-    
+
     <style name="Body14" parent="WixMadeforDisplayRegular">
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">14sp</item>
