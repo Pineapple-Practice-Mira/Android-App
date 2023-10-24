@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import site.pnpl.sayana.databinding.FragmentElementBinding
+import site.pnpl.mira.databinding.FragmentElementBinding
 
 const val ARG_OBJECT = "element"
 class ElementFragment : Fragment() {

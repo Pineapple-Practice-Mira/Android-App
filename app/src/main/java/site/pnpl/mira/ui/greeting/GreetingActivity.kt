@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import site.pnpl.mira.utils.HideNavigationBars
-import site.pnpl.sayana.R
-import site.pnpl.sayana.databinding.ActivityGreetingBinding
+import site.pnpl.mira.R
+import site.pnpl.mira.databinding.ActivityGreetingBinding
 
 class GreetingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGreetingBinding

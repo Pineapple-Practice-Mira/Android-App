@@ -1,6 +1,6 @@
 package site.pnpl.mira.ui.greeting.viewpager
 
-import site.pnpl.sayana.R
+import site.pnpl.mira.R
 
 object VpElementsGenerator {
     fun generate() = listOf<VpElement>(

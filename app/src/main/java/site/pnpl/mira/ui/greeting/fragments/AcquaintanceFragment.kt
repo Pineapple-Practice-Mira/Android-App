@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
+import site.pnpl.mira.App
 import site.pnpl.mira.ui.greeting.viewpager.VpAdapter
 import site.pnpl.mira.ui.greeting.viewpager.VpElement
 import site.pnpl.mira.ui.greeting.viewpager.VpElementsGenerator
 import site.pnpl.mira.ui.main.MainActivity
-import site.pnpl.sayana.R
-import site.pnpl.sayana.databinding.FragmentAcquaintanceBinding
+import site.pnpl.mira.R
+import site.pnpl.mira.data.SettingsProvider
+import site.pnpl.mira.databinding.FragmentAcquaintanceBinding
+import javax.inject.Inject
 
 class AcquaintanceFragment : Fragment() {
     private var _binding: FragmentAcquaintanceBinding? = null
@@ -22,6 +25,8 @@ class AcquaintanceFragment : Fragment() {
     private lateinit var adapter: VpAdapter
     private lateinit var viewPager: ViewPager2
     private val vpElements: List<VpElement> = VpElementsGenerator.generate()
+
+    @Inject lateinit var settingsProvider: SettingsProvider
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -32,6 +37,7 @@ class AcquaintanceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        App.instance.appComponent.inject(this)
 
         adapter = VpAdapter(requireActivity(), vpElements)
         viewPager = binding.viewPager
@@ -68,6 +74,7 @@ class AcquaintanceFragment : Fragment() {
             }
 
             btnSkip.setOnClickListener {
+                settingsProvider.firstLaunchCompleted()
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()

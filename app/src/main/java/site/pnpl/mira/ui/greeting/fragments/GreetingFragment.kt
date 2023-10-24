@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import site.pnpl.mira.ui.greeting.GreetingActivity
-import site.pnpl.sayana.R
-import site.pnpl.sayana.databinding.FragmentGreetingBinding
+import site.pnpl.mira.R
+import site.pnpl.mira.databinding.FragmentGreetingBinding
 
 class GreetingFragment : Fragment() {
     private var _binding: FragmentGreetingBinding? = null
