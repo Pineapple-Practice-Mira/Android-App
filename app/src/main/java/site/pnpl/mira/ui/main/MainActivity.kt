@@ -3,7 +3,7 @@ package site.pnpl.mira.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import site.pnpl.sayana.databinding.ActivityMainBinding
+import site.pnpl.mira.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
