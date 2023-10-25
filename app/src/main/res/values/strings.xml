@@ -30,7 +30,9 @@
     <string name="image_description_button_next">Следующая страница</string>
     <string name="image_description_button_previous">Предыдущая страница</string>
 
-    <string name="skip"><u>пропустить</u></string>
+    <string name="skip"><u>ПРОПУСТИТЬ</u></string>
     <string name="complete"><u>завершить</u></string>
     <string name="whats_name">Как к Вам\n<b>обращаться</b>?</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="enter_name">Укажите Имя</string>
 </resources>

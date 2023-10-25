@@ -19,8 +19,8 @@
         <item name="fontFamily">@font/wix_madefor_display_regular</item>
     </style>
 
-    <style name="Links" parent="WixMadeforDisplayMedium">
-        <item name="android:textColor">@color/primary</item>
+    <style name="Title18" parent="WixMadeforDisplayRegular">
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -30,9 +30,30 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="Body14" parent="WixMadeforDisplayRegular">
-        <item name="android:textColor">@color/dark</item>
+    <style name="Body14" parent="WixMadeforDisplayMedium">
+        <item name="android:textColor">@color/primary</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <style name="Notion12" parent="WixMadeforDisplayBold">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="DateNumber24" parent="WixMadeforDisplayBold">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Links16" parent="WixMadeforDisplayMedium">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">16sp</item>
+
+    </style> <style name="Buttons16" parent="WixMadeforDisplayBold">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
 </resources>

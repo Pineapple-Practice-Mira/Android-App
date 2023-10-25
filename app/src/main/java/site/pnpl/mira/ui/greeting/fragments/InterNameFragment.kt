@@ -36,16 +36,17 @@ class InterNameFragment : Fragment() {
         // Анимация Солнца и освещения гор
         sunAnim()
 
-
         //Врмееменая заглушка, для перехода между активити
         binding.next.setOnClickListener {
             (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
         }
 
+//        Имя пока без функции обработки на ошибки и корректировки ввода символов
+        val name = binding.textField.text.toString()
         // Введеное имя отправить и сохранить так:
-        //settingsProvider.saveName(name = name)
+//        settingsProvider.saveName(name = name)
         // После сохранения для перехода дальше вызвать:
-        // (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
+//         (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
     }
 
     override fun onDestroyView() {
