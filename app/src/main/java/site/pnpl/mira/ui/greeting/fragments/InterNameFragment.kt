@@ -59,9 +59,9 @@ class InterNameFragment : Fragment() {
         val nightAnim = ObjectAnimator.ofFloat(interName, View.ALPHA, 0.5f, 1f)
         nightAnim.duration = 500
         val mountAnim1 = ObjectAnimator.ofFloat(mountain1, View.TRANSLATION_Y, 500f, 0f)
-        mountAnim1.duration = 500
+        mountAnim1.duration = 1000
         val mountAnim2 = ObjectAnimator.ofFloat(mountain2, View.TRANSLATION_Y, 800f, 0f)
-        mountAnim2.duration = 800
+        mountAnim2.duration = 1000
         val mountAnim3 = ObjectAnimator.ofFloat(mountain3, View.TRANSLATION_Y, 2000f, 0f)
         mountAnim3.duration = 1000
 
