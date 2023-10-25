@@ -54,20 +54,19 @@ class InterNameFragment : Fragment() {
     }
 
     fun sunAnim() = with(binding) {
-        val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f,-100f)
-        sunAnim.duration = 3000
-        val nightAnim = ObjectAnimator.ofFloat(interName, View.ALPHA, 0.5f,1f)
+        val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f, -100f)
+        sunAnim.duration = 1000
+        val nightAnim = ObjectAnimator.ofFloat(interName, View.ALPHA, 0.5f, 1f)
         nightAnim.duration = 500
-
-        val mountAnim1 = ObjectAnimator.ofFloat(mountain1, View.ALPHA, 0.3f,1f)
-        mountAnim1.duration = 3000
-        val mountAnim2 = ObjectAnimator.ofFloat(mountain2, View.ALPHA, 0.3f,1f)
-        mountAnim2.duration = 2000
-        val mountAnim3 = ObjectAnimator.ofFloat(mountain3, View.ALPHA, 0.3f,1f)
+        val mountAnim1 = ObjectAnimator.ofFloat(mountain1, View.TRANSLATION_Y, 500f, 0f)
+        mountAnim1.duration = 500
+        val mountAnim2 = ObjectAnimator.ofFloat(mountain2, View.TRANSLATION_Y, 800f, 0f)
+        mountAnim2.duration = 800
+        val mountAnim3 = ObjectAnimator.ofFloat(mountain3, View.TRANSLATION_Y, 2000f, 0f)
         mountAnim3.duration = 1000
 
         val animatorSun = AnimatorSet()
-        animatorSun.playTogether(sunAnim, nightAnim,mountAnim3,mountAnim2,mountAnim1)
+        animatorSun.playTogether(sunAnim, nightAnim,mountAnim3,mountAnim2,mountAnim1 )
         animatorSun.start()
 
     }
