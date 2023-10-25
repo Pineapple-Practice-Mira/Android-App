@@ -57,7 +57,7 @@ class InterNameFragment : Fragment() {
         val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f,-100f)
         sunAnim.duration = 2000
 
-        val nightAnim = ObjectAnimator.ofFloat(mountains, View.ALPHA, 0f,1f)
+        val nightAnim = ObjectAnimator.ofFloat(mountain1, View.ALPHA, 0f,1f)
         nightAnim.duration = 2000
 
         val animatorSun = AnimatorSet()

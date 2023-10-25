@@ -7,12 +7,32 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/mountains"
+        android:id="@+id/mountain1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@drawable/mountains"
+        android:src="@drawable/mountain1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/mountain2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/mountain2"
+        app:layout_constraintBottom_toTopOf="@+id/mountain1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/mountain3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/mountain3"
+        app:layout_constraintBottom_toTopOf="@+id/mountain2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
