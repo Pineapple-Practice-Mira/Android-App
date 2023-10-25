@@ -33,7 +33,7 @@ class InterNameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         App.instance.appComponent.inject(this)
 
-        // Анимация Солнца и освещения гор
+        // Анимация Солнца и гор
         sunAnim()
 
         //Врмееменая заглушка, для перехода между активити
@@ -41,12 +41,14 @@ class InterNameFragment : Fragment() {
             (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
         }
 
-//        Имя пока без функции обработки на ошибки и корректировки ввода символов
-        val name = binding.textField.text.toString()
-        // Введеное имя отправить и сохранить так:
-//        settingsProvider.saveName(name = name)
-        // После сохранения для перехода дальше вызвать:
-//         (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
+        binding.consign.setOnClickListener {
+//          Имя пока без функции обработки на ошибки и корректировки ввода символов
+            val name = binding.textField.text.toString()
+            // Введеное имя отправить и сохранить так:
+            settingsProvider.saveName(name = name)
+            // После сохранения для перехода дальше вызвать:
+            (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
+        }
     }
 
     override fun onDestroyView() {
@@ -67,7 +69,7 @@ class InterNameFragment : Fragment() {
         mountAnim3.duration = 1000
 
         val animatorSun = AnimatorSet()
-        animatorSun.playTogether(sunAnim, nightAnim,mountAnim3,mountAnim2,mountAnim1 )
+        animatorSun.playTogether(sunAnim, nightAnim, mountAnim3, mountAnim2, mountAnim1)
         animatorSun.start()
 
     }

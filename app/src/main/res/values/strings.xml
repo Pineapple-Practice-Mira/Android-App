@@ -35,4 +35,5 @@
     <string name="whats_name">Как к Вам\n<b>обращаться</b>?</string>
     <string name="confirm">Подтвердить</string>
     <string name="enter_name">Укажите Имя</string>
+    <string name="wantAcquainted">Хочешь ли ты познакомиться и узнать,\nкак работает приложение?\n\n К этой части можно вернуться в любой\n момент из раздела “Упражнения”.</string>
 </resources>
