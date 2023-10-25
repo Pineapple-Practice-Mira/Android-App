@@ -54,7 +54,7 @@ class InterNameFragment : Fragment() {
     }
 
     fun sunAnim() = with(binding) {
-        val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f, -100f)
+        val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f, 0f)
         sunAnim.duration = 1000
         val nightAnim = ObjectAnimator.ofFloat(interName, View.ALPHA, 0.5f, 1f)
         nightAnim.duration = 500
