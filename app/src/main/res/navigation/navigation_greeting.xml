@@ -14,7 +14,8 @@
             android:id="@+id/action_splashFragment_to_interNameFragment"
             app:destination="@id/interNameFragment"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/interNameFragment" />
     </fragment>
     <fragment
         android:id="@+id/interNameFragment"
@@ -25,7 +26,11 @@
             android:id="@+id/action_interNameFragment_to_greetingFragment"
             app:destination="@id/greetingFragment"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"/>
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/interNameFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/greetingFragment"
@@ -36,7 +41,10 @@
             android:id="@+id/action_greetingFragment_to_acquaintanceFragment"
             app:destination="@id/acquaintanceFragment"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"/>
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/interNameFragment" />
     </fragment>
     <fragment
         android:id="@+id/acquaintanceFragment"

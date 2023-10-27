@@ -8,32 +8,41 @@
 
     <style name="Theme.Mira" parent="Base.Theme.Mira" />
 
-    <style name="WixMadeforDisplayMedium" parent="TextAppearance.AppCompat">
+
+    <style name="BaseTextTheme" parent="TextAppearance.AppCompat"/>
+
+    <style name="WixMadeforDisplayMedium" parent="BaseTextTheme">
         <item name="fontFamily">@font/wix_madefor_display_medium</item>
     </style>
 
-    <style name="WixMadeforDisplayBold" parent="TextAppearance.AppCompat">
+    <style name="WixMadeforDisplayBold" parent="BaseTextTheme">
         <item name="fontFamily">@font/wix_madefor_display_bold</item>
     </style>
-    <style name="WixMadeforDisplayRegular" parent="TextAppearance.AppCompat">
+    <style name="WixMadeforDisplayRegular" parent="BaseTextTheme">
         <item name="fontFamily">@font/wix_madefor_display_regular</item>
     </style>
 
-    <style name="Title18" parent="WixMadeforDisplayRegular">
+    <style name="WixMadeforDisplaySimiBold" parent="BaseTextTheme">
+        <item name="fontFamily">@font/wix_madefor_display_semi_bold</item>
+    </style>
+
+    <style name="Title18Dark" parent="WixMadeforDisplayRegular">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="TitleBold18" parent="WixMadeforDisplayBold">
+    <style name="TitleBold18Primary" parent="WixMadeforDisplayBold">
         <item name="android:textColor">@color/primary</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textAlignment">center</item>
+    </style>
+    
+    <style name="TittleBold18Dark" parent="TitleBold18Primary">
+        <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="Body14" parent="WixMadeforDisplayMedium">
+    <style name="Body14Primary" parent="WixMadeforDisplayMedium">
         <item name="android:textColor">@color/primary</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="Notion12" parent="WixMadeforDisplayBold">
@@ -46,14 +55,22 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="Links16" parent="WixMadeforDisplayMedium">
-        <item name="android:textColor">@color/dark</item>
+    <style name="Links16Primary" parent="WixMadeforDisplayMedium">
+        <item name="android:textColor">@color/primary</item>
         <item name="android:textSize">16sp</item>
+    </style>
 
-    </style> <style name="Buttons16" parent="WixMadeforDisplayBold">
+    <style name="Links16White" parent="Links16Primary">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Buttons16" parent="WixMadeforDisplayBold">
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-
+    <style name="Button16White" parent="WixMadeforDisplaySimiBold">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

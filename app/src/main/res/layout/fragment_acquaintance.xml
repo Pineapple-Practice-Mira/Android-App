@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">>
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start"
@@ -25,9 +25,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/skip"
-        style="@style/Links16"
-        android:textAllCaps="false"
-        android:textColor="@color/primary"
+        style="@style/Links16Primary"
         android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintStart_toStartOf="@id/start"
