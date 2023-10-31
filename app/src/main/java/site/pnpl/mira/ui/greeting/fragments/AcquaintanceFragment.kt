@@ -46,17 +46,17 @@ class AcquaintanceFragment : Fragment() {
         binding.indicator.setViewPager(viewPager)
         adapter.registerAdapterDataObserver(binding.indicator.adapterDataObserver)
 
-        binding.btnSkip.paintFlags = (binding.btnSkip.paintFlags and Paint.UNDERLINE_TEXT_FLAG)
-
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 with(binding) {
                     btnPrevious.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
                     btnNext.visibility = if (position == vpElements.size - 1) View.INVISIBLE else View.VISIBLE
+                    btnSkip2.visibility= if (position == vpElements.size - 1) View.VISIBLE else View.INVISIBLE
 
                     btnSkip.text = if (position == vpElements.size - 1) resources.getString(R.string.complete) else resources.getString(R.string.skip)
                     btnSkip.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
                 }
             }
         })
@@ -74,12 +74,20 @@ class AcquaintanceFragment : Fragment() {
             }
 
             btnSkip.setOnClickListener {
-                settingsProvider.firstLaunchCompleted()
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
+                startMainActivity()
+            }
+
+            btnSkip2.setOnClickListener {
+                startMainActivity()
             }
         }
+    }
+
+    private fun startMainActivity() {
+        settingsProvider.firstLaunchCompleted()
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {

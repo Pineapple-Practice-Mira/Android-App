@@ -79,6 +79,17 @@
         android:contentDescription="@string/image_description_button_next" />
 
     <ImageButton
+        android:id="@+id/btnSkip2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/check_mark"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@id/indicator"
+        app:layout_constraintBottom_toBottomOf="@id/indicator"
+        app:layout_constraintEnd_toEndOf="@id/end"
+        android:contentDescription="@string/image_description_button_next" />
+
+    <ImageButton
         android:id="@+id/btnPrevious"
         android:layout_width="40dp"
         android:layout_height="40dp"
