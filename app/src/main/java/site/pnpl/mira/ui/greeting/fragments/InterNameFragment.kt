@@ -3,6 +3,7 @@ package site.pnpl.mira.ui.greeting.fragments
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,24 +35,27 @@ class InterNameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         App.instance.appComponent.inject(this)
 
-        binding.confirm.isEnabled = false
-
         // Анимация Солнца и гор
         startAnimBackground()
 
-        var name = ""
-        binding.inputName.doAfterTextChanged { editable ->
-            name = editable.toString()
-            binding.confirm.isEnabled = name.isNotEmpty()
-        }
+        var name = settingsProvider.getName()
+        with(binding) {
+            inputName.text = SpannableStringBuilder(name)
+            confirm.isEnabled = name.isNotEmpty()
 
-        binding.confirm.setOnClickListener {
-            settingsProvider.saveName(name)
-            navigateToNextFragment()
-        }
+            inputName.doAfterTextChanged { editable ->
+                name = editable.toString()
+                binding.confirm.isEnabled = name.isNotEmpty()
+            }
 
-        binding.skip.setOnClickListener {
-            navigateToNextFragment()
+            confirm.setOnClickListener {
+                settingsProvider.saveName(name)
+                navigateToNextFragment()
+            }
+
+            skip.setOnClickListener {
+                navigateToNextFragment()
+            }
         }
     }
 
