@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem/random"
         android:layout_marginTop="20dp"
-        style="@style/Body14Primary"
+        style="@style/Body14Dark"
         android:textAlignment="center"
         app:layout_constraintVertical_bias="0"
         app:layout_constrainedWidth="true"

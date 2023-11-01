@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/wantAcquainted"
-        style="@style/Body14Primary"
+        style="@style/Body14Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"

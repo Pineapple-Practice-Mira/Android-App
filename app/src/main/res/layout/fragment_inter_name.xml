@@ -76,8 +76,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_name"
         app:boxStrokeWidth="0dp"
+        android:textColorHint="@null"
+        app:hintEnabled="false"
         app:hintTextColor="@android:color/transparent"
         android:layout_marginTop="342dp"
         app:layout_constraintEnd_toEndOf="@id/end"
@@ -86,14 +87,16 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputName"
-            style="@style/Body14Primary"
+            style="@style/Body14Dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/frame_input_field"
-            android:imeOptions="actionDone"
+            android:maxLength="30"
+            android:hint="@string/enter_name"
             android:inputType="text"
-            android:textAlignment="textStart"
             android:textColorHint="@color/primary"
+            android:imeOptions="actionDone"
+            android:textAlignment="textStart"
             android:textCursorDrawable="@null" />
 
     </com.google.android.material.textfield.TextInputLayout>

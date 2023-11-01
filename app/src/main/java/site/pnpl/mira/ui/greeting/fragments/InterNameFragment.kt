@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
 import site.pnpl.mira.ui.greeting.GreetingActivity
+import site.pnpl.mira.utils.InputLettersFilter
 import javax.inject.Inject
 
 class InterNameFragment : Fragment() {
@@ -40,15 +42,23 @@ class InterNameFragment : Fragment() {
 
         var name = settingsProvider.getName()
         with(binding) {
-            inputName.text = SpannableStringBuilder(name)
+            inputName.apply {
+                text = SpannableStringBuilder(name)
+                filters = arrayOf(InputLettersFilter())
+            }
+
             confirm.isEnabled = name.isNotEmpty()
 
             inputName.doAfterTextChanged { editable ->
                 name = editable.toString()
-                binding.confirm.isEnabled = name.isNotEmpty()
+                confirm.isEnabled = name.isNotEmpty()
             }
 
             confirm.setOnClickListener {
+                if (name.length < 2) {
+                    Toast.makeText(requireContext(), resources.getString(R.string.error_length_name), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 settingsProvider.saveName(name)
                 navigateToNextFragment()
             }

@@ -38,4 +38,6 @@
     <string name="wantAcquainted">Хочешь ли ты познакомиться и узнать,\nкак работает приложение?\n\n К этой части можно вернуться в любой\n момент из раздела “Упражнения”.</string>
     <string name="welcome">Добро пожаловать</string>
     <string name="to_greeting">Познакомиться</string>
+    <string name="input_name_filter">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
+    <string name="error_length_name">Длинна имени должна быть от 2 до 30 букв</string>
 </resources>
