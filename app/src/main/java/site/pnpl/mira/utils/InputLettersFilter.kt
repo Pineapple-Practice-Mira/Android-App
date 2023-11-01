@@ -13,7 +13,7 @@ class InputLettersFilter: InputFilter {
         dEnd: Int
     ): CharSequence {
         var filtered = ""
-        if (dStart >= 30) return ""
+        if (dStart >= MAX_LENGTH_IN_INPUT_NAME) return ""
 
         for (i in start until end) {
             val character = cs[i]

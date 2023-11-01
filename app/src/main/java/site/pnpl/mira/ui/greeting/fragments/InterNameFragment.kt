@@ -14,7 +14,10 @@ import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
 import site.pnpl.mira.ui.greeting.GreetingActivity
+import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME
+import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME_ALPHA
 import site.pnpl.mira.utils.InputLettersFilter
+import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
 import javax.inject.Inject
 
 class InterNameFragment : Fragment() {
@@ -41,16 +44,17 @@ class InterNameFragment : Fragment() {
 
         var name = settingsProvider.getName()
         with(binding) {
+
+            confirm.isEnabled = name.length >= MIN_LENGTH_IN_INPUT_NAME
+
             inputName.apply {
                 text = SpannableStringBuilder(name)
                 filters = arrayOf(InputLettersFilter())
             }
 
-            confirm.isEnabled = name.isNotEmpty()
-
             inputName.doAfterTextChanged { editable ->
                 name = editable.toString()
-                confirm.isEnabled = name.length >= 2
+                confirm.isEnabled = name.length >= MIN_LENGTH_IN_INPUT_NAME
             }
 
             confirm.setOnClickListener {
@@ -71,15 +75,15 @@ class InterNameFragment : Fragment() {
 
     private fun startAnimBackground() = with(binding) {
         val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f, 0f)
-        sunAnim.duration = 1000
+        sunAnim.duration = ANIMATION_TIME_INPUT_NAME
         val nightAnim = ObjectAnimator.ofFloat(binding.root, View.ALPHA, 0.5f, 1f)
-        nightAnim.duration = 500
+        nightAnim.duration = ANIMATION_TIME_INPUT_NAME_ALPHA
         val mountAnim1 = ObjectAnimator.ofFloat(mountain1, View.TRANSLATION_Y, 500f, 0f)
-        mountAnim1.duration = 1000
+        mountAnim1.duration = ANIMATION_TIME_INPUT_NAME
         val mountAnim2 = ObjectAnimator.ofFloat(mountain2, View.TRANSLATION_Y, 800f, 0f)
-        mountAnim2.duration = 1000
+        mountAnim2.duration = ANIMATION_TIME_INPUT_NAME
         val mountAnim3 = ObjectAnimator.ofFloat(mountain3, View.TRANSLATION_Y, 2000f, 0f)
-        mountAnim3.duration = 1000
+        mountAnim3.duration = ANIMATION_TIME_INPUT_NAME
 
         val animatorSun = AnimatorSet()
         animatorSun.playTogether(sunAnim, nightAnim, mountAnim3, mountAnim2, mountAnim1)
