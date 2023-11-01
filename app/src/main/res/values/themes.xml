@@ -31,6 +31,11 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="Title14DarkGray" parent="WixMadeforDisplayRegular">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="TitleBold18Primary" parent="WixMadeforDisplayBold">
         <item name="android:textColor">@color/primary</item>
         <item name="android:textSize">18sp</item>

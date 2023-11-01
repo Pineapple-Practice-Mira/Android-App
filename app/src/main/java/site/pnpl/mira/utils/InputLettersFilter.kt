@@ -11,15 +11,18 @@ class InputLettersFilter: InputFilter {
         spanned: Spanned?,
         dStart: Int,
         dEnd: Int
-    ): CharSequence? {
+    ): CharSequence {
         var filtered = ""
+        if (dStart >= 30) return ""
+
         for (i in start until end) {
             val character = cs[i]
-            //Если нужно будет добавить пробел: Character.isWhitespace(character)
-            if ( Character.isLetter(character)) {
-                filtered += character
+            if (Character.isLetter(character) || Character.isWhitespace(character) || character == Char('-'.code)) {
+                filtered += character.toString()
             }
         }
+
         return filtered
     }
+
 }

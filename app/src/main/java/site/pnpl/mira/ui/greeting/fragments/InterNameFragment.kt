@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import site.pnpl.mira.App
 import site.pnpl.mira.R
@@ -51,14 +50,10 @@ class InterNameFragment : Fragment() {
 
             inputName.doAfterTextChanged { editable ->
                 name = editable.toString()
-                confirm.isEnabled = name.isNotEmpty()
+                confirm.isEnabled = name.length >= 2
             }
 
             confirm.setOnClickListener {
-                if (name.length < 2) {
-                    Toast.makeText(requireContext(), resources.getString(R.string.error_length_name), Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
                 settingsProvider.saveName(name)
                 navigateToNextFragment()
             }

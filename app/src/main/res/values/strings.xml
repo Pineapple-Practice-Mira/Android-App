@@ -40,4 +40,6 @@
     <string name="to_greeting">Познакомиться</string>
     <string name="input_name_filter">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
     <string name="error_length_name">Длинна имени должна быть от 2 до 30 букв</string>
+    <string name="info_minimum_2_letter">минимум 2 символа</string>
+    <string name="stub">Заглушка для contentDescription</string>
 </resources>
