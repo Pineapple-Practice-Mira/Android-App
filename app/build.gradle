@@ -33,7 +33,7 @@ android {
         jvmTarget = '19'
     }
     buildFeatures {
-        viewBinding true
+        viewBinding=true
     }
 }
 

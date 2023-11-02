@@ -32,4 +32,14 @@
 
     <string name="skip"><u>пропустить</u></string>
     <string name="complete"><u>завершить</u></string>
+    <string name="whats_name">Как к Вам\n<b>обращаться</b>?</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="enter_name">Укажите Имя</string>
+    <string name="wantAcquainted">Хочешь ли ты познакомиться и узнать,\nкак работает приложение?\n\n К этой части можно вернуться в любой\n момент из раздела “Упражнения”.</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="to_greeting">Познакомиться</string>
+    <string name="input_name_filter">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
+    <string name="error_length_name">Длинна имени должна быть от 2 до 30 букв</string>
+    <string name="info_minimum_2_letter">минимум 2 символа</string>
+    <string name="stub">Заглушка для contentDescription</string>
 </resources>

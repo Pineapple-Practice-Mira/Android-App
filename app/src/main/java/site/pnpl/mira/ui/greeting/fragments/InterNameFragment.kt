@@ -1,22 +1,31 @@
 package site.pnpl.mira.ui.greeting.fragments
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import site.pnpl.mira.App
-import site.pnpl.mira.ui.greeting.GreetingActivity
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
+import site.pnpl.mira.ui.greeting.GreetingActivity
+import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME
+import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME_ALPHA
+import site.pnpl.mira.utils.InputLettersFilter
+import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
 import javax.inject.Inject
 
 class InterNameFragment : Fragment() {
     private var _binding: FragmentInterNameBinding? = null
     private val binding get() = _binding!!
 
-    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,15 +39,56 @@ class InterNameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         App.instance.appComponent.inject(this)
 
-        //Врмееменая заглушка, для перехода между активити
-        binding.next.setOnClickListener {
-            (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
-        }
+        // Анимация Солнца и гор
+        startAnimBackground()
 
-        // Введеное имя отправить и сохранить так:
-        //settingsProvider.saveName(name = name)
-        // После сохранения для перехода дальше вызвать:
-        // (activity as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
+        var name = settingsProvider.getName()
+        with(binding) {
+
+            confirm.isEnabled = name.length >= MIN_LENGTH_IN_INPUT_NAME
+
+            inputName.apply {
+                text = SpannableStringBuilder(name)
+                filters = arrayOf(InputLettersFilter())
+            }
+
+            inputName.doAfterTextChanged { editable ->
+                name = editable.toString()
+                confirm.isEnabled = name.length >= MIN_LENGTH_IN_INPUT_NAME
+            }
+
+            confirm.setOnClickListener {
+                settingsProvider.saveName(name)
+                navigateToNextFragment()
+            }
+
+            skip.setOnClickListener {
+                navigateToNextFragment()
+            }
+        }
+    }
+
+    private fun navigateToNextFragment() {
+        (requireActivity() as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
+    }
+
+
+    private fun startAnimBackground() = with(binding) {
+        val sunAnim = ObjectAnimator.ofFloat(sun, View.TRANSLATION_X, 500f, 0f)
+        sunAnim.duration = ANIMATION_TIME_INPUT_NAME
+        val nightAnim = ObjectAnimator.ofFloat(binding.root, View.ALPHA, 0.5f, 1f)
+        nightAnim.duration = ANIMATION_TIME_INPUT_NAME_ALPHA
+        val mountAnim1 = ObjectAnimator.ofFloat(mountain1, View.TRANSLATION_Y, 500f, 0f)
+        mountAnim1.duration = ANIMATION_TIME_INPUT_NAME
+        val mountAnim2 = ObjectAnimator.ofFloat(mountain2, View.TRANSLATION_Y, 800f, 0f)
+        mountAnim2.duration = ANIMATION_TIME_INPUT_NAME
+        val mountAnim3 = ObjectAnimator.ofFloat(mountain3, View.TRANSLATION_Y, 2000f, 0f)
+        mountAnim3.duration = ANIMATION_TIME_INPUT_NAME
+
+        val animatorSun = AnimatorSet()
+        animatorSun.playTogether(sunAnim, nightAnim, mountAnim3, mountAnim2, mountAnim1)
+        animatorSun.start()
+
     }
 
     override fun onDestroyView() {

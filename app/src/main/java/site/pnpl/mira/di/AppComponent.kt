@@ -3,6 +3,7 @@ package site.pnpl.mira.di
 import dagger.Component
 import site.pnpl.mira.di.modules.DomainModule
 import site.pnpl.mira.ui.greeting.fragments.AcquaintanceFragment
+import site.pnpl.mira.ui.greeting.fragments.GreetingFragment
 import site.pnpl.mira.ui.greeting.fragments.InterNameFragment
 import site.pnpl.mira.ui.greeting.fragments.SplashFragment
 import javax.inject.Singleton
@@ -13,5 +14,6 @@ interface AppComponent {
     fun inject(splashFragment: SplashFragment)
     fun inject(splashFragment: InterNameFragment)
     fun inject(acquaintanceFragment: AcquaintanceFragment)
+    fun inject(greetingFragment: GreetingFragment)
 
 }
