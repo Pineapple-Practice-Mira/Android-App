@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/navGraphFragment">
+    <fragment
+        android:id="@+id/checkInCompleted"
+        android:name="site.pnpl.mira.ui.main.fragments.CheckInCompletedFragment"
+        android:label="CheckInCompletedFragment"
+        tools:layout="@layout/fragment_check_in_comleted">
+        <action
+            android:id="@+id/action_checkInCompleted_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkInFactors"
+        android:name="site.pnpl.mira.ui.main.fragments.CheckInFactorsFragment"
+        android:label="CheckInFactorsFragment"
+        tools:layout="@layout/fragment_check_in_factors">
+        <action
+            android:id="@+id/action_factors_to_completed"
+            app:destination="@id/checkInCompleted"
+            app:popUpTo="@id/checkInCompleted"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkInFeel"
+        android:name="site.pnpl.mira.ui.main.fragments.CheckInFeelFragment"
+        android:label="CheckInFeelFragment"
+        tools:layout="@layout/fragment_check_in_feeling">
+        <action
+            android:id="@+id/action_feel_to_factors"
+            app:destination="@id/checkInFactors" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="site.pnpl.mira.ui.main.fragments.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings"/>
+
+    <navigation android:id="@+id/navigation_home"
+        app:startDestination="@id/homeFragment">
+        <fragment
+            android:id="@+id/homeFragment"
+            android:name="site.pnpl.mira.ui.main.fragments.HomeFragment"
+            android:label="HomeFragment" />
+
+        <action
+            android:id="@+id/createCheckIn"
+            app:destination="@id/checkInFeel"/>
+
+    </navigation>
+
+    <fragment
+        android:id="@+id/navGraphFragment"
+        android:name="site.pnpl.mira.ui.main.fragments.NavGraphFragment"
+        android:label="NavGraphFragment" >
+        <action
+            android:id="@+id/action_navGraphFragment_to_navigation2"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navGraphFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

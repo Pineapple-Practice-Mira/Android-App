@@ -15,5 +15,5 @@
         android:layout_height="match_parent"
         app:defaultNavHost="true"
 
-        app:navGraph="@navigation/navigation_greeting"/>
+        app:navGraph="@navigation/greeting_nav_graph"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

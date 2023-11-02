@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Список чек-инов"
+        android:textSize="30sp"/>
+    <Button
+        android:id="@+id/settings"
+        android:text="Настройки"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/statistic"
+        android:text="Статистика"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/openCheckIn"
+        android:text="Открыть ЧекИн"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/createCheckIn"
+        android:text="Создать ЧекИн"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/openExercisesList"
+        android:text="Список упражнений"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
