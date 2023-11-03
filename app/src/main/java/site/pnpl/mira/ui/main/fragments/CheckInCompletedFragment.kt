@@ -23,14 +23,24 @@ class CheckInCompletedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.main .setOnClickListener {
-            findNavController().navigate(R.id.action_checkInCompleted_to_navigation_home)
-        }
 
+        val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
+        binding.main .setOnClickListener {
+            when (key) {
+                CALLBACK_EXERCISES -> findNavController().navigate(R.id.action_checkInCompleted_to_exercises_list)
+                else -> findNavController().navigate(R.id.action_checkInCompleted_to_navigation_home)
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val CALLBACK_KEY = "CALLBACK_KEY"
+        const val CALLBACK_HOME = "HOME"
+        const val CALLBACK_EXERCISES = "EXERCISES"
     }
 }

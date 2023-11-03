@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
+import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
-import site.pnpl.mira.ui.greeting.GreetingActivity
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME_ALPHA
 import site.pnpl.mira.utils.InputLettersFilter
@@ -69,7 +69,7 @@ class InterNameFragment : Fragment() {
     }
 
     private fun navigateToNextFragment() {
-        (requireActivity() as GreetingActivity).navController.navigate(R.id.action_interNameFragment_to_greetingFragment)
+        findNavController().navigate(R.id.action_inter_name_to_greeting_fragment)
     }
 
 

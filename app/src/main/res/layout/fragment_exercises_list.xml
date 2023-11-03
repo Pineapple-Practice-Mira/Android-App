@@ -11,8 +11,20 @@
         android:text="Список упражнений"
         android:textSize="30sp"/>
     <Button
-        android:id="@+id/open"
+        android:id="@+id/openExercise"
         android:text="Открыть упражнение"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/openHome"
+        android:text="Открыть Главную"
+        android:backgroundTint="@color/button_background_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/createCheckIn"
+        android:text="Создать Чек Ин"
         android:backgroundTint="@color/button_background_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

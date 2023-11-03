@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Mira"
         tools:targetApi="31">
         <activity
-            android:name="site.pnpl.mira.ui.greeting.GreetingActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="site.pnpl.mira.ui.main.MainActivity"/>
+<!--        <activity android:name="site.pnpl.mira.ui.main.MainActivity"/>-->
     </application>
 
 </manifest>

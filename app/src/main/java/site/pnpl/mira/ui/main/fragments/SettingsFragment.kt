@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentSettingsBinding
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -16,6 +18,13 @@ class SettingsFragment : Fragment() {
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.close.setOnClickListener {
+            findNavController().navigate(R.id.action_setting_to_home)
+        }
     }
 
     override fun onDestroyView() {

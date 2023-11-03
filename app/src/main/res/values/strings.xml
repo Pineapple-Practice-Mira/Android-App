@@ -42,4 +42,5 @@
     <string name="error_length_name">Длинна имени должна быть от 2 до 30 букв</string>
     <string name="info_minimum_2_letter">минимум 2 символа</string>
     <string name="stub">Заглушка для contentDescription</string>
+    <string name="alert_double_tap_exit">Нажми дважды для выхода из приложения</string>
 </resources>
