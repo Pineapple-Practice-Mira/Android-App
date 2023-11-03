@@ -1,17 +1,15 @@
 package site.pnpl.mira.ui.greeting.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.App
-import site.pnpl.mira.ui.greeting.GreetingActivity
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentGreetingBinding
-import site.pnpl.mira.ui.main.MainActivity
 import javax.inject.Inject
 
 class GreetingFragment : Fragment() {
@@ -39,15 +37,12 @@ class GreetingFragment : Fragment() {
         }
 
         binding.greeting.setOnClickListener {
-            (requireActivity() as GreetingActivity).navController.navigate(R.id.action_greetingFragment_to_acquaintanceFragment)
+            findNavController().navigate(R.id.action_to_acquaintance_fragment)
         }
 
         binding.skip.setOnClickListener {
             settingsProvider.firstLaunchCompleted()
-            Intent(requireActivity(), MainActivity::class.java).apply {
-                startActivity(this)
-                requireActivity().finish()
-            }
+            findNavController().navigate(R.id.action_greeting_to_home)
         }
     }
 

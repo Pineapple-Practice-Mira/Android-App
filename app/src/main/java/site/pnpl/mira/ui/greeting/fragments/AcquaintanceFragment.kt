@@ -1,18 +1,17 @@
 package site.pnpl.mira.ui.greeting.fragments
 
-import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.App
 import site.pnpl.mira.ui.greeting.viewpager.VpAdapter
 import site.pnpl.mira.ui.greeting.viewpager.VpElement
 import site.pnpl.mira.ui.greeting.viewpager.VpElementsGenerator
-import site.pnpl.mira.ui.main.MainActivity
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentAcquaintanceBinding
@@ -74,20 +73,18 @@ class AcquaintanceFragment : Fragment() {
             }
 
             btnSkip.setOnClickListener {
-                startMainActivity()
+                navigateToHome()
             }
 
             btnSkip2.setOnClickListener {
-                startMainActivity()
+                navigateToHome()
             }
         }
     }
 
-    private fun startMainActivity() {
+    private fun navigateToHome() {
         settingsProvider.firstLaunchCompleted()
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
+        findNavController().navigate(R.id.action_acquaintance_to_home)
     }
 
     override fun onDestroyView() {
