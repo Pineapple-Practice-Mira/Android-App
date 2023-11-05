@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentHomeBinding
+import site.pnpl.mira.ui.customview.BottomBar
+import site.pnpl.mira.ui.customview.BottomBar.Companion.HOME
 import site.pnpl.mira.ui.main.fragments.CheckInCompletedFragment.Companion.CALLBACK_HOME
 import site.pnpl.mira.ui.main.fragments.CheckInCompletedFragment.Companion.CALLBACK_KEY
 
@@ -26,24 +28,49 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            createCheckIn.setOnClickListener {
-                findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
+        stubClickListener()
+
+        initBottomBar()
+        setClickListener()
+
+    }
+
+    private fun initBottomBar() {
+
+        binding.bottomBar.setFocusedButton(HOME)
+        binding.bottomBar.setClickListener(object : BottomBar.BottomBarClicked {
+            override fun onClick(button: BottomBar.BottomBarButton) {
+                when (button) {
+                    BottomBar.BottomBarButton.HOME -> {}
+                    BottomBar.BottomBarButton.EXERCISES_LIST -> {
+                        findNavController().navigate(R.id.action_home_to_exercises)
+                    }
+                    BottomBar.BottomBarButton.CHECK_IN -> {
+                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
+                    }
+                }
             }
+        })
+    }
+
+    private fun setClickListener() {
+
+    }
+
+    private fun stubClickListener() {
+        with(binding) {
+
             settings.setOnClickListener {
                 findNavController().navigate(R.id.action_home_to_setting)
             }
             statistic.setOnClickListener {
                 findNavController().navigate(R.id.action_home_to_statistics)
             }
-            openExercisesList.setOnClickListener {
-                findNavController().navigate(R.id.action_home_to_exercises)
-            }
+
             openCheckIn.setOnClickListener {
                 findNavController().navigate(R.id.action_home_to_details)
             }
         }
-
     }
 
     override fun onDestroyView() {
