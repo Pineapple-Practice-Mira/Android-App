@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentExercisesListBinding
+import site.pnpl.mira.ui.customview.BottomBar
 import site.pnpl.mira.ui.main.fragments.CheckInCompletedFragment.Companion.CALLBACK_EXERCISES
 import site.pnpl.mira.ui.main.fragments.CheckInCompletedFragment.Companion.CALLBACK_KEY
 
@@ -26,17 +27,33 @@ class ExercisesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.openHome.setOnClickListener {
-            findNavController().navigate(R.id.action_exercises_list_to_home)
-        }
+        stubClickListener()
+
+        initBottomBar()
+
+    }
+
+    private fun initBottomBar() {
+        binding.bottomBar.setFocusedButton(BottomBar.EXERCISES_LIST)
+        binding.bottomBar.setClickListener(object : BottomBar.BottomBarClicked {
+            override fun onClick(button: BottomBar.BottomBarButton) {
+                when (button) {
+                    BottomBar.BottomBarButton.HOME -> {
+                        findNavController().navigate(R.id.action_exercises_list_to_home)
+                    }
+                    BottomBar.BottomBarButton.EXERCISES_LIST -> {}
+                    BottomBar.BottomBarButton.CHECK_IN -> {
+                        findNavController().navigate(R.id.action_exercises_list_to_start_check_in, bundleOf(Pair(CALLBACK_KEY, CALLBACK_EXERCISES)))
+                    }
+                }
+            }
+        })
+    }
+
+    private fun stubClickListener() {
         binding.openExercise.setOnClickListener {
             findNavController().navigate(R.id.action_exercises_list_to_exercise)
         }
-
-        binding.createCheckIn.setOnClickListener {
-            findNavController().navigate(R.id.action_exercises_list_to_start_check_in, bundleOf(Pair(CALLBACK_KEY, CALLBACK_EXERCISES)))
-        }
-
     }
 
     override fun onDestroyView() {
