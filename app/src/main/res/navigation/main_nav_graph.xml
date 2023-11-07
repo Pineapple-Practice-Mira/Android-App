@@ -19,8 +19,9 @@
 
         <fragment
             android:id="@+id/navigation_home"
-            android:name="site.pnpl.mira.ui.main.fragments.HomeFragment"
-            android:label="HomeFragment" />
+            android:name="site.pnpl.mira.ui.home.HomeFragment"
+            android:label="HomeFragment"
+            tools:layout="@layout/fragment_home"/>
         <action
             android:id="@+id/action_home_to_setting"
             app:destination="@id/settingsFragment" />
@@ -46,7 +47,8 @@
     <fragment
         android:id="@+id/splashFragment2"
         android:name="site.pnpl.mira.ui.greeting.fragments.SplashFragment"
-        android:label="SplashFragment">
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment2_to_greeting_graph"
             app:destination="@id/greeting_graph"
@@ -203,6 +205,10 @@
             <action
                 android:id="@+id/action_exercises_list_to_home"
                 app:destination="@id/navigation_home"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
                 app:popUpTo="@id/exercises_graph"
                 app:popUpToInclusive="true"/>
             <action
