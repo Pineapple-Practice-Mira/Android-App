@@ -22,7 +22,7 @@ class BottomBar constructor(context: Context, attributeSet: AttributeSet) : Cons
         _binding = BottomBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.bottom_bar, this))
     }
 
-    fun setFocusedButton(@BottomButton bottomButton: Int) {
+    fun setSelectedButton(@BottomButton bottomButton: Int) {
         buttons.forEach { isSelected = false }
         buttons[bottomButton].isSelected = true
 
