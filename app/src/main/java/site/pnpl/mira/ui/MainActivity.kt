@@ -1,4 +1,4 @@
-package site.pnpl.mira.ui.main
+package site.pnpl.mira.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

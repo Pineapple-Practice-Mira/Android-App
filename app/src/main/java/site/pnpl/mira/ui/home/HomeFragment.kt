@@ -6,17 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.AnimationUtils
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.marginBottom
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentHomeBinding
 import site.pnpl.mira.ui.customview.BottomBar
 import site.pnpl.mira.ui.customview.BottomBar.Companion.HOME
-import site.pnpl.mira.ui.home.recycler_view.CheckInItem
 import site.pnpl.mira.ui.home.recycler_view.HomeAdapter
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.utils.toPx
@@ -28,6 +32,9 @@ class HomeFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: HomeAdapter
+
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var scope: CoroutineScope
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,6 +51,7 @@ class HomeFragment : Fragment() {
         initRecyclerView()
         setClickListener()
         setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
+        getCheckInData()
     }
 
     private fun initBottomBar() {
@@ -60,7 +68,6 @@ class HomeFragment : Fragment() {
                     BottomBar.BottomBarButton.CHECK_IN -> {
 //                        открытие чекина
 //                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
-                        addTempCheckIn()
                     }
                 }
             }
@@ -74,13 +81,16 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(TopSpacingItemDecoration(12))
 
+    }
+
+    private fun mountainsMarginCorrect() {
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
 
                 val mountainsY = binding.mountains.y - EXTRA_MARGIN_MOUNTAINS.toPx
                 recyclerView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
                 val rvHeight = recyclerView.measuredHeight
-
+                println("rvHeight $rvHeight")
                 val rvFullSize = rvHeight + recyclerView.y
                 if (rvFullSize > mountainsY) {
                     changeMountainsPos(rvFullSize)
@@ -91,7 +101,6 @@ class HomeFragment : Fragment() {
                 recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
-
     }
 
     private fun changeMountainsPos(rvFullSize: Float) {
@@ -110,19 +119,20 @@ class HomeFragment : Fragment() {
         binding.mountains.startAnimation(mountainsAnimation)
     }
 
-    private fun addTempCheckIn() {
-        adapter.addItem(
-            CheckInItem(
-                day = "04",
-                month = "сент",
-                dayOfWeekAndTime = "Пн, 13:00",
-                emotion = "#усталость",
-                emotionDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.emo)!!,
-                dateTime = System.currentTimeMillis()
-
-            )
-        )
+    private fun getCheckInData() {
+        viewModel.getCheckIns()
+        scope = CoroutineScope(Dispatchers.IO).also { scope ->
+            scope.launch {
+                viewModel.checkInData.collect{checkIns ->
+                    withContext(Dispatchers.Main) {
+                        adapter.setItemsList(checkIns)
+                        mountainsMarginCorrect()
+                    }
+                }
+            }
+        }
     }
+
 
     private fun setClickListener() {
     }
@@ -146,6 +156,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        scope.cancel()
     }
 
     companion object {

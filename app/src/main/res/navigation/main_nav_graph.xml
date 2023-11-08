@@ -192,12 +192,12 @@
         app:startDestination="@id/exercisesListFragment">
         <fragment
             android:id="@+id/exerciseFragment"
-            android:name="site.pnpl.mira.ui.main.fragments.ExerciseFragment"
+            android:name="site.pnpl.mira.ui.exercise.ExerciseFragment"
             android:label="ExerciseFragment">
         </fragment>
         <fragment
             android:id="@+id/exercisesListFragment"
-            android:name="site.pnpl.mira.ui.main.fragments.ExercisesListFragment"
+            android:name="site.pnpl.mira.ui.exercise.ExercisesListFragment"
             android:label="ExercisesListFragment">
             <action
                 android:id="@+id/action_exercises_list_to_exercise"
