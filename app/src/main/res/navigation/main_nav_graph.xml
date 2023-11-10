@@ -149,22 +149,22 @@
         android:name="site.pnpl.mira.ui.main.fragments.CheckInDetailsFragment"
         android:label="CheckInDetailsFragment"
         tools:layout="@layout/fragment_check_in_details"/>
+
     <navigation android:id="@+id/check_in_graph"
-        app:startDestination="@id/checkInFeel">
+        app:startDestination="@id/checkInFragment">
         <fragment
-            android:id="@+id/checkInFactors"
-            android:name="site.pnpl.mira.ui.main.fragments.CheckInFactorsFragment"
-            android:label="CheckInFactorsFragment"
-            tools:layout="@layout/fragment_check_in_factors">
+            android:id="@+id/checkInFragment"
+            android:name="site.pnpl.mira.ui.check_in.fragments.CheckInFragment"
+            android:label="CheckInFragment" >
             <action
-                android:id="@+id/action_factors_to_completed"
+                android:id="@+id/action_checkInFragment_to_checkInCompleted"
                 app:destination="@id/checkInCompleted"
-                app:popUpTo="@id/checkInFeel"
-                app:popUpToInclusive="true" />
+                app:popUpTo="@id/checkInFragment"
+                app:popUpToInclusive="true"/>
         </fragment>
         <fragment
             android:id="@+id/checkInCompleted"
-            android:name="site.pnpl.mira.ui.main.fragments.CheckInCompletedFragment"
+            android:name="site.pnpl.mira.ui.check_in.CheckInCompletedFragment"
             android:label="CheckInCompletedFragment"
             tools:layout="@layout/fragment_check_in_comleted">
             <action
@@ -178,16 +178,8 @@
                 app:popUpTo="@id/exercises_graph"
                 app:popUpToInclusive="true" />
         </fragment>
-        <fragment
-            android:id="@+id/checkInFeel"
-            android:name="site.pnpl.mira.ui.main.fragments.CheckInFeelFragment"
-            android:label="CheckInFeelFragment"
-            tools:layout="@layout/fragment_check_in_feeling">
-            <action
-                android:id="@+id/action_feel_to_factors"
-                app:destination="@id/checkInFactors" />
-        </fragment>
     </navigation>
+
     <navigation android:id="@+id/exercises_graph"
         app:startDestination="@id/exercisesListFragment">
         <fragment
@@ -216,4 +208,5 @@
                 app:destination="@id/check_in_graph"/>
         </fragment>
     </navigation>
+
 </navigation>

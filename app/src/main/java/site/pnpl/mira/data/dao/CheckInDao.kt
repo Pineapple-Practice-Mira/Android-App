@@ -15,4 +15,7 @@ interface CheckInDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(checkIn: CheckIn)
+
+    @Query("DELETE FROM ${DBConstants.TABLE_NAME_CHECK_IN}")
+    fun deleteAll()
 }

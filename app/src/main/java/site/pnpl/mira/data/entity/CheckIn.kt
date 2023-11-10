@@ -23,6 +23,7 @@ data class CheckIn(
     @ColumnInfo(name = "exercises_id") val exercisesId: Int = 0,
     @ColumnInfo(name = "note") val note: String = "",
     @ColumnInfo(name = "created_at") val createdAt: String,
+    @ColumnInfo(name = "created_at_long") val createdAtLong: Long,
     @ColumnInfo(name = "edited_at") val editedAt: String = "",
     @ColumnInfo(name = "is_synchronized", defaultValue = "0") val isSynchronized: Int = 0
 ) : Parcelable

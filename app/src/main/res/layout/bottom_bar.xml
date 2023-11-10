@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@drawable/bottom_bar_line"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="71dp"
         android:layout_marginStart="17dp"
         android:layout_marginEnd="17dp"
         app:layout_constraintStart_toStartOf="parent"

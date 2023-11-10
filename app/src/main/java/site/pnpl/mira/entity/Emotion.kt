@@ -16,7 +16,7 @@ data class Emotion(
     }
 }
 
-object EmotionList {
+object EmotionsList {
     val emotions = listOf(
         Emotion(id = 0, nameResId = R.string.joy, type = Emotion.Type.POSITIVE, emojiResId = R.drawable.emotion_joy),
         Emotion(id = 1, nameResId = R.string.calmness, type = Emotion.Type.POSITIVE, emojiResId = R.drawable.emotion_calmness),

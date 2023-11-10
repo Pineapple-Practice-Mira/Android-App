@@ -23,4 +23,10 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
             checkInDao.getAllCheckIn()
         }
     }
+
+    suspend fun deleteAll() {
+        withContext(Dispatchers.IO) {
+            checkInDao.deleteAll()
+        }
+    }
 }

@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/emotion_view_background_state" />
+    <corners android:radius="8dp" />
+</shape>

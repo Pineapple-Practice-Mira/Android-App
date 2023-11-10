@@ -1,4 +1,4 @@
-package site.pnpl.mira.ui.main.fragments
+package site.pnpl.mira.ui.check_in
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

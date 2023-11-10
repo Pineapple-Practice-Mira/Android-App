@@ -43,6 +43,11 @@ class BottomBar constructor(context: Context, attributeSet: AttributeSet) : Cons
 
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        _binding = null
+    }
+
     companion object {
         const val HOME = 0
         const val EXERCISES_LIST = 1

@@ -25,4 +25,10 @@ class HomeViewModel : ViewModel() {
             repository.getAllCheckIns()
         }
     }
+
+    fun deleteAll() {
+        viewModelScope.launch {
+            repository.deleteAll()
+        }
+    }
 }

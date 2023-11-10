@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.animation.AnimationUtils
+import androidx.core.os.bundleOf
 import androidx.core.view.marginBottom
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
@@ -19,6 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentHomeBinding
+import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_HOME
+import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.customview.BottomBar
 import site.pnpl.mira.ui.customview.BottomBar.Companion.HOME
 import site.pnpl.mira.ui.home.recycler_view.HomeAdapter
@@ -45,6 +48,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        @Suppress("DEPRECATION")
+        requireActivity().window.statusBarColor = resources.getColor(R.color.white)
         stubClickListener()
 
         initBottomBar()
@@ -66,8 +71,7 @@ class HomeFragment : Fragment() {
                     }
 
                     BottomBar.BottomBarButton.CHECK_IN -> {
-//                        открытие чекина
-//                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
+                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
                     }
                 }
             }
@@ -140,15 +144,18 @@ class HomeFragment : Fragment() {
     private fun stubClickListener() {
         with(binding) {
 
-            settings.setOnClickListener {
-                findNavController().navigate(R.id.action_home_to_setting)
-            }
-            statistic.setOnClickListener {
-                findNavController().navigate(R.id.action_home_to_statistics)
-            }
-
-            openCheckIn.setOnClickListener {
-                findNavController().navigate(R.id.action_home_to_details)
+//            settings.setOnClickListener {
+//                findNavController().navigate(R.id.action_home_to_setting)
+//            }
+//            statistic.setOnClickListener {
+//                findNavController().navigate(R.id.action_home_to_statistics)
+//            }
+//
+//            openCheckIn.setOnClickListener {
+//                findNavController().navigate(R.id.action_home_to_details)
+//            }
+            delAll.setOnClickListener {
+                viewModel.deleteAll()
             }
         }
     }
