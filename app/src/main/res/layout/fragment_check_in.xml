@@ -20,14 +20,43 @@
 
     <ImageView
         android:id="@+id/close"
-        tools:ignore="ContentDescription"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/icon_close"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/bubbleRecyclerView"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginStart="16dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:layoutAnimation="@anim/layout_animation"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/viewPagerFragment"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <site.pnpl.mira.ui.check_in.custoview.ScrollBubblesView
+        android:id="@+id/bubblesList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:scrollbarFadeDuration="700"
+        app:animationDuration="700"
+        app:layout_constraintBottom_toTopOf="@id/viewPagerFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:maxVisibleBubbles="2" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerFragment"

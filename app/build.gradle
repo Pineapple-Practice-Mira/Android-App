@@ -71,4 +71,7 @@ dependencies {
 
     //Create videModel
     implementation "androidx.fragment:fragment-ktx:1.6.2"
+
+    //KeyboardVisibilityEvent
+    implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
 }
