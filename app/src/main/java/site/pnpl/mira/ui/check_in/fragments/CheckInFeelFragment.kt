@@ -12,7 +12,10 @@ import site.pnpl.mira.entity.Emotion
 import site.pnpl.mira.entity.EmotionsList
 import site.pnpl.mira.ui.check_in.custoview.EmotionView
 
-class CheckInFeelFragment(private val listener: CheckInFragment.OnArrowClickListener) : Fragment() {
+class CheckInFeelFragment(
+    private val onArrowClickListener: CheckInFragment.OnArrowClickListener,
+    private val onEmotionClickListener: CheckInFragment.OnEmotionClickListener
+) : Fragment() {
     private var _binding: FragmentCheckInFeelingBinding? = null
     private val binding get() = _binding!!
     private val emotionsButtons = mutableListOf<EmotionView>()
@@ -30,8 +33,7 @@ class CheckInFeelFragment(private val listener: CheckInFragment.OnArrowClickList
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnNext.isEnabled = false
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
+
         fillEmotions()
 
 //        val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
@@ -80,7 +82,14 @@ class CheckInFeelFragment(private val listener: CheckInFragment.OnArrowClickList
                     if (it.isSelected) {
                         binding.btnNext.isEnabled = true
                         emotionId = it.emotionId
+
+                        onEmotionClickListener.onClick(resources.getString(EmotionsList.emotions[emotionId].nameResId))
                     }
+                }
+
+                //Если кнопка далее не активна - значит эмоция не выбрана - передаем Null
+                if (!binding.btnNext.isEnabled) {
+                    onEmotionClickListener.onClick(null)
                 }
                 println("binding.btnNext.isEnabled ${binding.btnNext.isEnabled}")
             }
@@ -90,7 +99,7 @@ class CheckInFeelFragment(private val listener: CheckInFragment.OnArrowClickList
     private fun setClickListener() {
         with(binding) {
             btnNext.setOnClickListener {
-                listener.onClick(true, emotionId)
+                onArrowClickListener.onClick(true, emotionId)
             }
         }
     }
