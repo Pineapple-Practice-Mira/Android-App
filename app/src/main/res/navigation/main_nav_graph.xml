@@ -26,6 +26,8 @@
             android:id="@+id/action_home_to_setting"
             app:destination="@id/settingsFragment" />
         <action
+            app:enterAnim="@anim/check_in_up"
+            app:popExitAnim="@anim/check_in_down"
             android:id="@+id/createCheckIn"
             app:destination="@id/check_in_graph" />
 
@@ -164,9 +166,9 @@
         </fragment>
         <fragment
             android:id="@+id/checkInCompleted"
-            android:name="site.pnpl.mira.ui.check_in.CheckInCompletedFragment"
+            android:name="site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment"
             android:label="CheckInCompletedFragment"
-            tools:layout="@layout/fragment_check_in_comleted">
+            tools:layout="@layout/fragment_check_in_saved">
             <action
                 android:id="@+id/action_checkInCompleted_to_navigation_home"
                 app:destination="@id/navigation_home"

@@ -77,5 +77,9 @@
     <string name="bubble_2">...</string>
     <string name="bubble_3">"Я чувствую "</string>
     <string name="bubble_4">Выбери один или несколько факторов, повлияших на твое состояние</string>
+    <string name="pop_up_check_in_title">Возврат на главную</string>
+    <string name="pop_up_check_in_content">Данные не будут сохранены. Вы уверены, что хотите прервать запись?</string>
+    <string name="pop_up_check_in_left">Остаться</string>
+    <string name="pop_up_check_in_right">На главную</string>
 
 </resources>

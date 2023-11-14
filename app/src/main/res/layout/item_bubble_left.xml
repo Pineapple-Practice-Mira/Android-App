@@ -17,7 +17,7 @@
         android:id="@+id/message"
         style="@style/Body12White"
         android:layout_width="230dp"
-        android:layout_height="62dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/bubble_left_high"
         android:backgroundTint="@color/primary"
         android:paddingStart="19dp"

@@ -16,11 +16,12 @@ import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.R
 import site.pnpl.mira.data.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInBinding
-import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_KEY
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.custoview.BubbleView
 import site.pnpl.mira.ui.check_in.viewpager.Adapter
 import site.pnpl.mira.ui.exercise.convertMillisToDataTimeISO8601
+import site.pnpl.mira.utils.PopUpDialog
 
 class CheckInFragment : Fragment() {
     private var _binding: FragmentCheckInBinding? = null
@@ -39,6 +40,8 @@ class CheckInFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
@@ -53,10 +56,11 @@ class CheckInFragment : Fragment() {
             findNavController().navigate(R.id.action_checkInFragment_to_checkInCompleted, bundleOf(Pair(CALLBACK_KEY, key)))
         }
         initBubbleView()
+        initPopUpDialog()
     }
 
     private fun initBubbleView() {
-        binding.bubblesList.addListOfBubbles(listOf(
+        binding.bubbleView.addListOfBubbles(listOf(
             BubbleView(requireContext(), BubbleView.Type.LEFT, resources.getString(R.string.bubble_1)),
             BubbleView(requireContext(), BubbleView.Type.RIGHT, resources.getString(R.string.bubble_2)),
             BubbleView(requireContext(), BubbleView.Type.LEFT, resources.getString(R.string.bubble_4))
@@ -78,15 +82,42 @@ class CheckInFragment : Fragment() {
         }
     }
 
+    private fun initPopUpDialog() {
+        binding.close.setOnClickListener {
+            val popUpDialog = PopUpDialog.Builder()
+                .title(resources.getString(R.string.pop_up_check_in_title))
+                .content(resources.getString(R.string.pop_up_check_in_content))
+                .leftButtonText(resources.getString(R.string.pop_up_check_in_left))
+                .rightButtonText((resources.getString(R.string.pop_up_check_in_right)))
+                .leftButtonListener(popUpDialogClickListenerLeft)
+                .rightButtonListener(popUpDialogClickListenerRight)
+                .build()
+            popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
+        }
+    }
+
+    private val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener{
+        override fun onClick(popUpDialog: PopUpDialog) {
+            popUpDialog.dismiss()
+        }
+    }
+
+    private val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
+        override fun onClick(popUpDialog: PopUpDialog) {
+            findNavController().popBackStack()
+        }
+
+    }
+
     private val onArrowClickListener = object : OnArrowClickListener {
         override fun onClick(isForward: Boolean, emotionId: Int) {
             if (isForward) {
                 this@CheckInFragment.emotionId = emotionId
                 viewPager.setCurrentItem(viewPager.currentItem + 1, DURATION_TRANSITION)
-                binding.bubblesList.scrollUp()
+                binding.bubbleView.scrollUp()
             } else {
                 viewPager.setCurrentItem(viewPager.currentItem - 1, DURATION_TRANSITION)
-                binding.bubblesList.scrollDown()
+                binding.bubbleView.scrollDown()
             }
         }
     }
@@ -112,7 +143,7 @@ class CheckInFragment : Fragment() {
             if (emotionName != null) {
                 message = resources.getString(R.string.bubble_3) + emotionName
             }
-            binding.bubblesList.setMessageInRightBubble(message)
+            binding.bubbleView.setMessageInRightBubble(message)
         }
 
     }

@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
+import androidx.core.view.marginTop
 import site.pnpl.mira.R
 
 class ScrollBubblesView @JvmOverloads constructor(
@@ -50,7 +51,12 @@ class ScrollBubblesView @JvmOverloads constructor(
     }
 
     fun scrollUp() {
-        bubbles.find { it.y >= y + height }?.let { targetBubbleView ->
+
+        bubbles.forEach {
+            println(it.height)
+        }
+
+        bubbles.find { it.y + y + marginTop >= (y + height + marginTop) }?.let { targetBubbleView ->
             val yOffset = targetBubbleView.height
 
             bubbles.forEachIndexed { index, bubbleView ->
@@ -69,9 +75,10 @@ class ScrollBubblesView @JvmOverloads constructor(
             it.y <= downBorder
         }.height
 
+
+
         forEach { bubbleView ->
             val newPos = bubbleView.y + yOffset
-            println("bubbleView.y ${bubbleView.y} yOffset $yOffset newPos $newPos bubbles[0].y ${bubbles[0].y} bubbles[0].y - yOffset ${bubbles[0].y - yOffset}")
             bubbleView.animate()
                 .y(newPos)
                 .alphaBy(1f)
