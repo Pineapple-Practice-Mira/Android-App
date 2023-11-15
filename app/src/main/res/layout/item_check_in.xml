@@ -85,7 +85,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/stub" />
+        tools:ignore="ContentDescription" />
 
     <View
         android:id="@+id/rightBorder"
@@ -106,7 +106,7 @@
         app:layout_constraintStart_toEndOf="@id/rightBorder"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/dark"
-        android:contentDescription="@string/stub"/>
+        tools:ignore="ContentDescription" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
