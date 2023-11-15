@@ -35,16 +35,18 @@ class ScrollBubblesView @JvmOverloads constructor(
             addView(it)
         }
         doOnLayout {
+            var yOffset = -marginTop
             if (bubbles.size > maxVisibleBubbles) {
-                var yOffset = 0
+
                 bubbles.forEachIndexed { index, bubbleView ->
                     if (index > maxVisibleBubbles - 1) {
                         yOffset += bubbleView.height
                     }
                 }
-                bubbles.forEach { bubbleView ->
-                    bubbleView.y = bubbleView.y + yOffset
-                }
+
+            }
+            bubbles.forEach { bubbleView ->
+                bubbleView.y = bubbleView.y + yOffset
             }
         }
 
@@ -52,11 +54,7 @@ class ScrollBubblesView @JvmOverloads constructor(
 
     fun scrollUp() {
 
-        bubbles.forEach {
-            println(it.height)
-        }
-
-        bubbles.find { it.y + y + marginTop >= (y + height + marginTop) }?.let { targetBubbleView ->
+        bubbles.find { it.y + marginTop  >= height  }?.let { targetBubbleView ->
             val yOffset = targetBubbleView.height
 
             bubbles.forEachIndexed { index, bubbleView ->
@@ -89,7 +87,7 @@ class ScrollBubblesView @JvmOverloads constructor(
 
     fun setMessageInRightBubble(message: String) {
         bubbles.forEach { bubbleView ->
-            if (bubbleView.type == BubbleView.Type.RIGHT) {
+            if (bubbleView.type == BubbleView.Type.RIGHT_SMALL) {
                 bubbleView.message = message
             }
         }

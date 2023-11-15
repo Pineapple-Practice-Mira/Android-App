@@ -17,16 +17,19 @@ class BubbleView @JvmOverloads constructor(
         inflate(
             context,
             when (type) {
-                Type.LEFT -> R.layout.item_bubble_left
-                Type.RIGHT -> R.layout.item_bubble_right
+                Type.LEFT_HIGH -> R.layout.item_bubble_left_high
+                Type.LEFT_SMALL -> R.layout.item_bubble_left_small
+                Type.RIGHT_HIGH -> R.layout.item_bubble_right_high
+                Type.RIGHT_SMALL -> R.layout.item_bubble_right_small
             },
             this
         )
         this.type = type
         this.message = message
+
     }
 
-    var type : Type = Type.LEFT
+    var type : Type = Type.LEFT_HIGH
         private set
     var message : String = ""
         set(value) {
@@ -34,9 +37,12 @@ class BubbleView @JvmOverloads constructor(
             field = value
         }
 
-
     enum class Type {
-        LEFT,
-        RIGHT
+        LEFT_HIGH,
+        LEFT_SMALL,
+        RIGHT_HIGH,
+        RIGHT_SMALL
     }
+
 }
+

@@ -3,9 +3,7 @@ package site.pnpl.mira.ui.check_in.fragments
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -19,11 +17,12 @@ import site.pnpl.mira.databinding.FragmentCheckInBinding
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.custoview.BubbleView
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CHECK_IN_KEY
 import site.pnpl.mira.ui.check_in.viewpager.Adapter
 import site.pnpl.mira.ui.exercise.convertMillisToDataTimeISO8601
 import site.pnpl.mira.utils.PopUpDialog
 
-class CheckInFragment : Fragment() {
+class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     private var _binding: FragmentCheckInBinding? = null
     private val binding get() = _binding!!
 
@@ -31,40 +30,39 @@ class CheckInFragment : Fragment() {
     private lateinit var vpAdapter: Adapter
     private lateinit var viewPager: ViewPager2
     private var emotionId = -1
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCheckInBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-
+    private var checkIn: CheckIn? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentCheckInBinding.bind(view)
         initViewPager()
 
-        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
         @Suppress("DEPRECATION")
-        binding.root.rootWindowInsets.systemWindowInsetBottom
-        println("ttttttttttt ${binding.root.rootWindowInsets.systemWindowInsetBottom}")
+        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
 
         viewModel.isSaved.observe(viewLifecycleOwner) {
             val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
-            findNavController().navigate(R.id.action_checkInFragment_to_checkInCompleted, bundleOf(Pair(CALLBACK_KEY, key)))
+            findNavController()
+                .navigate(
+                    R.id.action_checkInFragment_to_checkInCompleted,
+                    bundleOf(
+                        Pair(CALLBACK_KEY, key),
+                        Pair(CHECK_IN_KEY, checkIn)
+                    )
+                )
         }
         initBubbleView()
         initPopUpDialog()
     }
 
     private fun initBubbleView() {
-        binding.bubbleView.addListOfBubbles(listOf(
-            BubbleView(requireContext(), BubbleView.Type.LEFT, resources.getString(R.string.bubble_1)),
-            BubbleView(requireContext(), BubbleView.Type.RIGHT, resources.getString(R.string.bubble_2)),
-            BubbleView(requireContext(), BubbleView.Type.LEFT, resources.getString(R.string.bubble_4))
-        ))
+        binding.bubbleView.addListOfBubbles(
+            listOf(
+                BubbleView(requireContext(), BubbleView.Type.LEFT_HIGH, resources.getString(R.string.bubble_1)),
+                BubbleView(requireContext(), BubbleView.Type.RIGHT_SMALL, resources.getString(R.string.bubble_2)),
+                BubbleView(requireContext(), BubbleView.Type.LEFT_HIGH, resources.getString(R.string.bubble_4))
+            )
+        )
 
     }
 
@@ -96,7 +94,7 @@ class CheckInFragment : Fragment() {
         }
     }
 
-    private val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener{
+    private val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
         override fun onClick(popUpDialog: PopUpDialog) {
             popUpDialog.dismiss()
         }
@@ -124,15 +122,14 @@ class CheckInFragment : Fragment() {
 
     private val onSaveClickListener = object : OnSaveClickListener {
         override fun onClick(factorId: Int, note: String) {
-            println("saved emotionId: $emotionId factorId: $factorId not: $note")
-            val checkIn = CheckIn(
+            checkIn = CheckIn(
                 emotionId = emotionId,
                 factorId = factorId,
                 note = note,
                 createdAt = convertMillisToDataTimeISO8601(System.currentTimeMillis()),
                 createdAtLong = System.currentTimeMillis()
             )
-            viewModel.saveCheckIn(checkIn)
+            viewModel.saveCheckIn(checkIn!!)
         }
 
     }

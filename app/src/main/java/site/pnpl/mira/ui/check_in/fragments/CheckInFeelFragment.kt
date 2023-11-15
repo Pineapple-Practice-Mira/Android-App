@@ -2,9 +2,7 @@ package site.pnpl.mira.ui.check_in.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFeelingBinding
@@ -15,38 +13,18 @@ import site.pnpl.mira.ui.check_in.custoview.EmotionView
 class CheckInFeelFragment(
     private val onArrowClickListener: CheckInFragment.OnArrowClickListener,
     private val onEmotionClickListener: CheckInFragment.OnEmotionClickListener
-) : Fragment() {
+) : Fragment(R.layout.fragment_check_in_feeling) {
     private var _binding: FragmentCheckInFeelingBinding? = null
     private val binding get() = _binding!!
     private val emotionsButtons = mutableListOf<EmotionView>()
     private var emotionId = -1
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCheckInFeelingBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentCheckInFeelingBinding.bind(view)
         binding.btnNext.isEnabled = false
 
         fillEmotions()
-
-//        val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
-//        binding.next.setOnClickListener {
-//            findNavController().navigate(R.id.action_feel_to_factors, bundleOf(Pair(CALLBACK_KEY, key)))
-//        }
-//        binding.close.setOnClickListener {
-//            findNavController().popBackStack()
-//        }
-
-        binding.root.setOnClickListener {
-//            findNavController().navigate(R.id.action_feel_to_factors)
-        }
         setClickListener()
     }
 
@@ -91,7 +69,6 @@ class CheckInFeelFragment(
                 if (!binding.btnNext.isEnabled) {
                     onEmotionClickListener.onClick(null)
                 }
-                println("binding.btnNext.isEnabled ${binding.btnNext.isEnabled}")
             }
         }
     }

@@ -3,9 +3,7 @@ package site.pnpl.mira.ui.greeting.fragments
 import android.graphics.Paint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.App
@@ -17,7 +15,7 @@ import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentAcquaintanceBinding
 import javax.inject.Inject
 
-class AcquaintanceFragment : Fragment() {
+class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
     private var _binding: FragmentAcquaintanceBinding? = null
     private val binding get() = _binding!!
 
@@ -27,15 +25,9 @@ class AcquaintanceFragment : Fragment() {
 
     @Inject lateinit var settingsProvider: SettingsProvider
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAcquaintanceBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAcquaintanceBinding.bind(view)
         App.instance.appComponent.inject(this)
 
         adapter = VpAdapter(requireActivity(), vpElements)
