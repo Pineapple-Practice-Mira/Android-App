@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentExercisesListBinding
-import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_EXERCISES
-import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_KEY
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.customview.BottomBar
 import java.util.Calendar
 

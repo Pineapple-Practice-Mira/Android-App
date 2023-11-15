@@ -29,30 +29,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/bubbleRecyclerView"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="16dp"-->
-    <!--        android:layout_marginEnd="16dp"-->
-    <!--        android:layoutAnimation="@anim/layout_animation"-->
-    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/viewPagerFragment"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <site.pnpl.mira.ui.check_in.custoview.ScrollBubblesView
-        android:id="@+id/bubblesList"
+        android:id="@+id/bubbleView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:gravity="bottom"
         android:orientation="vertical"
         android:scrollbarFadeDuration="700"
         app:animationDuration="700"
-        app:layout_constraintBottom_toTopOf="@id/viewPagerFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -65,6 +52,18 @@
         android:layout_marginTop="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="-1dp"
+        android:background="@drawable/bottom_bar_line"
+        app:layout_constraintBottom_toTopOf="@id/viewPagerFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

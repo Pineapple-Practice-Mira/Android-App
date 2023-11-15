@@ -1,7 +1,6 @@
 package site.pnpl.mira.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -20,8 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentHomeBinding
-import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_HOME
-import site.pnpl.mira.ui.check_in.CheckInCompletedFragment.Companion.CALLBACK_KEY
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.customview.BottomBar
 import site.pnpl.mira.ui.customview.BottomBar.Companion.HOME
 import site.pnpl.mira.ui.home.recycler_view.HomeAdapter
@@ -29,7 +28,7 @@ import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.utils.toPx
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -39,22 +38,16 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var scope: CoroutineScope
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentHomeBinding.bind(view)
+
         @Suppress("DEPRECATION")
         requireActivity().window.statusBarColor = resources.getColor(R.color.white)
         stubClickListener()
 
         initBottomBar()
         initRecyclerView()
-        setClickListener()
         setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
         getCheckInData()
     }
@@ -84,7 +77,6 @@ class HomeFragment : Fragment() {
         recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(TopSpacingItemDecoration(12))
-
     }
 
     private fun mountainsMarginCorrect() {
@@ -135,10 +127,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-
-    private fun setClickListener() {
     }
 
     private fun stubClickListener() {

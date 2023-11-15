@@ -2,9 +2,7 @@ package site.pnpl.mira.ui.check_in.fragments
 
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
@@ -21,34 +19,19 @@ import site.pnpl.mira.utils.KeyboardUtils
 class CheckInFactorsFragment(
     private val onArrowClickListener: CheckInFragment.OnArrowClickListener,
     private val onSaveClickListener: CheckInFragment.OnSaveClickListener
-) : Fragment() {
+) : Fragment(R.layout.fragment_check_in_factors) {
     private var _binding: FragmentCheckInFactorsBinding? = null
     private val binding get() = _binding!!
     private val factorsButtons = mutableListOf<FactorView>()
     private var factorId = -1
     private var isHidden = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCheckInFactorsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentCheckInFactorsBinding.bind(view)
         binding.btnDone.isEnabled = false
 //        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         fillFactors()
-
-//        val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
-//        binding.next.setOnClickListener {
-//            findNavController().navigate(R.id.action_factors_to_completed, bundleOf(Pair(CALLBACK_KEY, key)))
-//        }
-//        binding.close.setOnClickListener {
-//            findNavController().popBackStack()
-//        }
 
         binding.noteInput.imeOptions = EditorInfo.IME_ACTION_DONE
         binding.noteInput.setRawInputType(InputType.TYPE_CLASS_TEXT)

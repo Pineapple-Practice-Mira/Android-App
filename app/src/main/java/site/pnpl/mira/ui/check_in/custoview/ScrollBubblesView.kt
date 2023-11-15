@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
+import androidx.core.view.marginTop
 import site.pnpl.mira.R
 
 class ScrollBubblesView @JvmOverloads constructor(
@@ -34,23 +35,26 @@ class ScrollBubblesView @JvmOverloads constructor(
             addView(it)
         }
         doOnLayout {
+            var yOffset = -marginTop
             if (bubbles.size > maxVisibleBubbles) {
-                var yOffset = 0
+
                 bubbles.forEachIndexed { index, bubbleView ->
                     if (index > maxVisibleBubbles - 1) {
                         yOffset += bubbleView.height
                     }
                 }
-                bubbles.forEach { bubbleView ->
-                    bubbleView.y = bubbleView.y + yOffset
-                }
+
+            }
+            bubbles.forEach { bubbleView ->
+                bubbleView.y = bubbleView.y + yOffset
             }
         }
 
     }
 
     fun scrollUp() {
-        bubbles.find { it.y >= y + height }?.let { targetBubbleView ->
+
+        bubbles.find { it.y + marginTop  >= height  }?.let { targetBubbleView ->
             val yOffset = targetBubbleView.height
 
             bubbles.forEachIndexed { index, bubbleView ->
@@ -69,9 +73,10 @@ class ScrollBubblesView @JvmOverloads constructor(
             it.y <= downBorder
         }.height
 
+
+
         forEach { bubbleView ->
             val newPos = bubbleView.y + yOffset
-            println("bubbleView.y ${bubbleView.y} yOffset $yOffset newPos $newPos bubbles[0].y ${bubbles[0].y} bubbles[0].y - yOffset ${bubbles[0].y - yOffset}")
             bubbleView.animate()
                 .y(newPos)
                 .alphaBy(1f)
@@ -82,7 +87,7 @@ class ScrollBubblesView @JvmOverloads constructor(
 
     fun setMessageInRightBubble(message: String) {
         bubbles.forEach { bubbleView ->
-            if (bubbleView.type == BubbleView.Type.RIGHT) {
+            if (bubbleView.type == BubbleView.Type.RIGHT_SMALL) {
                 bubbleView.message = message
             }
         }
