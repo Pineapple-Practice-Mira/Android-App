@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragmentInterName"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -28,11 +26,11 @@
         android:layout_marginBottom="30dp"
         android:scaleType="fitXY"
         android:src="@drawable/mountain3"
+        android:contentDescription="@string/stub"
         app:layout_constraintBottom_toBottomOf="@+id/mountain2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/mountain2"
@@ -41,11 +39,11 @@
         android:layout_marginBottom="100dp"
         android:scaleType="fitXY"
         android:src="@drawable/mountain2"
+        android:contentDescription="@string/stub"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/mountain1"
@@ -56,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        android:contentDescription="@string/stub"/>
 
     <ImageView
         android:id="@+id/sun"
@@ -66,10 +64,9 @@
         android:src="@drawable/sun"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        android:contentDescription="@string/stub" />
 
     <TextView
-        android:id="@+id/textViewWhatsName"
         style="@style/Title18Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,11 +80,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="342dp"
-        android:textColorHint="@null"
         app:boxStrokeWidth="0dp"
+        android:textColorHint="@null"
         app:hintEnabled="false"
         app:hintTextColor="@android:color/transparent"
+        android:layout_marginTop="342dp"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintStart_toEndOf="@id/start"
         app:layout_constraintTop_toTopOf="parent">
@@ -98,38 +95,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/frame_input_field"
-            android:hint="@string/enter_name"
-            android:imeOptions="actionDone"
-            android:inputType="text"
             android:maxLength="30"
-            android:textAlignment="textStart"
+            android:hint="@string/enter_name"
+            android:inputType="text"
             android:textColorHint="@color/primary"
+            android:imeOptions="actionDone"
+            android:textAlignment="textStart"
             android:textCursorDrawable="@null" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/textViewMinimumSymbols"
-        style="@style/Title14DarkGray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:text="@string/info_minimum_2_letter"
-        app:layout_constrainedWidth="true"
+        android:layout_marginTop="6dp"
+        style="@style/Title14DarkGray"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout"
+        app:layout_constraintStart_toStartOf="@id/start"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/start"
-        app:layout_constraintTop_toBottomOf="@id/textInputLayout" />
+        app:layout_constrainedWidth="true"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm"
-        style="@style/Button16White"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_margin_second_button"
-        android:background="@drawable/button_background"
+        android:layout_width="0dp"
+        style="@style/Button16White"
         android:text="@string/confirm"
+        android:background="@drawable/button_background"
         app:backgroundTint="@color/button_background_state"
+        android:layout_marginBottom="@dimen/bottom_margin_second_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintStart_toStartOf="@id/start" />
@@ -145,5 +141,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/mountain1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Мира</string>
+    <string name="app_name">Mira</string>
 
     <string name="acquaintance_title_1">Привет,\n меня зовут Мира</string>
     <string name="acquaintance_text_1">Я рада познакомиться с тобой!\n\n
@@ -38,53 +38,8 @@
     <string name="wantAcquainted">Хочешь ли ты познакомиться и узнать,\nкак работает приложение?\n\n К этой части можно вернуться в любой\n момент из раздела “Упражнения”.</string>
     <string name="welcome">Добро пожаловать</string>
     <string name="to_greeting">Познакомиться</string>
+    <string name="input_name_filter">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</string>
+    <string name="error_length_name">Длинна имени должна быть от 2 до 30 букв</string>
     <string name="info_minimum_2_letter">минимум 2 символа</string>
-    <string name="alert_double_tap_exit">Нажми дважды для выхода из приложения</string>
-    <string name="joy">радость</string>
-    <string name="calmness">спокойствие</string>
-    <string name="satisfaction">удовлетворение</string>
-    <string name="interest">интерес</string>
-    <string name="confidence">уверенность</string>
-    <string name="sympathy">симпатия</string>
-    <string name="delight">восхищение</string>
-    <string name="love">любовь</string>
-    <string name="sadness">грусть</string>
-    <string name="fatigue">усталость</string>
-    <string name="anxiety">тревога</string>
-    <string name="irritation">раздражение</string>
-    <string name="fear">страх</string>
-    <string name="depression">подавленность</string>
-    <string name="disappointment">разочарование</string>
-    <string name="anger">злость</string>
-    <string name="tittle_who_do_you_feel">Как ты себя чувствуешь?</string>
-    <string name="house">дом</string>
-    <string name="job">работа</string>
-    <string name="family">семья</string>
-    <string name="partner">партнер</string>
-    <string name="society">общество</string>
-    <string name="studies">учеба</string>
-    <string name="friends">учеба</string>
-    <string name="rest">отдых</string>
-    <string name="hobby">хобби</string>
-    <string name="sport">спорт</string>
-    <string name="health">здоровье</string>
-    <string name="creation">творчество</string>
-    <string name="note_text">Текст заметки</string>
-    <string name="label_factors">Можно описать подробнее день и события, повлиявшие на твоё состояние</string>
-    <string name="button_save">Сохранить</string>
-    <string name="bubble_1">Выбери одно из чувств, которое ты сейчас испытываешь в большей степени, чем другие</string>
-    <string name="bubble_2">…</string>
-    <string name="bubble_3">"Я чувствую "</string>
-    <string name="bubble_4">Выбери один или несколько факторов, повлияших на твое состояние</string>
-    <string name="pop_up_check_in_title">Возврат на главную</string>
-    <string name="pop_up_check_in_content">Данные не будут сохранены. Вы уверены, что хотите прервать запись?</string>
-    <string name="pop_up_check_in_left">Остаться</string>
-    <string name="pop_up_check_in_right">На главную</string>
-    <string name="label_check_in_saved_1">Все записи и статистика доступны на главном экране приложения.</string>
-    <string name="label_check_in_saved_2">Под твоё состояние подобрано особое упражнение. Ты можешь выполнить его сейчас или позже из раздела «Упражнения».</string>
-    <string name="button_later">Позже</string>
-    <string name="button_execute_exercises">Выполнить упражнение</string>
-    <string name="bubble_5">Сегодня, %1$s, я чувствую %2$s. Основная причина – %3$s.</string>
-    <string name="bubble_6">Спасибо за доверие!</string>
-
+    <string name="stub">Заглушка для contentDescription</string>
 </resources>

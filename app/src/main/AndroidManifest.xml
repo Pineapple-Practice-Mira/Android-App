@@ -14,9 +14,8 @@
         android:theme="@style/Theme.Mira"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustUnspecified">
+            android:name="site.pnpl.mira.ui.greeting.GreetingActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +23,7 @@
             </intent-filter>
         </activity>
 
-<!--        <activity android:name="site.pnpl.mira.ui.MainActivity"/>-->
+        <activity android:name="site.pnpl.mira.ui.main.MainActivity"/>
     </application>
 
 </manifest>

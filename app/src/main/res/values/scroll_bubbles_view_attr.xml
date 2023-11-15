@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="ScrollBubblesView">
-        <attr name="maxVisibleBubbles" format="integer" />
-        <attr name="animationDuration" format="integer" />
-    </declare-styleable>
-</resources>

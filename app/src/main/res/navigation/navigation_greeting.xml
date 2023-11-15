@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_navigation.xml"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="site.pnpl.mira.ui.greeting.fragments.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_interNameFragment"
+            app:destination="@id/interNameFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/interNameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/interNameFragment"
+        android:name="site.pnpl.mira.ui.greeting.fragments.InterNameFragment"
+        android:label="InterNameFragment"
+        tools:layout="@layout/fragment_inter_name">
+        <action
+            android:id="@+id/action_interNameFragment_to_greetingFragment"
+            app:destination="@id/greetingFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/interNameFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/greetingFragment"
+        android:name="site.pnpl.mira.ui.greeting.fragments.GreetingFragment"
+        android:label="GreetingFragment"
+        tools:layout="@layout/fragment_greeting">
+        <action
+            android:id="@+id/action_greetingFragment_to_acquaintanceFragment"
+            app:destination="@id/acquaintanceFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/interNameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/acquaintanceFragment"
+        android:name="site.pnpl.mira.ui.greeting.fragments.AcquaintanceFragment"
+        android:label="AcquaintanceFragment"
+        tools:layout="@layout/fragment_acquaintance"/>
+</navigation>

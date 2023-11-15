@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#6E78D1</color>
-    <color name="primary_alpha30">#4D6E78D1</color>
     <color name="primary_deep">#525FC9</color>
     <color name="secondary">#FFC468</color>
     <color name="third">#E7253E</color>
@@ -9,8 +8,5 @@
     <color name="dark_grey">#CFD0DA</color>
     <color name="black">#2D2D2D</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="white_alpha0">#00FFFFFF</color>
     <color name="dark">#2D2D2D</color>
-    <color name="dark_alpha_30">#4D2D2D2D</color>
-
 </resources>
