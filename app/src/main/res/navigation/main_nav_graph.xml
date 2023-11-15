@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/splashFragment2">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="site.pnpl.mira.ui.main.fragments.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_setting_to_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navigation_home" />
+    </fragment>
+
+
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="site.pnpl.mira.ui.home.HomeFragment"
+            android:label="HomeFragment"
+            tools:layout="@layout/fragment_home"/>
+        <action
+            android:id="@+id/action_home_to_setting"
+            app:destination="@id/settingsFragment" />
+        <action
+            app:enterAnim="@anim/check_in_up"
+            app:popExitAnim="@anim/check_in_down"
+            android:id="@+id/createCheckIn"
+            app:destination="@id/check_in_graph" />
+
+        <action
+            android:id="@+id/action_home_to_details"
+            app:destination="@id/checkInDetailsFragment"/>
+
+        <action
+            android:id="@+id/action_home_to_statistics"
+            app:destination="@id/statisticsFragment"/>
+        <action
+            android:id="@+id/action_home_to_exercises"
+            app:destination="@id/exercises_graph"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"/>
+
+
+
+    <fragment
+        android:id="@+id/splashFragment2"
+        android:name="site.pnpl.mira.ui.greeting.fragments.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment2_to_greeting_graph"
+            app:destination="@id/greeting_graph"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/splashFragment2"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splash_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/splashFragment2"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <navigation
+        android:id="@+id/greeting_graph"
+        android:label="@string/to_greeting"
+        app:startDestination="@id/interNameFragment2">
+        <fragment
+            android:id="@+id/interNameFragment2"
+            android:name="site.pnpl.mira.ui.greeting.fragments.InterNameFragment"
+            android:label="InterNameFragment">
+            <action
+                android:id="@+id/action_inter_name_to_greeting_fragment"
+                app:destination="@id/greetingFragment2"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/interNameFragment2" />
+        </fragment>
+        <fragment
+            android:id="@+id/greetingFragment2"
+            android:name="site.pnpl.mira.ui.greeting.fragments.GreetingFragment"
+            android:label="GreetingFragment">
+            <action
+                android:id="@+id/action_to_acquaintance_fragment"
+                app:destination="@id/acquaintanceFragment2"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            <action
+                android:id="@+id/action_greeting_to_home"
+                app:destination="@id/navigation_home"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/interNameFragment2"
+                app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/acquaintanceFragment2"
+            android:name="site.pnpl.mira.ui.greeting.fragments.AcquaintanceFragment">
+            <action
+                android:id="@+id/action_acquaintance_to_home"
+                app:destination="@id/navigation_home"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/interNameFragment2"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="site.pnpl.mira.ui.main.fragments.StatisticsFragment"
+        android:label="StatisticsFragment"
+        tools:layout="@layout/fragment_statistics">
+        <action
+            android:id="@+id/action_statistics_to_statistics_by_factor"
+            app:destination="@id/statisticsByFactorFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/statisticsByFactorFragment"
+        android:name="site.pnpl.mira.ui.main.fragments.StatisticsByFactorFragment"
+        android:label="StatisticsByFactorFragment"
+        tools:layout="@layout/fragment_statistics_by_factor">
+        <action
+            android:id="@+id/action_stat_by_factor_to_details"
+            app:destination="@id/checkInDetailsFragment"/>
+        <action
+            android:id="@+id/action_stat_by_factor_to_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/statisticsFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/checkInDetailsFragment"
+        android:name="site.pnpl.mira.ui.main.fragments.CheckInDetailsFragment"
+        android:label="CheckInDetailsFragment"
+        tools:layout="@layout/fragment_check_in_details"/>
+
+    <navigation android:id="@+id/check_in_graph"
+        app:startDestination="@id/checkInFragment">
+        <fragment
+            android:id="@+id/checkInFragment"
+            android:name="site.pnpl.mira.ui.check_in.fragments.CheckInFragment"
+            android:label="CheckInFragment" >
+            <action
+                android:id="@+id/action_checkInFragment_to_checkInCompleted"
+                app:destination="@id/checkInCompleted"
+                app:popUpTo="@id/checkInFragment"
+                app:popUpToInclusive="true"/>
+        </fragment>
+        <fragment
+            android:id="@+id/checkInCompleted"
+            android:name="site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment"
+            android:label="CheckInCompletedFragment"
+            tools:layout="@layout/fragment_check_in_saved">
+            <action
+                android:id="@+id/action_checkInCompleted_to_navigation_home"
+                app:destination="@id/navigation_home"
+                app:popUpTo="@id/navigation_home"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_checkInCompleted_to_exercises_list"
+                app:destination="@id/exercises_graph"
+                app:popUpTo="@id/exercises_graph"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
+
+    <navigation android:id="@+id/exercises_graph"
+        app:startDestination="@id/exercisesListFragment">
+        <fragment
+            android:id="@+id/exerciseFragment"
+            android:name="site.pnpl.mira.ui.exercise.ExerciseFragment"
+            android:label="ExerciseFragment">
+        </fragment>
+        <fragment
+            android:id="@+id/exercisesListFragment"
+            android:name="site.pnpl.mira.ui.exercise.ExercisesListFragment"
+            android:label="ExercisesListFragment">
+            <action
+                android:id="@+id/action_exercises_list_to_exercise"
+                app:destination="@id/exerciseFragment"/>
+            <action
+                android:id="@+id/action_exercises_list_to_home"
+                app:destination="@id/navigation_home"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/exercises_graph"
+                app:popUpToInclusive="true"/>
+            <action
+                android:id="@+id/action_exercises_list_to_start_check_in"
+                app:destination="@id/check_in_graph"/>
+        </fragment>
+    </navigation>
+
+</navigation>
