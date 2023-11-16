@@ -76,10 +76,10 @@
     <string name="bubble_2">…</string>
     <string name="bubble_3">"Я чувствую "</string>
     <string name="bubble_4">Выбери один или несколько факторов, повлияших на твое состояние</string>
-    <string name="pop_up_check_in_title">Возврат на главную</string>
-    <string name="pop_up_check_in_content">Данные не будут сохранены. Вы уверены, что хотите прервать запись?</string>
+    <string name="pop_up_check_in_title">Закрыть окно</string>
+    <string name="pop_up_check_in_content">Данные не будут сохранены. Ты точно хочешь прервать запись?</string>
     <string name="pop_up_check_in_left">Остаться</string>
-    <string name="pop_up_check_in_right">На главную</string>
+    <string name="pop_up_check_in_right">Закрыть</string>
     <string name="label_check_in_saved_1">Все записи и статистика доступны на главном экране приложения.</string>
     <string name="label_check_in_saved_2">Под твоё состояние подобрано особое упражнение. Ты можешь выполнить его сейчас или позже из раздела «Упражнения».</string>
     <string name="button_later">Позже</string>

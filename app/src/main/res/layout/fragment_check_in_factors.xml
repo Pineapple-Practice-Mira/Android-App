@@ -47,53 +47,63 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/label_factors"
-        app:layout_constraintBottom_toTopOf="@id/noteInput"
+        app:layout_constraintBottom_toTopOf="@id/noteInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/noteInput"
-        style="@style/Body14Primary"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/noteInputLayout"
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:imeActionId="55555"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/check_in_input_note_background"
-        android:gravity="start|top"
-        android:hint="@string/note_text"
-        android:inputType="textMultiLine"
-        android:imeOptions="actionDone"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:textColor="@color/dark"
-        android:textColorHint="@color/primary"
+        app:counterEnabled="true"
+        app:counterMaxLength="10"
+        app:hintEnabled="false"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/noteInput"
+            style="@style/Body14Primary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/check_in_input_note_background"
+            android:gravity="start|top"
+            android:hint="@string/note_text"
+            android:imeActionId="55555"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLength="500"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/dark"
+            android:textColorHint="@color/primary" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <View
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@drawable/bottom_bar_line"
-        android:layout_marginBottom="71dp"
         android:layout_marginStart="17dp"
         android:layout_marginEnd="17dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="71dp"
+        android:background="@drawable/bottom_bar_line"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btnBack"
@@ -101,26 +111,26 @@
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:background="@android:color/transparent"
         android:rotationY="180"
         android:src="@drawable/icon_arrow"
-        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
 
     <Button
-        style="@style/Buttons16"
-        android:textColor="@color/bottom_bar_button_arrow_state"
         android:id="@+id/btnDone"
+        style="@style/Buttons16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        android:text="@string/button_save"
-        android:src="@drawable/icon_arrow"
         android:background="@android:color/transparent"
+        android:src="@drawable/icon_arrow"
+        android:text="@string/button_save"
+        android:textColor="@color/bottom_bar_button_arrow_state"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

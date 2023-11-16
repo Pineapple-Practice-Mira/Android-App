@@ -163,7 +163,7 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     }
 
     companion object {
-        const val DURATION_TRANSITION = 650L
+        const val DURATION_TRANSITION = 300L
     }
 }
 

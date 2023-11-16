@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import site.pnpl.mira.R
 import site.pnpl.mira.data.entity.CheckIn
 import site.pnpl.mira.databinding.ItemCheckInBinding
+import site.pnpl.mira.entity.Emotion
 import site.pnpl.mira.entity.EmotionsList
 import site.pnpl.mira.utils.MiraDateFormat
 
@@ -26,8 +27,23 @@ class HomeAdapter() : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             holder.day.text = date.getDateOfMonth()
             holder.month.text = date.getNameMonth()
             holder.dayOfWeekAndTime.text = date.getDayOfWeekAndTime()
-            holder.emotion.text = "#${holder.context.resources.getString(EmotionsList.emotions[emotionId].nameResId)}"
-            holder.emotionDrawable.setImageDrawable(AppCompatResources.getDrawable(holder.itemView.context, EmotionsList.emotions[emotionId].emojiResId))
+
+            holder.emotion.apply {
+                val emotionText = "#${holder.context.resources.getString(EmotionsList.emotions[emotionId].nameResId)}"
+                text = emotionText
+                setTextColor(
+                    when (EmotionsList.emotions[emotionId].type) {
+                        Emotion.Type.POSITIVE -> AppCompatResources.getColorStateList(context, R.color.emotion_view_text_color_positive_state)
+                        Emotion.Type.NEGATIVE -> AppCompatResources.getColorStateList(context, R.color.emotion_view_text_color_negative_state)
+                    }
+                )
+            }
+            holder.emotionDrawable.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    holder.itemView.context,
+                    EmotionsList.emotions[emotionId].emojiResId
+                )
+            )
         }
 
 
