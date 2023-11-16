@@ -1,11 +1,11 @@
 package site.pnpl.mira.ui.check_in.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.Animation.AnimationListener
-import android.view.animation.AnimationUtils
+import android.view.WindowInsets
+import android.view.WindowInsetsAnimation
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
@@ -36,7 +36,49 @@ class CheckInFactorsFragment(
         binding.noteInput.imeOptions = EditorInfo.IME_ACTION_DONE
         binding.noteInput.setRawInputType(InputType.TYPE_CLASS_TEXT)
         setListener()
+
+        keyboardListener()
     }
+
+
+    private fun keyboardListener() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+            view?.setWindowInsetsAnimationCallback(object : WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
+
+                override fun onProgress(p0: WindowInsets, p1: MutableList<WindowInsetsAnimation>): WindowInsets = p0
+
+                override fun onPrepare(animation: WindowInsetsAnimation) {
+                    super.onPrepare(animation)
+                    hideAndShowViews(!isHidden)
+                }
+            })
+
+        } else {
+
+            with(binding) {
+                noteInput.setOnEditorActionListener { p0, id, p2 ->
+                    if (id == EditorInfo.IME_ACTION_DONE) {
+                        hideAndShowViews(false)
+                    }
+                    false
+                }
+                noteInput.setOnFocusChangeListener { _, _ ->
+                    if (!isHidden) {
+                        hideAndShowViews(true)
+                    }
+                }
+
+                noteInput.setOnClickListener {
+                    if (!isHidden) {
+                        hideAndShowViews(true)
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun fillFactors() {
         FactorsList.factors.forEachIndexed { index, factor ->
@@ -69,7 +111,6 @@ class CheckInFactorsFragment(
                         factorId = it.factorId
                     }
                 }
-                println("binding.btnNext.isEnabled ${binding.btnDone.isEnabled}")
             }
         }
     }
@@ -83,74 +124,22 @@ class CheckInFactorsFragment(
                 val note = binding.noteInput.text.toString()
                 onSaveClickListener.onClick(factorId = factorId, note = note)
             }
-
-//        activity?.let {
-//            KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
-//                factorsButtons.forEach { factorView ->
-//                    val animation = AnimationUtils.loadAnimation(
-//                        requireContext(), if (isOpen) R.anim.hide_buttons else R.anim.show_buttons).apply {
-//                        setAnimationListener(object : AnimationListener{
-//                            override fun onAnimationStart(p0: Animation?) {}
-//
-//                            override fun onAnimationEnd(p0: Animation?) {
-//                                if (isOpen) factorView.alpha = 0f else factorView.alpha = 1f
-//                            }
-//                            override fun onAnimationRepeat(p0: Animation?) {}
-//                        })
-//                    }
-//                    factorView.startAnimation(animation)
-//                }
-//            }
-//        }
-
-//        KeyboardUtils.addKeyboardToggleListener(requireActivity(), object : SoftKeyboardToggleListener {
-//            override fun onToggleSoftKeyboard(isVisible: Boolean) {
-//                factorsButtons.forEach { factorView ->
-//                    val animation = AnimationUtils.loadAnimation(
-//                        requireContext(), if (isVisible) R.anim.hide_buttons else R.anim.show_buttons).apply {
-//                        setAnimationListener(object : AnimationListener{
-//                            override fun onAnimationStart(p0: Animation?) {}
-//
-//                            override fun onAnimationEnd(p0: Animation?) {
-//                                if (isVisible) factorView.alpha = 0f else factorView.alpha = 1f
-//                            }
-//                            override fun onAnimationRepeat(p0: Animation?) {}
-//                        })
-//                    }
-//                    factorView.startAnimation(animation)
-//                }
-//            }
-//        })
-//            noteInput.setOnEditorActionListener { p0, id, p2 ->
-//                if (id == EditorInfo.IME_ACTION_DONE) {
-//                    hideAndShowViews(false)
-//                }
-//                false
-//            }
-//            noteInput.setOnClickListener {
-//                if (!isHidden) {
-//                    hideAndShowViews(true)
-//                }
-//            }
         }
     }
 
     private fun hideAndShowViews(isHide: Boolean) {
+        with(binding) {
+            val visible = if (isHide) View.GONE else View.VISIBLE
+            bottomBar.visibility = visible
+            line.visibility = visible
+            btnBack.visibility = visible
+            btnDone.visibility = visible
+
+        }
         factorsButtons.forEach { factorView ->
-            val animation = AnimationUtils.loadAnimation(
-                requireContext(), if (isHide) R.anim.hide_buttons else R.anim.show_buttons
-            ).apply {
-                setAnimationListener(object : AnimationListener {
-                    override fun onAnimationStart(p0: Animation?) {}
-
-                    override fun onAnimationEnd(p0: Animation?) {
-                        if (isHide) factorView.alpha = 0f else factorView.alpha = 1f
-                    }
-
-                    override fun onAnimationRepeat(p0: Animation?) {}
-                })
-            }
-            factorView.startAnimation(animation)
+            factorView.isEnabled = !isHide
+            factorView.animate()
+                .alpha(if (isHide) 0f else 1f)
         }
         isHidden = isHide
     }
