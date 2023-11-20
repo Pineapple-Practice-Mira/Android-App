@@ -1,15 +1,14 @@
 package site.pnpl.mira.data
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.data.dao.CheckInDao
 import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.utils.MiraDateFormat
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class CheckInRepository(private val checkInDao: CheckInDao) {
-
-    val checkInFlow: Flow<List<CheckIn>>
-        get() = checkInDao.getAllCheckIn()
 
     suspend fun insertCheckIn(checkIn: CheckIn): Boolean {
         return withContext(Dispatchers.IO) {
@@ -27,6 +26,29 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
     suspend fun deleteAll() {
         withContext(Dispatchers.IO) {
             checkInDao.deleteAll()
+        }
+    }
+
+    suspend fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long): List<CheckIn> =
+        suspendCoroutine { continuation ->
+            continuation.resume(
+                checkInDao.getByPeriod(
+                    MiraDateFormat(startPeriod).getFormatForBD(),
+                    MiraDateFormat(endPeriod).getFormatForBD()
+                )
+            )
+        }
+
+
+    suspend fun insertListOfCheckIns(list: List<CheckIn>) {
+        withContext(Dispatchers.IO) {
+            checkInDao.insertListOfCheckIns(list)
+        }
+    }
+
+    suspend fun deleteListOfCheckIns(checkIns: List<CheckIn>) {
+        withContext(Dispatchers.IO) {
+            checkInDao.deleteListOfCheckIns(checkIns)
         }
     }
 }

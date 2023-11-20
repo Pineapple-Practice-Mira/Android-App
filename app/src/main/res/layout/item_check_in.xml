@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    android:layout_marginEnd="16dp"
     android:background="@drawable/item_check_in_background">
 
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -42,8 +44,9 @@
         android:id="@+id/leftBorder"
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="64dp"
+        app:layout_constraintHorizontal_bias="0.18"
         android:background="@drawable/item_check_in_border"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -80,10 +83,11 @@
         android:id="@+id/emotionDrawable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
         android:src="@drawable/emo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -91,9 +95,10 @@
         android:id="@+id/rightBorder"
         android:layout_width="2dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="64dp"
         android:background="@drawable/item_check_in_border"
+        app:layout_constraintHorizontal_bias="0.82"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

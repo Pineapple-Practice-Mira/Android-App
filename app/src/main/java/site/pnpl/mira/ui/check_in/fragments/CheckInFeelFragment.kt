@@ -6,9 +6,9 @@ import android.view.View
 import android.widget.LinearLayout
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFeelingBinding
-import site.pnpl.mira.entity.Emotion
-import site.pnpl.mira.entity.EmotionsList
-import site.pnpl.mira.ui.check_in.custoview.EmotionView
+import site.pnpl.mira.model.Emotion
+import site.pnpl.mira.model.EmotionsList
+import site.pnpl.mira.ui.check_in.customview.EmotionView
 
 class CheckInFeelFragment(
     private val onArrowClickListener: CheckInFragment.OnArrowClickListener,
@@ -61,7 +61,7 @@ class CheckInFeelFragment(
                         binding.btnNext.isEnabled = true
                         emotionId = it.emotionId
 
-                        onEmotionClickListener.onClick(resources.getString(EmotionsList.emotions[emotionId].nameResId))
+                        onEmotionClickListener.onClick(resources.getString(EmotionsList.emotions[emotionId].nameParentCaseResId))
                     }
                 }
 

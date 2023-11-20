@@ -1,4 +1,4 @@
-package site.pnpl.mira.ui.check_in.custoview
+package site.pnpl.mira.ui.check_in.customview
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.EmotionViewBinding
-import site.pnpl.mira.entity.Emotion
+import site.pnpl.mira.model.Emotion
 
 class EmotionView constructor(context: Context) : LinearLayout(context) {
 

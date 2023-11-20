@@ -3,16 +3,16 @@ package site.pnpl.mira.ui.check_in.fragments
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.Animation.AnimationListener
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsAnimationCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFactorsBinding
-import site.pnpl.mira.entity.FactorsList
-import site.pnpl.mira.ui.check_in.custoview.FactorView
+import site.pnpl.mira.model.FactorsList
+import site.pnpl.mira.ui.check_in.customview.FactorView
 import site.pnpl.mira.utils.KeyboardUtils
 
 
@@ -30,15 +30,41 @@ class CheckInFactorsFragment(
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCheckInFactorsBinding.bind(view)
         binding.btnDone.isEnabled = false
-//        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         fillFactors()
 
         binding.noteInput.imeOptions = EditorInfo.IME_ACTION_DONE
         binding.noteInput.setRawInputType(InputType.TYPE_CLASS_TEXT)
         setListener()
+
+        keyboardListener()
+    }
+
+    private fun keyboardListener() {
+        ViewCompat.setWindowInsetsAnimationCallback(
+            requireView(),
+            object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+                override fun onProgress(
+                    insets: WindowInsetsCompat,
+                    runningAnimations: MutableList<WindowInsetsAnimationCompat>
+                ): WindowInsetsCompat = insets
+
+                override fun onStart(
+                    animation: WindowInsetsAnimationCompat,
+                    bounds: WindowInsetsAnimationCompat.BoundsCompat
+                ): WindowInsetsAnimationCompat.BoundsCompat {
+
+                    if (animation.typeMask == WindowInsetsCompat.Type.ime()) {
+                        hideAndShowViews(!isHidden)
+                    }
+                    return super.onStart(animation, bounds)
+                }
+            }
+        )
     }
 
     private fun fillFactors() {
+        binding.leftContainer.removeAllViews()
+        binding.rightContainer.removeAllViews()
         FactorsList.factors.forEachIndexed { index, factor ->
             val factorView = FactorView(requireContext()).apply {
                 setData(factor)
@@ -69,7 +95,6 @@ class CheckInFactorsFragment(
                         factorId = it.factorId
                     }
                 }
-                println("binding.btnNext.isEnabled ${binding.btnDone.isEnabled}")
             }
         }
     }
@@ -83,75 +108,19 @@ class CheckInFactorsFragment(
                 val note = binding.noteInput.text.toString()
                 onSaveClickListener.onClick(factorId = factorId, note = note)
             }
-
-//        activity?.let {
-//            KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
-//                factorsButtons.forEach { factorView ->
-//                    val animation = AnimationUtils.loadAnimation(
-//                        requireContext(), if (isOpen) R.anim.hide_buttons else R.anim.show_buttons).apply {
-//                        setAnimationListener(object : AnimationListener{
-//                            override fun onAnimationStart(p0: Animation?) {}
-//
-//                            override fun onAnimationEnd(p0: Animation?) {
-//                                if (isOpen) factorView.alpha = 0f else factorView.alpha = 1f
-//                            }
-//                            override fun onAnimationRepeat(p0: Animation?) {}
-//                        })
-//                    }
-//                    factorView.startAnimation(animation)
-//                }
-//            }
-//        }
-
-//        KeyboardUtils.addKeyboardToggleListener(requireActivity(), object : SoftKeyboardToggleListener {
-//            override fun onToggleSoftKeyboard(isVisible: Boolean) {
-//                factorsButtons.forEach { factorView ->
-//                    val animation = AnimationUtils.loadAnimation(
-//                        requireContext(), if (isVisible) R.anim.hide_buttons else R.anim.show_buttons).apply {
-//                        setAnimationListener(object : AnimationListener{
-//                            override fun onAnimationStart(p0: Animation?) {}
-//
-//                            override fun onAnimationEnd(p0: Animation?) {
-//                                if (isVisible) factorView.alpha = 0f else factorView.alpha = 1f
-//                            }
-//                            override fun onAnimationRepeat(p0: Animation?) {}
-//                        })
-//                    }
-//                    factorView.startAnimation(animation)
-//                }
-//            }
-//        })
-//            noteInput.setOnEditorActionListener { p0, id, p2 ->
-//                if (id == EditorInfo.IME_ACTION_DONE) {
-//                    hideAndShowViews(false)
-//                }
-//                false
-//            }
-//            noteInput.setOnClickListener {
-//                if (!isHidden) {
-//                    hideAndShowViews(true)
-//                }
-//            }
         }
     }
 
     private fun hideAndShowViews(isHide: Boolean) {
-        factorsButtons.forEach { factorView ->
-            val animation = AnimationUtils.loadAnimation(
-                requireContext(), if (isHide) R.anim.hide_buttons else R.anim.show_buttons
-            ).apply {
-                setAnimationListener(object : AnimationListener {
-                    override fun onAnimationStart(p0: Animation?) {}
-
-                    override fun onAnimationEnd(p0: Animation?) {
-                        if (isHide) factorView.alpha = 0f else factorView.alpha = 1f
-                    }
-
-                    override fun onAnimationRepeat(p0: Animation?) {}
-                })
-            }
-            factorView.startAnimation(animation)
+        val visible = if (isHide) View.GONE else View.VISIBLE
+        with(binding) {
+            bottomBar.visibility = visible
+            line.visibility = visible
+            btnBack.visibility = visible
+            btnDone.visibility = visible
+            scrollView.visibility = visible
         }
+
         isHidden = isHide
     }
 

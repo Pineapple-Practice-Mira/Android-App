@@ -76,15 +76,22 @@
     <string name="bubble_2">…</string>
     <string name="bubble_3">"Я чувствую "</string>
     <string name="bubble_4">Выбери один или несколько факторов, повлияших на твое состояние</string>
-    <string name="pop_up_check_in_title">Возврат на главную</string>
-    <string name="pop_up_check_in_content">Данные не будут сохранены. Вы уверены, что хотите прервать запись?</string>
+    <string name="pop_up_check_in_title">Закрыть окно</string>
+    <string name="pop_up_check_in_content">Данные не будут сохранены. Ты точно хочешь прервать запись?</string>
     <string name="pop_up_check_in_left">Остаться</string>
-    <string name="pop_up_check_in_right">На главную</string>
+    <string name="pop_up_check_in_right">Закрыть</string>
     <string name="label_check_in_saved_1">Все записи и статистика доступны на главном экране приложения.</string>
     <string name="label_check_in_saved_2">Под твоё состояние подобрано особое упражнение. Ты можешь выполнить его сейчас или позже из раздела «Упражнения».</string>
     <string name="button_later">Позже</string>
     <string name="button_execute_exercises">Выполнить упражнение</string>
     <string name="bubble_5">Сегодня, %1$s, я чувствую %2$s. Основная причина – %3$s.</string>
     <string name="bubble_6">Спасибо за доверие!</string>
+    <string name="sympathy_parent_case">симпатию</string>
+    <string name="anxiety_parent_case">тревогу</string>
+    <string name="action_bar_date_label">Выбранный период</string>
+    <string name="pop_up_home_title">Удаление записей</string>
+    <string name="pop_up_home_content">Ты точно хочешь безвозвратно удалить выбранные записи?</string>
+    <string name="pop_up_home_left">Отменить</string>
+    <string name="pop_up_home_right">Удалить</string>
 
 </resources>
