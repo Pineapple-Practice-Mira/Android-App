@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M13,12H27C28.105,12 29,12.895 29,14V28C29,29.105 28.105,30 27,30H13C11.895,30 11,29.105 11,28V14C11,12.895 11.895,12 13,12Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:strokeColor="@color/action_bar_button_state"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M16,10V14"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:strokeColor="@color/action_bar_button_state"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M24,10V14"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:strokeColor="@color/action_bar_button_state"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M29,18H11"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:strokeColor="@color/action_bar_button_state"
+      android:strokeLineCap="round"/>
+</vector>

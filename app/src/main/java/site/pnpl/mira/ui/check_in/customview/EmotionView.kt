@@ -1,4 +1,4 @@
-package site.pnpl.mira.ui.check_in.custoview
+package site.pnpl.mira.ui.check_in.customview
 
 import android.content.Context
 import android.view.LayoutInflater

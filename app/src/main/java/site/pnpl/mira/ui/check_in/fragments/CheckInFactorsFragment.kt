@@ -1,18 +1,18 @@
 package site.pnpl.mira.ui.check_in.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowInsetsAnimation
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsAnimationCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFactorsBinding
 import site.pnpl.mira.entity.FactorsList
-import site.pnpl.mira.ui.check_in.custoview.FactorView
+import site.pnpl.mira.ui.check_in.customview.FactorView
 import site.pnpl.mira.utils.KeyboardUtils
 
 
@@ -30,7 +30,6 @@ class CheckInFactorsFragment(
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCheckInFactorsBinding.bind(view)
         binding.btnDone.isEnabled = false
-//        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         fillFactors()
 
         binding.noteInput.imeOptions = EditorInfo.IME_ACTION_DONE
@@ -40,47 +39,32 @@ class CheckInFactorsFragment(
         keyboardListener()
     }
 
-
     private fun keyboardListener() {
+        ViewCompat.setWindowInsetsAnimationCallback(
+            requireView(),
+            object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
+                override fun onProgress(
+                    insets: WindowInsetsCompat,
+                    runningAnimations: MutableList<WindowInsetsAnimationCompat>
+                ): WindowInsetsCompat = insets
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                override fun onStart(
+                    animation: WindowInsetsAnimationCompat,
+                    bounds: WindowInsetsAnimationCompat.BoundsCompat
+                ): WindowInsetsAnimationCompat.BoundsCompat {
 
-            view?.setWindowInsetsAnimationCallback(object : WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
-
-                override fun onProgress(p0: WindowInsets, p1: MutableList<WindowInsetsAnimation>): WindowInsets = p0
-
-                override fun onPrepare(animation: WindowInsetsAnimation) {
-                    super.onPrepare(animation)
-                    hideAndShowViews(!isHidden)
-                }
-            })
-
-        } else {
-
-            with(binding) {
-                noteInput.setOnEditorActionListener { p0, id, p2 ->
-                    if (id == EditorInfo.IME_ACTION_DONE) {
-                        hideAndShowViews(false)
+                    if (animation.typeMask == WindowInsetsCompat.Type.ime()) {
+                        hideAndShowViews(!isHidden)
                     }
-                    false
-                }
-                noteInput.setOnFocusChangeListener { _, _ ->
-                    if (!isHidden) {
-                        hideAndShowViews(true)
-                    }
-                }
-
-                noteInput.setOnClickListener {
-                    if (!isHidden) {
-                        hideAndShowViews(true)
-                    }
+                    return super.onStart(animation, bounds)
                 }
             }
-        }
+        )
     }
 
-
     private fun fillFactors() {
+        binding.leftContainer.removeAllViews()
+        binding.rightContainer.removeAllViews()
         FactorsList.factors.forEachIndexed { index, factor ->
             val factorView = FactorView(requireContext()).apply {
                 setData(factor)
@@ -128,19 +112,15 @@ class CheckInFactorsFragment(
     }
 
     private fun hideAndShowViews(isHide: Boolean) {
+        val visible = if (isHide) View.GONE else View.VISIBLE
         with(binding) {
-            val visible = if (isHide) View.GONE else View.VISIBLE
             bottomBar.visibility = visible
             line.visibility = visible
             btnBack.visibility = visible
             btnDone.visibility = visible
+            scrollView.visibility = visible
+        }
 
-        }
-        factorsButtons.forEach { factorView ->
-            factorView.isEnabled = !isHide
-            factorView.animate()
-                .alpha(if (isHide) 0f else 1f)
-        }
         isHidden = isHide
     }
 

@@ -11,14 +11,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp"/>
+        app:layout_constraintGuide_percent="@dimen/width_margin_16dp"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="@dimen/width_margin_16dp_from_end" />
 
     <Button
         android:id="@+id/btnSkip"
@@ -27,10 +29,11 @@
         android:background="@android:color/transparent"
         android:text="@string/skip"
         style="@style/Links16Primary"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="@id/end"
+        app:layout_constraintVertical_bias="0.053"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@id/start"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/end"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -51,7 +54,8 @@
         app:ci_animator="@animator/alpha"
         app:ci_drawable="@drawable/indicator_selected"
         app:ci_drawable_unselected="@drawable/indicator_unselected"
-        android:layout_marginBottom="@dimen/bottom_margin_first_button"
+        app:layout_constraintVertical_bias="@dimen/greeting_button_1_bias"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

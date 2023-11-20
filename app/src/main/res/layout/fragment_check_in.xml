@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <site.pnpl.mira.ui.check_in.custoview.ScrollBubblesView
+    <site.pnpl.mira.ui.check_in.customview.ScrollBubblesView
         android:id="@+id/bubbleView"
         android:layout_width="0dp"
         android:layout_height="200dp"

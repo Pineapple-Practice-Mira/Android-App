@@ -10,8 +10,8 @@ import site.pnpl.mira.data.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInSavedBinding
 import site.pnpl.mira.entity.EmotionsList
 import site.pnpl.mira.entity.FactorsList
-import site.pnpl.mira.ui.check_in.custoview.BubbleView
-import site.pnpl.mira.ui.check_in.custoview.ScrollBubblesView
+import site.pnpl.mira.ui.check_in.customview.BubbleView
+import site.pnpl.mira.ui.check_in.customview.ScrollBubblesView
 import site.pnpl.mira.utils.MiraDateFormat
 
 class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
@@ -57,7 +57,7 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
                         getString(
                             R.string.bubble_5,
                             MiraDateFormat(checkIn.createdAtLong).getDayMonthYear(),
-                            getString(EmotionsList.emotions[checkIn.emotionId].nameResId),
+                            getString(EmotionsList.emotions[checkIn.emotionId].nameParentCaseResId),
                             getString(FactorsList.factors[checkIn.factorId].nameResId)
                         )
                     ),

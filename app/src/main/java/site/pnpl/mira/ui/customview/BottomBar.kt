@@ -28,19 +28,12 @@ class BottomBar constructor(context: Context, attributeSet: AttributeSet) : Cons
 
     }
 
-    fun setClickListener(listener: BottomBarClicked) {
-        binding.home.setOnClickListener {
-            listener.onClick(BottomBarButton.HOME)
+    fun setBottomBarClickListener(listener: (Button) -> Unit) {
+        with(binding) {
+            home.setOnClickListener { listener(Button.HOME) }
+            exercisesList.setOnClickListener { listener(Button.EXERCISES_LIST) }
+            btnCheckIn.setOnClickListener { listener(Button.CHECK_IN) }
         }
-
-        binding.exercisesList.setOnClickListener {
-            listener.onClick(BottomBarButton.EXERCISES_LIST)
-        }
-
-        binding.btnCheckIn.setOnClickListener {
-            listener.onClick(BottomBarButton.CHECK_IN)
-        }
-
     }
 
     override fun onDetachedFromWindow() {
@@ -62,11 +55,7 @@ class BottomBar constructor(context: Context, attributeSet: AttributeSet) : Cons
         annotation class BottomButton
     }
 
-    interface BottomBarClicked {
-        fun onClick(button: BottomBarButton)
-    }
-
-    enum class BottomBarButton {
+    enum class Button {
         HOME,
         EXERCISES_LIST,
         CHECK_IN
