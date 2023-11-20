@@ -3,7 +3,7 @@
     <item>
         <shape>
             <corners android:radius="18dp"/>
-            <solid android:color="@color/light_grey"/>
+            <solid android:color="@color/item_check_in_background_state"/>
         </shape>
     </item>
 </selector>

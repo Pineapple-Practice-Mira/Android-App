@@ -29,8 +29,8 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
         }
     }
 
-    suspend fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long): List<CheckIn> {
-        val list = suspendCoroutine { continuation ->
+    suspend fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long): List<CheckIn> =
+        suspendCoroutine { continuation ->
             continuation.resume(
                 checkInDao.getByPeriod(
                     MiraDateFormat(startPeriod).getFormatForBD(),
@@ -38,14 +38,17 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
                 )
             )
         }
-        println("startPeriod ${MiraDateFormat(startPeriod).getFormatForBD()} endPeriod ${MiraDateFormat(endPeriod).getFormatForBD()}")
-        println("list.size ${list.size} $list")
-        return list
-    }
+
 
     suspend fun insertListOfCheckIns(list: List<CheckIn>) {
         withContext(Dispatchers.IO) {
             checkInDao.insertListOfCheckIns(list)
+        }
+    }
+
+    suspend fun deleteListOfCheckIns(checkIns: List<CheckIn>) {
+        withContext(Dispatchers.IO) {
+            checkInDao.deleteListOfCheckIns(checkIns)
         }
     }
 }

@@ -8,8 +8,8 @@ import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.R
 import site.pnpl.mira.data.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInSavedBinding
-import site.pnpl.mira.entity.EmotionsList
-import site.pnpl.mira.entity.FactorsList
+import site.pnpl.mira.model.EmotionsList
+import site.pnpl.mira.model.FactorsList
 import site.pnpl.mira.ui.check_in.customview.BubbleView
 import site.pnpl.mira.ui.check_in.customview.ScrollBubblesView
 import site.pnpl.mira.utils.MiraDateFormat

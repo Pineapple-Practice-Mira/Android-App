@@ -89,5 +89,9 @@
     <string name="sympathy_parent_case">симпатию</string>
     <string name="anxiety_parent_case">тревогу</string>
     <string name="action_bar_date_label">Выбранный период</string>
+    <string name="pop_up_home_title">Удаление записей</string>
+    <string name="pop_up_home_content">Ты точно хочешь безвозвратно удалить выбранные записи?</string>
+    <string name="pop_up_home_left">Отменить</string>
+    <string name="pop_up_home_right">Удалить</string>
 
 </resources>

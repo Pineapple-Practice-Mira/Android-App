@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.EmotionViewBinding
-import site.pnpl.mira.entity.Emotion
+import site.pnpl.mira.model.Emotion
 
 class EmotionView constructor(context: Context) : LinearLayout(context) {
 

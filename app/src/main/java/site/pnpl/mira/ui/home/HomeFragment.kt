@@ -12,19 +12,23 @@ import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentHomeBinding
+import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
-import site.pnpl.mira.ui.customview.ActionBar
-import site.pnpl.mira.ui.customview.BottomBar
-import site.pnpl.mira.ui.customview.BottomBar.Companion.HOME
-import site.pnpl.mira.ui.home.recycler_view.HomeAdapter
+import site.pnpl.mira.ui.home.customview.ActionBar
+import site.pnpl.mira.ui.home.customview.BottomBar
+import site.pnpl.mira.ui.home.customview.BottomBar.Companion.HOME
+import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter
+import site.pnpl.mira.ui.home.recycler_view.ItemTouchHelperCallback
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.utils.OFFSET_DAYS_FOR_DEFAULT_PERIOD
+import site.pnpl.mira.utils.PopUpDialog
 import site.pnpl.mira.utils.toPx
 import java.util.Calendar
 
@@ -33,14 +37,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private val mountainsDefPositionY by lazy {
+        binding.mountains.y - EXTRA_MARGIN_MOUNTAINS.toPx
+    }
+
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: HomeAdapter
+    private var adapter: CheckInAdapter? = null
+    private lateinit var itemTouchHelperCallback: ItemTouchHelperCallback
 
     private val viewModel: HomeViewModel by viewModels()
 
     private var startPeriod = 0L
     private var endPeriod = 0L
     private lateinit var dateRangePicker: MaterialDatePicker<androidx.core.util.Pair<Long, Long>>
+    private var isSelectAll = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,23 +58,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         @Suppress("DEPRECATION")
         requireActivity().window.statusBarColor = resources.getColor(R.color.white)
-        stubClickListener()
 
         initActionBar()
-        setDefaultPeriod()
         initBottomBar()
         initRecyclerView()
-        setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
+        setDefaultPeriod()
+//        setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
         getCheckInData()
-    }
-
-    private fun setDefaultPeriod() {
-        endPeriod = MaterialDatePicker.todayInUtcMilliseconds()
-        Calendar.getInstance().apply {
-            timeInMillis = endPeriod
-            add(Calendar.DAY_OF_YEAR, OFFSET_DAYS_FOR_DEFAULT_PERIOD)
-            startPeriod = timeInMillis
-        }
     }
 
     private fun initActionBar() {
@@ -78,16 +78,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     createFakeCheckIns()
                 }
 
-                ActionBar.Button.SELECT_ALL -> {}
-                ActionBar.Button.DELETE -> {}
+                ActionBar.Button.SELECT_ALL -> {
+                    isSelectAll = !isSelectAll
+                    adapter!!.selectAll(isSelectAll)
+                }
+                ActionBar.Button.DELETE -> {
+                    showPopUpDialog()
+                }
             }
         }
     }
 
-    private fun createFakeCheckIns() {
-        viewModel.insertListOfCheckIns()
-        Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
-    }
 
     private fun showDatePicker() {
 
@@ -99,6 +100,39 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             endPeriod = periods.second
             getCheckInData()
         }
+    }
+
+    private fun createFakeCheckIns() {
+        viewModel.insertListOfCheckIns()
+        Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
+    }
+    private fun showPopUpDialog() {
+        val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener{
+            override fun onClick(popUpDialog: PopUpDialog) {
+                popUpDialog.dismiss()
+            }
+        }
+
+
+        val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener{
+            override fun onClick(popUpDialog: PopUpDialog) {
+                val items =  adapter!!.getSelectedItemsAndDelete()
+                viewModel.deleteListOfCheckIns(items)
+                if (isSelectAll) isSelectAll = false
+                initPropertyRV()
+                popUpDialog.dismiss()
+            }
+
+        }
+        val popUpDialog = PopUpDialog.Builder()
+            .title(resources.getString(R.string.pop_up_home_title))
+            .content(resources.getString(R.string.pop_up_home_content))
+            .leftButtonText(resources.getString(R.string.pop_up_home_left))
+            .rightButtonText((resources.getString(R.string.pop_up_home_right)))
+            .leftButtonListener(popUpDialogClickListenerLeft)
+            .rightButtonListener(popUpDialogClickListenerRight)
+            .build()
+        popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
     }
 
     private fun initBottomBar() {
@@ -117,20 +151,48 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-
     private fun initRecyclerView() {
-        adapter = HomeAdapter()
-        recyclerView = binding.recyclerView
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(TopSpacingItemDecoration(12))
+
+        recyclerView = binding.recyclerView.apply {
+            addItemDecoration(TopSpacingItemDecoration(12))
+        }
+
+        itemTouchHelperCallback = ItemTouchHelperCallback(onChangeExpandedListener)
+        val touchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        touchHelper.attachToRecyclerView(recyclerView)
+
+        initPropertyRV()
+
     }
+
+    private fun initPropertyRV(isExpanded: Boolean = false) {
+
+        var items = emptyList<CheckInUI>()
+        if (adapter != null) {
+            items = adapter!!.checkIns
+        }
+
+        val onSelectedItemsListener = object : SelectedItemsListener{
+            override fun notify(isHaveSelected: Boolean) {
+                binding.actionBar.trashBoxEnable(isHaveSelected)
+            }
+
+        }
+
+        adapter = CheckInAdapter(isExpanded, onChangeExpandedListener, onSelectedItemsListener)
+        recyclerView.adapter = adapter
+        adapter!!.setItemsList(items)
+        itemTouchHelperCallback.isExpanded = isExpanded
+
+        binding.actionBar.setRemoveMode(isExpanded)
+    }
+
 
     private fun mountainsMarginCorrect() {
         recyclerView.doOnLayout {
-            val mountainsY = binding.mountains.y - EXTRA_MARGIN_MOUNTAINS.toPx
+            val mountainsY = mountainsDefPositionY
             recyclerView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
             val rvHeight = recyclerView.measuredHeight
-            println("rvHeight $rvHeight")
             val rvFullSize = rvHeight + recyclerView.y
             if (rvFullSize > mountainsY) {
                 changeMountainsPos(rvFullSize)
@@ -156,31 +218,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.mountains.startAnimation(mountainsAnimation)
     }
 
-    private fun getCheckInData() {
-        viewModel.getCheckInForPeriod(startPeriod, endPeriod)
-        viewModel.checkInLiveData.observe(viewLifecycleOwner) { checkIns ->
-            println("checkIns.size - ${checkIns.size}")
-            adapter.setItemsList(checkIns)
-            mountainsMarginCorrect()
+    private fun setDefaultPeriod() {
+        endPeriod = MaterialDatePicker.todayInUtcMilliseconds()
+        Calendar.getInstance().apply {
+            timeInMillis = endPeriod
+            add(Calendar.DAY_OF_YEAR, OFFSET_DAYS_FOR_DEFAULT_PERIOD)
+            startPeriod = timeInMillis
         }
     }
 
-    private fun stubClickListener() {
-        with(binding) {
-
-//            settings.setOnClickListener {
-//                findNavController().navigate(R.id.action_home_to_setting)
-//            }
-//            statistic.setOnClickListener {
-//                findNavController().navigate(R.id.action_home_to_statistics)
-//            }
-//
-//            openCheckIn.setOnClickListener {
-//                findNavController().navigate(R.id.action_home_to_details)
-//            }
-//            delAll.setOnClickListener {
-//                viewModel.deleteAll()
-//            }
+    private fun getCheckInData() {
+        viewModel.getCheckInForPeriod(startPeriod, endPeriod)
+        viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
+            val checkIns = event.contentIfNotHandled
+            if (checkIns != null) {
+                adapter!!.setItemsList(checkIns)
+                mountainsMarginCorrect()
+            }
         }
     }
 
@@ -214,9 +268,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         _binding = null
     }
 
+    private val onChangeExpandedListener = object : ChangeExpandedListener {
+        override fun expandAll(value: Boolean) {
+            initPropertyRV(value)
+        }
+    }
+
     companion object {
         const val DATE_PICKER_TAG = "DATE_PICKER_TAG"
         const val EXTRA_MARGIN_MOUNTAINS = 19
         const val DEFAULT_MOUNTAINS_MARGIN = 72
+    }
+
+    interface SelectedItemsListener{
+        fun notify(isHaveSelected: Boolean)
+    }
+
+
+    interface ChangeExpandedListener {
+        fun expandAll(value: Boolean)
     }
 }

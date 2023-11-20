@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.LinearLayout
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFeelingBinding
-import site.pnpl.mira.entity.Emotion
-import site.pnpl.mira.entity.EmotionsList
+import site.pnpl.mira.model.Emotion
+import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.ui.check_in.customview.EmotionView
 
 class CheckInFeelFragment(
