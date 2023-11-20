@@ -1,4 +1,4 @@
-package site.pnpl.mira.entity
+package site.pnpl.mira.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

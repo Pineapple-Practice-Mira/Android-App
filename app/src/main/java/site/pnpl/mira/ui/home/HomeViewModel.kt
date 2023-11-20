@@ -10,8 +10,12 @@ import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
 import site.pnpl.mira.data.entity.CheckIn
-import site.pnpl.mira.entity.EmotionsList
-import site.pnpl.mira.entity.FactorsList
+import site.pnpl.mira.data.entity.mapToCheckInUI
+import site.pnpl.mira.model.CheckInUI
+import site.pnpl.mira.model.EmotionsList
+import site.pnpl.mira.model.FactorsList
+import site.pnpl.mira.model.mapToCheckIn
+import site.pnpl.mira.utils.Event
 import site.pnpl.mira.utils.MiraDateFormat
 import java.util.Calendar
 import javax.inject.Inject
@@ -22,13 +26,18 @@ class HomeViewModel : ViewModel() {
     @Inject
     lateinit var repository: CheckInRepository
 
-
-    private var _checkInLiveData = MutableLiveData<List<CheckIn>>()
-    val checkInLiveData: LiveData<List<CheckIn>>
-        get() = _checkInLiveData
-
     init {
         App.instance.appComponent.inject(this)
+    }
+
+    private fun newSaveEvent(checkIns: List<CheckInUI>) {
+        saveEvent.postValue(Event(checkIns))
+    }
+
+    private val saveEvent: MutableLiveData<Event<List<CheckInUI>>> = MutableLiveData<Event<List<CheckInUI>>>()
+
+    fun onSaveEvent(): LiveData<Event<List<CheckInUI>>> {
+        return saveEvent
     }
 
     fun getAllCheckIns() {
@@ -38,10 +47,23 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long) {
+
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _checkInLiveData.postValue(repository.getCheckInForPeriod(startPeriod, endPeriod))
+                val checkIns = repository.getCheckInForPeriod(startPeriod, endPeriod)
+                val checkInsUIMap = checkIns.map {
+                    it.mapToCheckInUI()
+                }
+                val checkInSorted = checkInsUIMap.sortedByDescending { it.createdAtLong }
+                newSaveEvent(checkInSorted)
             }
+        }
+    }
+
+    fun deleteListOfCheckIns(checkInsUI: List<CheckInUI>){
+        viewModelScope.launch {
+            val checkIns = checkInsUI.map { it.mapToCheckIn() }
+            repository.deleteListOfCheckIns(checkIns)
         }
     }
 

@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFactorsBinding
-import site.pnpl.mira.entity.FactorsList
+import site.pnpl.mira.model.FactorsList
 import site.pnpl.mira.ui.check_in.customview.FactorView
 import site.pnpl.mira.utils.KeyboardUtils
 

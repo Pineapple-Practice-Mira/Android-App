@@ -7,6 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import site.pnpl.mira.data.DBConstants
+import site.pnpl.mira.model.CheckInUI
 
 @Parcelize
 @Entity(
@@ -27,3 +28,18 @@ data class CheckIn(
     @ColumnInfo(name = "edited_at") val editedAt: String = "",
     @ColumnInfo(name = "is_synchronized", defaultValue = "0") val isSynchronized: Int = 0
 ) : Parcelable
+
+fun CheckIn.mapToCheckInUI(): CheckInUI {
+    return CheckInUI(
+        id = id,
+        emotionId = emotionId,
+        factorId = factorId,
+        exercisesId = exercisesId,
+        note = note,
+        createdAt = createdAt,
+        createdAtLong = createdAtLong,
+        editedAt = editedAt,
+        isSynchronized = isSynchronized == 1,
+        isSelected = false
+    )
+}
