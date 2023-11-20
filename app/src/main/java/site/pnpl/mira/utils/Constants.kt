@@ -8,3 +8,6 @@ const val MIN_LENGTH_IN_INPUT_NAME = 2
 const val ANIMATION_TIME_INPUT_NAME = 1000L
 //Время изменения альфа
 const val ANIMATION_TIME_INPUT_NAME_ALPHA = 500L
+
+//Отступ в днях от текущего дня для периода по умолчанию в выборке чекинов
+const val OFFSET_DAYS_FOR_DEFAULT_PERIOD = -14

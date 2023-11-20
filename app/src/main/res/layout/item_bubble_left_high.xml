@@ -22,10 +22,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bubble_left_high"
         android:gravity="center|start"
+        android:maxLines="3"
         android:includeFontPadding="false"
         android:paddingStart="19dp"
         android:paddingTop="4dp"
-        android:paddingEnd="10dp"
+        android:paddingEnd="4dp"
         android:paddingBottom="4dp"
         tools:text="Выбери одно из чувств, которое ты сейчас испытываешь в большей степени, чем другие"
         android:textColor="@color/white" />

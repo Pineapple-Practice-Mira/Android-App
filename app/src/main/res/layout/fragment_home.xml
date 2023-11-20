@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentHome"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.Guideline
@@ -35,53 +35,76 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
 
-    <LinearLayout
-        android:id="@+id/stubLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/stubLayout"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent">-->
 
-        <Button
-            android:id="@+id/delAll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_background_state"
-            android:text="Удалить все записи"
-            tools:ignore="HardcodedText" />
+    <!--            <Button-->
+    <!--                android:id="@+id/delAll"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:backgroundTint="@color/button_background_state"-->
+    <!--                android:text="Удалить все записи"-->
+    <!--                tools:ignore="HardcodedText" />-->
 
-        <Button
-            android:id="@+id/settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_background_state"
-            android:text="Настройки"
-            android:visibility="gone"
-            tools:ignore="HardcodedText" />
+    <!--        <Button-->
+    <!--            android:id="@+id/settings"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:backgroundTint="@color/button_background_state"-->
+    <!--            android:text="Настройки"-->
+    <!--            android:visibility="gone"-->
+    <!--            tools:ignore="HardcodedText" />-->
 
-        <Button
-            android:id="@+id/statistic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_background_state"
-            android:text="Статистика"
-            android:visibility="gone"
-            tools:ignore="HardcodedText" />
+    <!--            <Button-->
+    <!--                android:id="@+id/statistic"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:backgroundTint="@color/button_background_state"-->
+    <!--                android:text="Статистика"-->
+    <!--                android:visibility="gone"-->
+    <!--                tools:ignore="HardcodedText" />-->
 
-        <Button
-            android:id="@+id/openCheckIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/button_background_state"
-            android:text="Открыть ЧекИн"
-            android:visibility="gone"
-            tools:ignore="HardcodedText" />
+    <!--            <Button-->
+    <!--                android:id="@+id/openCheckIn"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:backgroundTint="@color/button_background_state"-->
+    <!--                android:text="Открыть ЧекИн"-->
+    <!--                android:visibility="gone"-->
+    <!--                tools:ignore="HardcodedText" />-->
 
 
-    </LinearLayout>
+    <!--        </LinearLayout>-->
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/actionBarCardView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="72dp"-->
+<!--        android:layout_marginTop="80dp"-->
+<!--        app:cardCornerRadius="18dp"-->
+<!--        app:cardElevation="4dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/end"-->
+<!--        app:layout_constraintStart_toStartOf="@id/start"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+
+        <site.pnpl.mira.ui.customview.ActionBar
+            android:id="@+id/actionBar"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="80dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toEndOf="@id/end"
+            app:layout_constraintStart_toStartOf="@id/start"
+            app:layout_constraintTop_toTopOf="parent"/>
+<!--    </androidx.cardview.widget.CardView>-->
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -94,7 +117,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintStart_toStartOf="@id/start"
-        app:layout_constraintTop_toBottomOf="@id/stubLayout"
+        app:layout_constraintTop_toBottomOf="@id/actionBar"
         app:layout_constraintVertical_bias="0" />
 
     <site.pnpl.mira.ui.customview.BottomBar

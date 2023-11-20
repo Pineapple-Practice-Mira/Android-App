@@ -4,10 +4,16 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="materialCalendarTheme">@style/MiraDatePicker</item>
     </style>
 
     <style name="Theme.Mira" parent="Base.Theme.Mira" />
 
+    <style name="MiraDatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/primary</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
 
     <style name="BaseTextTheme" parent="TextAppearance.AppCompat" />
 

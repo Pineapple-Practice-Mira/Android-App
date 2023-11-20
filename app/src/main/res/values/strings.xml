@@ -86,5 +86,8 @@
     <string name="button_execute_exercises">Выполнить упражнение</string>
     <string name="bubble_5">Сегодня, %1$s, я чувствую %2$s. Основная причина – %3$s.</string>
     <string name="bubble_6">Спасибо за доверие!</string>
+    <string name="sympathy_parent_case">симпатию</string>
+    <string name="anxiety_parent_case">тревогу</string>
+    <string name="action_bar_date_label">Выбранный период</string>
 
 </resources>

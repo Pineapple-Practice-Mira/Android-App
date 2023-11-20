@@ -16,10 +16,10 @@ import site.pnpl.mira.data.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInBinding
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.check_in.CheckInViewModel
-import site.pnpl.mira.ui.check_in.custoview.BubbleView
+import site.pnpl.mira.ui.check_in.customview.BubbleView
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CHECK_IN_KEY
 import site.pnpl.mira.ui.check_in.viewpager.Adapter
-import site.pnpl.mira.ui.exercise.convertMillisToDataTimeISO8601
+import site.pnpl.mira.utils.MiraDateFormat
 import site.pnpl.mira.utils.PopUpDialog
 
 class CheckInFragment : Fragment(R.layout.fragment_check_in) {
@@ -126,7 +126,7 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
                 emotionId = emotionId,
                 factorId = factorId,
                 note = note,
-                createdAt = convertMillisToDataTimeISO8601(System.currentTimeMillis()),
+                createdAt = MiraDateFormat(System.currentTimeMillis()).convertToDataTimeISO8601(),
                 createdAtLong = System.currentTimeMillis()
             )
             viewModel.saveCheckIn(checkIn!!)
