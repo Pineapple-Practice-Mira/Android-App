@@ -67,8 +67,6 @@
         android:layout_height="wrap_content"
         android:text="@string/to_greeting"
         style="@style/Button16White"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/button_background"
         app:backgroundTint="@color/button_background_state"
         app:layout_constraintBottom_toBottomOf="parent"
