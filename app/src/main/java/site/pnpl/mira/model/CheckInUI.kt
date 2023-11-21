@@ -1,6 +1,7 @@
 package site.pnpl.mira.model
 
 import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter.Companion.TYPE_ITEM_CHECK_IN
 
 
 data class CheckInUI (
@@ -13,7 +14,8 @@ data class CheckInUI (
     val createdAtLong: Long,
     val editedAt: String = "",
     val isSynchronized: Boolean = false,
-    var isSelected: Boolean
+    var isSelected: Boolean,
+    val typeItem: Int = TYPE_ITEM_CHECK_IN
 )
 
 fun CheckInUI.mapToCheckIn(): CheckIn {
