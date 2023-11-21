@@ -26,17 +26,27 @@ class CheckInAdapter(
 ) : RecyclerView.Adapter<CheckInAdapter.ViewHolder>() {
     val checkIns = mutableListOf<CheckInUI>()
 
+    override fun getItemViewType(position: Int): Int {
+        return checkIns[position].typeItem
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (isExpanded) {
-            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_check_in_expanded, parent, false))
+        return if (viewType == TYPE_ITEM_VOID) {
+            VoidViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_check_in_void, parent, false))
         } else {
-            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_check_in, parent, false))
+            if (isExpanded) {
+                CheckInViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_check_in_expanded, parent, false))
+            } else {
+                CheckInViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_check_in, parent, false))
+            }
         }
     }
 
     override fun getItemCount(): Int = checkIns.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (checkIns[position].typeItem == TYPE_ITEM_VOID) return
+        holder as CheckInViewHolder
         checkIns[position].apply {
             val date = MiraDateFormat(createdAtLong)
             holder.day.text = date.getDateOfMonth()
@@ -80,7 +90,9 @@ class CheckInAdapter(
 
     fun selectAll(value: Boolean) {
         checkIns.forEach { checkIn ->
-            checkIn.isSelected = value
+            if (checkIn.typeItem == TYPE_ITEM_CHECK_IN) {
+                checkIn.isSelected = value
+            }
         }
         update()
         notifyIfHaveSelectedItems()
@@ -100,10 +112,33 @@ class CheckInAdapter(
     fun setItemsList(items: List<CheckInUI>) {
         checkIns.clear()
         checkIns.addAll(items)
+        if (checkIns.isNotEmpty() && checkIns[0].typeItem != TYPE_ITEM_VOID) {
+            checkIns.add(0, getVoidCheckIn())
+        }
         if (!isExpanded) {
-            checkIns.forEach { it.isSelected = false }
+            checkIns.forEach {
+                if (it.typeItem == TYPE_ITEM_CHECK_IN) {
+                    it.isSelected = false
+                }
+            }
         }
         update()
+    }
+
+    private fun getVoidCheckIn(): CheckInUI {
+        return CheckInUI(
+            id = 0,
+            emotionId = 0,
+            factorId = 0,
+            exercisesId = 0,
+            note = "",
+            createdAt = "",
+            createdAtLong = 0,
+            editedAt = "",
+            isSynchronized = false,
+            isSelected = false,
+            typeItem = TYPE_ITEM_VOID
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -128,7 +163,14 @@ class CheckInAdapter(
         selectAll(false)
     }
 
-    inner class ViewHolder(private val item: View) : RecyclerView.ViewHolder(item) {
+    companion object {
+        const val TYPE_ITEM_CHECK_IN = 0
+        const val TYPE_ITEM_VOID = 1
+    }
+
+    open inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item)
+
+    inner class CheckInViewHolder(private val item: View) : ViewHolder(item) {
         val context: Context = item.context
         val day: TextView = item.findViewById(R.id.day)
         val month: TextView = item.findViewById(R.id.month)
@@ -146,6 +188,9 @@ class CheckInAdapter(
             }
         }
     }
+
+    inner class VoidViewHolder(item: View) : ViewHolder(item)
+
 }
 
 

@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
+import androidx.core.view.isVisible
 import androidx.core.view.marginBottom
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+import site.pnpl.mira.App
 import site.pnpl.mira.R
+import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentHomeBinding
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
@@ -31,6 +34,7 @@ import site.pnpl.mira.utils.OFFSET_DAYS_FOR_DEFAULT_PERIOD
 import site.pnpl.mira.utils.PopUpDialog
 import site.pnpl.mira.utils.toPx
 import java.util.Calendar
+import javax.inject.Inject
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -52,22 +56,29 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var dateRangePicker: MaterialDatePicker<androidx.core.util.Pair<Long, Long>>
     private var isSelectAll = false
 
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentHomeBinding.bind(view)
+        App.instance.appComponent.inject(this)
 
         @Suppress("DEPRECATION")
         requireActivity().window.statusBarColor = resources.getColor(R.color.white)
 
         initActionBar()
         initBottomBar()
+        initText()
         initRecyclerView()
         setDefaultPeriod()
 //        setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
         getCheckInData()
     }
 
+
     private fun initActionBar() {
+        binding.actionBar.enableActionBarButtons(settingsProvider.isMakeFirstCheckIn())
         binding.actionBar.setActionBarClickListener { button ->
             when (button) {
                 ActionBar.Button.CALENDAR -> {
@@ -82,6 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     isSelectAll = !isSelectAll
                     adapter!!.selectAll(isSelectAll)
                 }
+
                 ActionBar.Button.DELETE -> {
                     showPopUpDialog()
                 }
@@ -106,17 +118,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.insertListOfCheckIns()
         Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
     }
+
     private fun showPopUpDialog() {
-        val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener{
+        val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
                 popUpDialog.dismiss()
             }
         }
 
 
-        val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener{
+        val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
-                val items =  adapter!!.getSelectedItemsAndDelete()
+                val items = adapter!!.getSelectedItemsAndDelete()
                 viewModel.deleteListOfCheckIns(items)
                 if (isSelectAll) isSelectAll = false
                 initPropertyRV()
@@ -136,19 +149,37 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initBottomBar() {
-        binding.bottomBar.setSelectedButton(HOME)
-        binding.bottomBar.setBottomBarClickListener { button ->
-            when (button) {
-                BottomBar.Button.HOME -> {}
-                BottomBar.Button.EXERCISES_LIST -> {
-                    findNavController().navigate(R.id.action_home_to_exercises)
-                }
+        with(binding) {
+            floatingArrow.isVisible = !settingsProvider.isMakeFirstCheckIn()
+            bottomBar.setSelectedButton(HOME)
+            bottomBar.setBottomBarClickListener { button ->
+                when (button) {
+                    BottomBar.Button.HOME -> {}
+                    BottomBar.Button.EXERCISES_LIST -> {
+                        findNavController().navigate(R.id.action_home_to_exercises)
+                    }
 
-                BottomBar.Button.CHECK_IN -> {
-                    findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
+                    BottomBar.Button.CHECK_IN -> {
+                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
+                    }
                 }
             }
         }
+    }
+
+    private fun initText() {
+        val name = settingsProvider.getName()
+        if (name.isNotEmpty()) {
+            binding.name.text = name
+            val newHi = "${binding.hi.text},"
+            binding.hi.text = newHi
+        }
+
+        binding.labelInfo.text =
+            if (settingsProvider.isMakeFirstCheckIn())
+                resources.getString(R.string.label_info_2)
+            else
+                resources.getString(R.string.label_info_1)
     }
 
     private fun initRecyclerView() {
@@ -172,11 +203,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             items = adapter!!.checkIns
         }
 
-        val onSelectedItemsListener = object : SelectedItemsListener{
+        val onSelectedItemsListener = object : SelectedItemsListener {
             override fun notify(isHaveSelected: Boolean) {
                 binding.actionBar.trashBoxEnable(isHaveSelected)
             }
-
         }
 
         adapter = CheckInAdapter(isExpanded, onChangeExpandedListener, onSelectedItemsListener)
@@ -185,6 +215,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         itemTouchHelperCallback.isExpanded = isExpanded
 
         binding.actionBar.setRemoveMode(isExpanded)
+        binding.labelInfo.isVisible = adapter!!.checkIns.size < 2
     }
 
 
@@ -230,11 +261,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun getCheckInData() {
         viewModel.getCheckInForPeriod(startPeriod, endPeriod)
         viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
+
             val checkIns = event.contentIfNotHandled
             if (checkIns != null) {
                 adapter!!.setItemsList(checkIns)
                 mountainsMarginCorrect()
+                binding.labelInfo.isVisible = checkIns.isEmpty()
             }
+
         }
     }
 
@@ -280,7 +314,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         const val DEFAULT_MOUNTAINS_MARGIN = 72
     }
 
-    interface SelectedItemsListener{
+    interface SelectedItemsListener {
         fun notify(isHaveSelected: Boolean)
     }
 

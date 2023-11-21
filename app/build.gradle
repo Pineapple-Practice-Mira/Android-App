@@ -78,4 +78,6 @@ dependencies {
     //KeyboardVisibilityEvent
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
 
+    implementation "com.github.Devlight:CornerCutLinearLayout:1.0.5"
+
 }

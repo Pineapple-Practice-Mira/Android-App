@@ -93,5 +93,8 @@
     <string name="pop_up_home_content">Ты точно хочешь безвозвратно удалить выбранные записи?</string>
     <string name="pop_up_home_left">Отменить</string>
     <string name="pop_up_home_right">Удалить</string>
+    <string name="label_hi">Привет</string>
+    <string name="label_info_1">"Пока что здесь пусто\nНачни записывать свои ощущения ежедневно, это поможет разобраться в себе"</string>
+    <string name="label_info_2">"За выбранный период нет записей\nВыбери другие даты, используя календарь"</string>
 
 </resources>

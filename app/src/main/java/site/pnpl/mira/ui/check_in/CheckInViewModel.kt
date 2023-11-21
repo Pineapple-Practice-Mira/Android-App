@@ -8,6 +8,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
+import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.data.entity.CheckIn
 import javax.inject.Inject
 
@@ -16,8 +17,8 @@ class CheckInViewModel : ViewModel() {
     val isSaved: LiveData<Boolean>
         get() = _isSaved
 
-    @Inject
-    lateinit var repository: CheckInRepository
+    @Inject lateinit var repository: CheckInRepository
+    @Inject lateinit var settingsProvider: SettingsProvider
 
     init {
         App.instance.appComponent.inject(this)
@@ -26,6 +27,7 @@ class CheckInViewModel : ViewModel() {
     fun saveCheckIn(checkIn: CheckIn) {
         viewModelScope.launch {
             val save = async {
+                settingsProvider.firstCheckInCreated()
                 repository.insertCheckIn(checkIn)
             }
             _isSaved.postValue(save.await())

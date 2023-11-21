@@ -9,6 +9,7 @@ import site.pnpl.mira.ui.greeting.fragments.AcquaintanceFragment
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment
 import site.pnpl.mira.ui.greeting.fragments.InterNameFragment
 import site.pnpl.mira.ui.greeting.fragments.SplashFragment
+import site.pnpl.mira.ui.home.HomeFragment
 import site.pnpl.mira.ui.home.HomeViewModel
 import javax.inject.Singleton
 
@@ -27,5 +28,6 @@ interface AppComponent {
     fun inject(homeViewModel: HomeViewModel)
     fun inject(exercisesListViewModel: ExercisesListViewModel)
     fun inject(checkInViewModel: CheckInViewModel)
+    fun inject(homeFragment: HomeFragment)
 
 }
