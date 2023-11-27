@@ -25,10 +25,11 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/mira"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/with_glass"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +68,6 @@
         android:layout_height="wrap_content"
         android:text="@string/to_greeting"
         style="@style/Button16White"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/button_background"
         app:backgroundTint="@color/button_background_state"
         app:layout_constraintBottom_toBottomOf="parent"

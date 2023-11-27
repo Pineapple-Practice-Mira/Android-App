@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bias_90_percent">0.9</dimen>
     <dimen name="greeting_button_1_bias">0.913</dimen>
     <dimen name="greeting_button_2_bias">0.834</dimen>
-    <dimen name="margin_greeting_tittle">406dp</dimen>
-
-    <dimen name="bottom_bar_height_percent">0.09</dimen>
-    <dimen name="bottom_bar_line_height_percent">0.002</dimen>
-    <dimen name="icon_40x40_height_percent">0.053</dimen>
-    <dimen name="icon_40x40_width_percent">0.111</dimen>
-    <dimen name="buttom_bar_left_icon_horizont_bias">0.844</dimen>
-    <dimen name="factor_view_scroll_view_height_max">0.55</dimen>
 
     <dimen name="width_margin_16dp">0.044</dimen>
     <dimen name="width_margin_16dp_from_end">0.956</dimen>

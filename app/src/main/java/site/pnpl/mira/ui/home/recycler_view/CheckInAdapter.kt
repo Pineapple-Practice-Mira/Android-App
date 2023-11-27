@@ -16,7 +16,7 @@ import site.pnpl.mira.databinding.ItemCheckInExpandedBinding
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.Emotion
 import site.pnpl.mira.model.EmotionsList
-import site.pnpl.mira.ui.home.HomeFragment
+import site.pnpl.mira.ui.home.fragments.HomeFragment
 import site.pnpl.mira.utils.MiraDateFormat
 
 class CheckInAdapter(
