@@ -3,14 +3,14 @@ package site.pnpl.mira.ui.home.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.cardview.widget.CardView
+import android.widget.LinearLayout
 import androidx.core.util.Pair
 import androidx.core.view.isVisible
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ActionBarBinding
 import site.pnpl.mira.utils.MiraDateFormat
 
-class ActionBar(context: Context, attributeSet: AttributeSet) : CardView(context, attributeSet) {
+class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
 
     private var _binding: ActionBarBinding? = null
     private val binding: ActionBarBinding get() = _binding!!
@@ -50,6 +50,10 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : CardView(context
         if(!value) {
             binding.selector.isSelected = false
         }
+    }
+
+    fun enableActionBarButtons(value: Boolean) {
+        binding.calendar.isEnabled = value
     }
 
     fun trashBoxEnable(value: Boolean) {

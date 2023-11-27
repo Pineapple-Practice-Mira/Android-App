@@ -7,7 +7,6 @@
     <color name="third">#E7253E</color>
     <color name="light_grey">#F2F2F2</color>
     <color name="dark_grey">#CFD0DA</color>
-    <color name="dark_grey_alpha0">#00CFD0DA</color>
     <color name="black">#2D2D2D</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_alpha30">#4DFFFFFF</color>
@@ -17,5 +16,6 @@
 
     <color name="gray">#D9D9D9</color>
     <color name="gray_alpha0">#00D9D9D9</color>
+
 
 </resources>

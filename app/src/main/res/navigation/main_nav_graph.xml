@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="site.pnpl.mira.ui.main.fragments.SettingsFragment"
+        android:name="site.pnpl.mira.ui.home.fragments.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings">
         <action
@@ -19,10 +19,12 @@
 
         <fragment
             android:id="@+id/navigation_home"
-            android:name="site.pnpl.mira.ui.home.HomeFragment"
+            android:name="site.pnpl.mira.ui.home.fragments.HomeFragment"
             android:label="HomeFragment"
             tools:layout="@layout/fragment_home"/>
         <action
+            app:enterAnim="@anim/check_in_up"
+            app:popExitAnim="@anim/check_in_down"
             android:id="@+id/action_home_to_setting"
             app:destination="@id/settingsFragment" />
         <action

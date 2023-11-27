@@ -5,8 +5,8 @@
     android:viewportHeight="56">
   <path
       android:pathData="M28,0L28,0A28,28 0,0 1,56 28L56,28A28,28 0,0 1,28 56L28,56A28,28 0,0 1,0 28L0,28A28,28 0,0 1,28 0z"
-      android:fillColor="#6E78D1"/>
+      android:fillColor="@color/check_in_button_background_state"/>
   <path
       android:pathData="M36,28C36,28.552 35.552,29 35,29H29V35C29,35.552 28.552,36 28,36C27.448,36 27,35.552 27,35V29H21C20.448,29 20,28.552 20,28C20,27.448 20.448,27 21,27H27V21C27,20.448 27.448,20 28,20C28.552,20 29,20.448 29,21V27H35C35.552,27 36,27.448 36,28Z"
-      android:fillColor="#ffffff"/>
+      android:fillColor="@color/white"/>
 </vector>

@@ -24,6 +24,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_19
@@ -33,7 +36,8 @@ android {
         jvmTarget = '19'
     }
     buildFeatures {
-        viewBinding=true
+        viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -77,5 +81,7 @@ dependencies {
 
     //KeyboardVisibilityEvent
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
+
+    implementation "com.github.Devlight:CornerCutLinearLayout:1.0.5"
 
 }

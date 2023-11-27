@@ -25,10 +25,20 @@ class SettingsProviderImpl @Inject constructor(context: Context) : SettingsProvi
         }
     }
 
+    override fun isMakeFirstCheckIn(): Boolean = preference.getBoolean(FIELD_AT_CREATED_FIRST_CHECK_IN, false)
+
+    override fun firstCheckInCreated() {
+        preference.edit().apply {
+            putBoolean(FIELD_AT_CREATED_FIRST_CHECK_IN, true)
+            apply()
+        }
+    }
+
     companion object {
         private const val FILE_NAME = "settings"
         private const val FIELD_AT_NAME = "name"
         private const val FILED_AT_FIRST_LAUNCH = "first_launch"
+        private const val FIELD_AT_CREATED_FIRST_CHECK_IN = "created_first_check_in"
     }
 
 }

@@ -5,7 +5,11 @@ interface SettingsProvider {
 
     fun getName(): String
 
-    fun isFirstLaunch() : Boolean
+    fun isFirstLaunch(): Boolean
 
     fun firstLaunchCompleted()
+
+    fun isMakeFirstCheckIn(): Boolean
+
+    fun firstCheckInCreated()
 }
