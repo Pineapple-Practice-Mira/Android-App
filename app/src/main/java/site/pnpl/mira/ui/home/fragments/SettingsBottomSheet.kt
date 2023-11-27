@@ -1,5 +1,6 @@
 package site.pnpl.mira.ui.home.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -10,10 +11,12 @@ class SettingsBottomSheet : BottomSheetDialogFragment(R.layout.fragment_bottom_s
 
     private var _binding: FragmentBottomSheetSettingsBinding? = null
     private val binding get() = _binding!!
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentBottomSheetSettingsBinding.bind(view)
-
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.loadUrl(URL)
     }
 
     override fun onDestroyView() {
@@ -22,5 +25,6 @@ class SettingsBottomSheet : BottomSheetDialogFragment(R.layout.fragment_bottom_s
     }
     companion object {
         const val TAG = "ModalBottomSheet"
+        const val URL = "https://www.pnpl.site/"
     }
 }

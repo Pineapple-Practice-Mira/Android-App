@@ -10,6 +10,7 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
@@ -24,13 +25,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
     private var savedName = ""
     private var newName = ""
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding =  FragmentSettingsBinding.bind(view)
+        _binding = FragmentSettingsBinding.bind(view)
         App.instance.appComponent.inject(this)
 
         @Suppress("DEPRECATION")
@@ -74,32 +77,45 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 save.text = resources.getString(R.string.button_change_saved)
             }
 
-            share.setOnClickListener {
-                val url = "https://ссылка_на_наш_лэндинг.net"
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    val imageUri = FileProvider.getUriForFile(requireContext(), "$APPLICATION_ID.provider", getAssetsFile("mira2.png"))
-                    val share = Intent.createChooser (Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, url)
-                        putExtra(Intent.EXTRA_TITLE, "Посмотри какое замечательное приложение!")
-                        data = imageUri
-                        clipData = ClipData.newRawUri(null, imageUri)
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    }, null)
-                    startActivity(share)
-
-                } else {
-
-                    val sendIntent: Intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, url)
-                        type = "text/plain"
-                    }
-
-                    val shareIntent = Intent.createChooser(sendIntent, null)
-                    startActivity(shareIntent)
-                }
+            about.setOnClickListener {
+                aboutClicked()
             }
+
+            share.setOnClickListener {
+                shareClicked()
+            }
+        }
+    }
+
+    private fun aboutClicked() {
+        val modalBottomSheet = SettingsBottomSheet()
+        modalBottomSheet.show(childFragmentManager, SettingsBottomSheet.TAG)
+    }
+
+    private fun shareClicked() {
+        val url = "https://ссылка_на_наш_лэндинг.net"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val imageUri = FileProvider.getUriForFile(requireContext(), "$APPLICATION_ID.provider", getAssetsFile("mira2.png"))
+            val share = Intent.createChooser(Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, url)
+                putExtra(Intent.EXTRA_TITLE, "Посмотри какое замечательное приложение!")
+                data = imageUri
+                clipData = ClipData.newRawUri(null, imageUri)
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            }, null)
+            startActivity(share)
+
+        } else {
+
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, url)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
         }
     }
 
