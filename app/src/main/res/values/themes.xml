@@ -9,11 +9,24 @@
 
     <style name="Theme.Mira" parent="Base.Theme.Mira" />
 
-    <style name="MiraDatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+    <style name="MiraDatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
+        <item name="rangeFillColor">@color/dark_grey</item>
+<!--        <item name="daySelectedStyle">@style/MiraDatePickerDaySelected</item>-->
+<!--        <item name="dayTodayStyle">@style/MiraDatePickerDayToday</item>-->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorOnPrimary">@color/primary</item>
-        <item name="android:textColor">@color/primary</item>
     </style>
+
+    <style name="MiraDatePickerDayToday" parent="Widget.Material3.MaterialCalendar.Day.Today">
+        <item name="colorPrimary">@color/secondary</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="itemTextColor">@color/primary</item>
+    </style>
+
+    <style name="MiraDatePickerDaySelected">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="itemFillColor">@color/primary</item>
+    </style>
+
 
     <style name="BaseTextTheme" parent="TextAppearance.AppCompat" />
 
