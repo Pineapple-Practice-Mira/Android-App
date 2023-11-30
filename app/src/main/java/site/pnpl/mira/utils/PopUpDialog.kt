@@ -3,19 +3,27 @@ package site.pnpl.mira.utils
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.PopUpDialogBinding
 
 class PopUpDialog private constructor(
-    private val title: String = "",
+    private val title: String? = null,
     private val content: String = "",
-    private val rightButtonText: String = "",
+    private val rightButtonText: String? = null,
     private val rightButtonListener: PopUpDialogClickListener? = null,
-    private val leftButtonText: String = "",
-    private val leftButtonListener: PopUpDialogClickListener? = null
+    private val leftButtonText: String? = null,
+    private val leftButtonListener: PopUpDialogClickListener? = null,
+    private val duration: Long? = null,
+    private val animationType: AnimationType? = null
 ) : DialogFragment(R.layout.pop_up_dialog) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,16 +32,31 @@ class PopUpDialog private constructor(
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         PopUpDialogBinding.bind(view).apply {
-            title.text = this@PopUpDialog.title
+            title.apply {
+                if (this@PopUpDialog.title == null) {
+                    this.isVisible = false
+                } else {
+                    text = this@PopUpDialog.title
+                }
+            }
+
             content.text = this@PopUpDialog.content
 
             leftButton.apply {
-                text = leftButtonText
-                background = AppCompatResources.getDrawable(requireContext(), R.drawable.pop_up_button_background)
+                if (leftButtonText == null) {
+                    this.isVisible = false
+                } else {
+                    text = leftButtonText
+                    background = AppCompatResources.getDrawable(requireContext(), R.drawable.pop_up_button_background)
+                }
             }
             rightButton.apply {
-                text = rightButtonText
-                background = AppCompatResources.getDrawable(requireContext(), R.drawable.pop_up_button_background)
+                if (this@PopUpDialog.rightButtonText == null) {
+                    this.isVisible = false
+                } else {
+                    text = rightButtonText
+                    background = AppCompatResources.getDrawable(requireContext(), R.drawable.pop_up_button_background)
+                }
             }
 
             leftButton.setOnClickListener {
@@ -43,6 +66,31 @@ class PopUpDialog private constructor(
             rightButton.setOnClickListener {
                 rightButtonListener?.onClick(this@PopUpDialog)
             }
+
+            if (duration != null) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    delay(duration)
+                    this@PopUpDialog.dismiss()
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            when (animationType) {
+                AnimationType.BOTTOM -> {
+                    decorView.setPadding(0,0,0, 100.toPx)
+                    setGravity(Gravity.BOTTOM)
+                    setWindowAnimations(R.style.pop_up_dialog_from_bottom)
+                }
+                AnimationType.RIGHT -> {
+                    setWindowAnimations(R.style.pop_up_dialog_from_right)
+                }
+                null -> {}
+            }
+
         }
     }
 
@@ -55,20 +103,28 @@ class PopUpDialog private constructor(
     }
 
     data class Builder(
-        var title: String = "",
+        var title: String? = null,
         var content: String = "",
-        var rightButtonText: String = "",
+        var rightButtonText: String? = null,
         var rightButtonListener: PopUpDialogClickListener? = null,
-        var leftButtonText: String = "",
-        var leftButtonListener: PopUpDialogClickListener? = null
+        var leftButtonText: String? = null,
+        var leftButtonListener: PopUpDialogClickListener? = null,
+        var duration: Long? = null,
+        var animationType: AnimationType? = null
     ) {
         fun title(title: String) = apply { this.title = title }
         fun content(content: String) = apply { this.content = content }
         fun rightButtonText(rightButtonText: String) = apply { this.rightButtonText = rightButtonText }
-        fun rightButtonListener(rightButtonListener: PopUpDialogClickListener?) = apply { this.rightButtonListener = rightButtonListener }
+        fun rightButtonListener(rightButtonListener: PopUpDialogClickListener) = apply { this.rightButtonListener = rightButtonListener }
         fun leftButtonText(leftButtonText: String) = apply { this.leftButtonText = leftButtonText }
-        fun leftButtonListener(leftButtonListener: PopUpDialogClickListener?) = apply { this.leftButtonListener = leftButtonListener }
+        fun leftButtonListener(leftButtonListener: PopUpDialogClickListener) = apply { this.leftButtonListener = leftButtonListener }
+        fun duration(millis: Long) = apply { this.duration = millis }
+        fun animationType(animationType: AnimationType) = apply { this.animationType = animationType }
+        fun build() = PopUpDialog(title, content, rightButtonText, rightButtonListener, leftButtonText, leftButtonListener, duration, animationType)
+    }
 
-        fun build() = PopUpDialog(title, content, rightButtonText, rightButtonListener, leftButtonText, leftButtonListener)
+    enum class AnimationType {
+        BOTTOM,
+        RIGHT
     }
 }

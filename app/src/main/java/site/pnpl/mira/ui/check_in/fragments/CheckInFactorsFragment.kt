@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFactorsBinding
@@ -112,13 +113,12 @@ class CheckInFactorsFragment(
     }
 
     private fun hideAndShowViews(isHide: Boolean) {
-        val visible = if (isHide) View.GONE else View.VISIBLE
         with(binding) {
-            bottomBar.visibility = visible
-            line.visibility = visible
-            btnBack.visibility = visible
-            btnDone.visibility = visible
-            scrollView.visibility = visible
+            bottomBar.isVisible = !isHide
+            line.isVisible = !isHide
+            btnBack.isVisible = !isHide
+            btnDone.isVisible = !isHide
+            scrollView.isVisible = !isHide
         }
 
         isHidden = isHide

@@ -27,6 +27,16 @@
         <item name="itemFillColor">@color/primary</item>
     </style>
 
+    <style name="pop_up_dialog_from_bottom" >
+        <item name="android:windowEnterAnimation">@anim/pop_up_dialog_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/pop_up_dialog_bottom_exit</item>
+    </style>
+
+    <style name="pop_up_dialog_from_right" >
+        <item name="android:windowEnterAnimation">@anim/pop_up_dialog_right_enter</item>
+        <item name="android:windowExitAnimation">@anim/pop_up_dialog_right_exit</item>
+    </style>
+
 
     <style name="BaseTextTheme" parent="TextAppearance.AppCompat" />
 

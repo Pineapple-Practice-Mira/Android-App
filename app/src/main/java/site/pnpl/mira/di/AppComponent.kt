@@ -3,6 +3,7 @@ package site.pnpl.mira.di
 import dagger.Component
 import site.pnpl.mira.di.modules.DatabaseModule
 import site.pnpl.mira.di.modules.DomainModule
+import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.exercise.ExercisesListViewModel
 import site.pnpl.mira.ui.greeting.fragments.AcquaintanceFragment
@@ -31,5 +32,6 @@ interface AppComponent {
     fun inject(checkInViewModel: CheckInViewModel)
     fun inject(homeFragment: HomeFragment)
     fun inject(settingsFragment: SettingsFragment)
+    fun inject(checkInDetailsViewModel: CheckInDetailsViewModel)
 
 }

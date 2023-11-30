@@ -8,22 +8,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/popUpDialog"
-        android:layout_width="312dp"
+        android:layout_width="328dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@drawable/pop_up_dialog_background"
         android:elevation="6dp"
-        android:paddingBottom="8dp">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/title"
             style="@style/Title18Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp"
             android:letterSpacing="0.03"
             android:lineSpacingExtra="-3sp"
             android:textAlignment="center"
@@ -38,21 +35,15 @@
             style="@style/Body14Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textAlignment="center"
+            android:layout_marginTop="12dp"
+            app:layout_goneMarginTop="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             tools:text="Данные не будут сохранены. Вы уверены, что хотите прервать запись?" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
 
         <Button
             android:id="@+id/leftButton"
@@ -64,8 +55,11 @@
             android:background="@drawable/pop_up_button_background"
             android:letterSpacing="0.01"
             android:textColor="@color/primary"
-            app:layout_constraintEnd_toStartOf="@id/center"
+            app:layout_constraintEnd_toStartOf="@id/rightButton"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/content"
+            app:layout_goneMarginBottom="0dp"
             tools:text="Действие" />
 
         <Button
@@ -78,7 +72,8 @@
             android:background="@drawable/pop_up_button_background"
             android:letterSpacing="0.01"
             android:textColor="@color/primary"
-            app:layout_constraintStart_toEndOf="@id/center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/leftButton"
             app:layout_constraintTop_toBottomOf="@id/content"
             tools:text="Действие" />
     </androidx.constraintlayout.widget.ConstraintLayout>

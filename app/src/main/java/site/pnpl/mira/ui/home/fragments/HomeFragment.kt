@@ -22,14 +22,21 @@ import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentHomeBinding
 import site.pnpl.mira.model.CheckInUI
+import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
+import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.LIST_OF_CHECK_IN_KEY
+import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.POSITION_KEY
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.home.HomeViewModel
 import site.pnpl.mira.ui.home.customview.ActionBar
 import site.pnpl.mira.ui.home.customview.BottomBar
 import site.pnpl.mira.ui.home.customview.BottomBar.Companion.HOME
+import site.pnpl.mira.ui.home.recycler_view.ChangeExpandedListener
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter
+import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter.Companion.TYPE_ITEM_VOID
+import site.pnpl.mira.ui.home.recycler_view.ItemClickListener
 import site.pnpl.mira.ui.home.recycler_view.ItemTouchHelperCallback
+import site.pnpl.mira.ui.home.recycler_view.SelectedItemsListener
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.utils.OFFSET_DAYS_FOR_DEFAULT_PERIOD
 import site.pnpl.mira.utils.PopUpDialog
@@ -146,6 +153,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .rightButtonText((resources.getString(R.string.pop_up_home_right)))
             .leftButtonListener(popUpDialogClickListenerLeft)
             .rightButtonListener(popUpDialogClickListenerRight)
+            .animationType(PopUpDialog.AnimationType.RIGHT)
             .build()
         popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
     }
@@ -210,14 +218,41 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.actionBar.trashBoxEnable(isHaveSelected)
             }
         }
+        val onItemClickListener = object : ItemClickListener {
+            override fun onItemClick(position: Int) {
+                val checkIns = adapter!!.checkIns
 
-        adapter = CheckInAdapter(isExpanded, onChangeExpandedListener, onSelectedItemsListener)
+                //Убираем пустой элемент
+                if (checkIns[0].typeItem == TYPE_ITEM_VOID) {
+                    checkIns.removeAt(0)
+                }
+
+                //сортировка в обратном порядке
+                checkIns.sortBy { it.createdAtLong }
+                val posInNewList = checkIns.size - position
+                navigateToCheckInDetails(posInNewList, checkIns)
+            }
+
+        }
+        adapter = CheckInAdapter(isExpanded, onChangeExpandedListener, onSelectedItemsListener, onItemClickListener)
         recyclerView.adapter = adapter
         adapter!!.setItemsList(items)
         itemTouchHelperCallback.isExpanded = isExpanded
 
         binding.actionBar.setRemoveMode(isExpanded)
+        //Меньше 2ух так как в списке есть всегда 1 элемент - CheckIn Void
         binding.labelInfo.isVisible = adapter!!.checkIns.size < 2
+    }
+
+    private fun navigateToCheckInDetails(position: Int, checkIns: List<CheckInUI>) {
+        findNavController()
+            .navigate(
+                R.id.action_home_to_details,
+                bundleOf(
+                    Pair(CheckInDetailsFragment.CALLBACK_KEY, CheckInDetailsFragment.CALLBACK_HOME),
+                    Pair(POSITION_KEY, position),
+                    Pair(LIST_OF_CHECK_IN_KEY, checkIns)
+                ))
     }
 
 
@@ -261,8 +296,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setClickListeners() {
-        binding.settings.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_setting)
+        binding.root.doOnLayout {
+            binding.settings.setOnClickListener {
+                findNavController().navigate(R.id.action_home_to_setting)
+            }
         }
     }
 
@@ -321,14 +358,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         const val DATE_PICKER_TAG = "DATE_PICKER_TAG"
         const val EXTRA_MARGIN_MOUNTAINS = 19
         const val DEFAULT_MOUNTAINS_MARGIN = 72
-    }
-
-    interface SelectedItemsListener {
-        fun notify(isHaveSelected: Boolean)
-    }
-
-
-    interface ChangeExpandedListener {
-        fun expandAll(value: Boolean)
     }
 }

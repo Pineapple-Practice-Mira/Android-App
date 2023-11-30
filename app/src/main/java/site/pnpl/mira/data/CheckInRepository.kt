@@ -51,4 +51,5 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
             checkInDao.deleteListOfCheckIns(checkIns)
         }
     }
+
 }
