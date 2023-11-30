@@ -1,15 +1,11 @@
 package site.pnpl.mira.ui.check_in.fragments
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
-import android.view.animation.LinearInterpolator
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.R
 import site.pnpl.mira.data.entity.CheckIn
@@ -21,6 +17,7 @@ import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CHECK
 import site.pnpl.mira.ui.check_in.viewpager.Adapter
 import site.pnpl.mira.utils.MiraDateFormat
 import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.utils.setCurrentItem
 
 class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     private var _binding: FragmentCheckInBinding? = null
@@ -89,6 +86,7 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
                 .rightButtonText((resources.getString(R.string.pop_up_check_in_right)))
                 .leftButtonListener(popUpDialogClickListenerLeft)
                 .rightButtonListener(popUpDialogClickListenerRight)
+                .animationType(PopUpDialog.AnimationType.RIGHT)
                 .build()
             popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
         }
@@ -165,43 +163,4 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     companion object {
         const val DURATION_TRANSITION = 300L
     }
-}
-
-fun ViewPager2.setCurrentItem(
-    index: Int,
-    duration: Long,
-//    interpolator: TimeInterpolator = PathInterpolator(0.8f, 0f, 0.35f, 1f),
-    interpolator: LinearInterpolator = LinearInterpolator(),
-    pageWidth: Int = width - paddingLeft - paddingRight,
-) {
-    val pxToDrag: Int = pageWidth * (index - currentItem)
-    val animator = ValueAnimator.ofInt(0, pxToDrag)
-    var previousValue = 0
-
-    val scrollView = (getChildAt(0) as? RecyclerView)
-    animator.addUpdateListener { valueAnimator ->
-        val currentValue = valueAnimator.animatedValue as Int
-        val currentPxToDrag = (currentValue - previousValue).toFloat()
-        scrollView?.scrollBy(currentPxToDrag.toInt(), 0)
-        previousValue = currentValue
-    }
-
-    animator.addListener(object : Animator.AnimatorListener {
-        override fun onAnimationStart(animation: Animator) {}
-        override fun onAnimationEnd(animation: Animator) {
-            // Fallback to fix minor offset inconsistency while scrolling
-            setCurrentItem(index, true)
-            post { requestTransform() } // To make sure custom transforms are applied
-        }
-
-        override fun onAnimationCancel(animation: Animator) { /* Ignored */
-        }
-
-        override fun onAnimationRepeat(animation: Animator) { /* Ignored */
-        }
-    })
-
-    animator.interpolator = interpolator
-    animator.duration = duration
-    animator.start()
 }

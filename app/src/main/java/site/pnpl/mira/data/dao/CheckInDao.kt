@@ -27,4 +27,5 @@ interface CheckInDao {
     fun getByPeriod(startPeriod: String, endPeriod: String): List<CheckIn>
     @Delete
     fun deleteListOfCheckIns(checkIns: List<CheckIn>)
+
 }

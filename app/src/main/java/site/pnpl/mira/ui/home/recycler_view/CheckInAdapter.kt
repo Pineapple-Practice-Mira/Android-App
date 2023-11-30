@@ -16,13 +16,13 @@ import site.pnpl.mira.databinding.ItemCheckInExpandedBinding
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.Emotion
 import site.pnpl.mira.model.EmotionsList
-import site.pnpl.mira.ui.home.fragments.HomeFragment
 import site.pnpl.mira.utils.MiraDateFormat
 
 class CheckInAdapter(
     private val isExpanded: Boolean,
-    private val changeExpandedListener: HomeFragment.ChangeExpandedListener,
-    private val onSelectedItemsListener: HomeFragment.SelectedItemsListener
+    private val changeExpandedListener: ChangeExpandedListener,
+    private val onSelectedItemsListener: SelectedItemsListener,
+    private val onItemClickListener: ItemClickListener
 ) : RecyclerView.Adapter<CheckInAdapter.ViewHolder>() {
     val checkIns = mutableListOf<CheckInUI>()
 
@@ -78,6 +78,8 @@ class CheckInAdapter(
             holder.itemView.setOnClickListener {
                 if (isExpanded) {
                     holder.selected()
+                } else {
+                    onItemClickListener.onItemClick(position)
                 }
             }
             if (isExpanded) {

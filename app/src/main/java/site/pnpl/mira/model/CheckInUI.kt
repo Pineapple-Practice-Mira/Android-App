@@ -1,9 +1,11 @@
 package site.pnpl.mira.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import site.pnpl.mira.data.entity.CheckIn
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter.Companion.TYPE_ITEM_CHECK_IN
 
-
+@Parcelize
 data class CheckInUI (
     val id: Int,
     val emotionId: Int,
@@ -16,7 +18,7 @@ data class CheckInUI (
     val isSynchronized: Boolean = false,
     var isSelected: Boolean,
     val typeItem: Int = TYPE_ITEM_CHECK_IN
-)
+) : Parcelable
 
 fun CheckInUI.mapToCheckIn(): CheckIn {
     return CheckIn(

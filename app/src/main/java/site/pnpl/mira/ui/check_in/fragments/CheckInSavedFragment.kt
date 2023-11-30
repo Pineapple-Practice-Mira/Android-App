@@ -24,7 +24,8 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
             val checkIn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 findNavController().currentBackStackEntry?.arguments?.getParcelable(CHECK_IN_KEY, CheckIn::class.java)
             } else {
-                @Suppress("DEPRECATION") findNavController().currentBackStackEntry?.arguments?.getParcelable(CHECK_IN_KEY)
+                @Suppress("DEPRECATION")
+                findNavController().currentBackStackEntry?.arguments?.getParcelable(CHECK_IN_KEY)
             }
 
             close.setOnClickListener {

@@ -104,5 +104,20 @@
     <string name="calendar_tittle">Начало - Конец</string>
     <string name="calendar_positive_button">Показать</string>
     <string name="calendar_negative_button">Отмена</string>
+    <string name="label_feeling">Чувство</string>
+    <string name="no_entry">нет записей</string>
+    <string name="clip_date">Дата</string>
+    <string name="clip_feel">Чувство</string>
+    <string name="clip_factor">Что повлияло</string>
+    <string name="clip_note">Комментарий</string>
+    <string name="pop_up_save_success">Текст заметки обновлен</string>
+    <string name="pop_up_copy_success">Текст записи скопирован в буфер обмена</string>
+    <string name="pop_up_detail_confirm_title">Удаление записи</string>
+    <string name="pop_up_detail_confirm_content">Ты точно хочешь безвозвратно удалить выбранную запись?</string>
+    <string name="pop_up_detail_confirm_left_button">Отменить</string>
+    <string name="pop_up_detail_confirm_right_button">Удалить</string>
+    <string name="pop_up_detail_delete_title">Запись удалена</string>
+    <string name="pop_up_detail_delete_content">Выбранная запись удалена\nс твоего устройства</string>
+    <string name="pop_up_detail_delete_button">Закрыть окно</string>
 
 </resources>

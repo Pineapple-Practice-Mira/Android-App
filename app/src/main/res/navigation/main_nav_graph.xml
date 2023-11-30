@@ -35,6 +35,8 @@
 
         <action
             android:id="@+id/action_home_to_details"
+            app:enterAnim="@anim/check_in_up"
+            app:popExitAnim="@anim/check_in_down"
             app:destination="@id/checkInDetailsFragment"/>
 
         <action
@@ -150,9 +152,9 @@
     </fragment>
     <fragment
         android:id="@+id/checkInDetailsFragment"
-        android:name="site.pnpl.mira.ui.main.fragments.CheckInDetailsFragment"
+        android:name="site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment"
         android:label="CheckInDetailsFragment"
-        tools:layout="@layout/fragment_check_in_details"/>
+        tools:layout="@layout/fragment_check_in_details_item"/>
 
     <navigation android:id="@+id/check_in_graph"
         app:startDestination="@id/checkInFragment">

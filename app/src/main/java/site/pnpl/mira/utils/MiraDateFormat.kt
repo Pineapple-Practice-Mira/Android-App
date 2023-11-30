@@ -52,6 +52,18 @@ class MiraDateFormat(val millis: Long) {
     fun getDayMonthYear(): String =
         DateFormat.format("dd MMMM yyyy", millis).toString()
 
+    /**
+     * @return example format: 03.09.2023
+     */
+    fun getDayMonthYearShort(): String =
+        DateFormat.format("dd.MM.yyyy", millis).toString()
+
+    /**
+     *  @return example format: 04 сент, 13:30
+     */
+    fun getDayMonthTime(): String =
+        "${getDateOfMonth()} ${getNameMonth()}, ${getTime()}"
+
     fun getFormatForBD(): String =
         DateFormat.format("yyyy-MM-dd", millis).toString()
 

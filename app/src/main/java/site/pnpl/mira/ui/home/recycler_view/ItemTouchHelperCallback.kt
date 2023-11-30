@@ -3,10 +3,9 @@ package site.pnpl.mira.ui.home.recycler_view
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import site.pnpl.mira.ui.home.fragments.HomeFragment
 
 class ItemTouchHelperCallback(
-    private val onChangeExpandedListener: HomeFragment.ChangeExpandedListener
+    private val onChangeExpandedListener: ChangeExpandedListener
 ) : ItemTouchHelper.Callback() {
 
     var isExpanded: Boolean = false
