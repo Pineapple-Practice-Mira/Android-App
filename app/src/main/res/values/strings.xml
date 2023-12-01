@@ -119,5 +119,6 @@
     <string name="pop_up_detail_delete_title">Запись удалена</string>
     <string name="pop_up_detail_delete_content">Выбранная запись удалена\nс твоего устройства</string>
     <string name="pop_up_detail_delete_button">Закрыть окно</string>
+    <string name="tittle_statistic">Статистика</string>
 
 </resources>

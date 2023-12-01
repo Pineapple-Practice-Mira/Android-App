@@ -128,7 +128,7 @@
     </navigation>
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="site.pnpl.mira.ui.main.fragments.StatisticsFragment"
+        android:name="site.pnpl.mira.ui.statistic.StatisticsFragment"
         android:label="StatisticsFragment"
         tools:layout="@layout/fragment_statistics">
         <action
@@ -137,7 +137,7 @@
     </fragment>
     <fragment
         android:id="@+id/statisticsByFactorFragment"
-        android:name="site.pnpl.mira.ui.main.fragments.StatisticsByFactorFragment"
+        android:name="site.pnpl.mira.ui.statistic.StatisticsByFactorFragment"
         android:label="StatisticsByFactorFragment"
         tools:layout="@layout/fragment_statistics_by_factor">
         <action

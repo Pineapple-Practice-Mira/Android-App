@@ -1,21 +1,22 @@
 package site.pnpl.mira.ui.home.fragments
 
+import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
-import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.clearFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import site.pnpl.mira.App
 import site.pnpl.mira.R
@@ -40,6 +41,7 @@ import site.pnpl.mira.ui.home.recycler_view.SelectedItemsListener
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.utils.OFFSET_DAYS_FOR_DEFAULT_PERIOD
 import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.utils.screenHeight
 import site.pnpl.mira.utils.toPx
 import java.util.Calendar
 import javax.inject.Inject
@@ -49,78 +51,168 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val mountainsDefPositionY by lazy {
-        binding.mountains.y - EXTRA_MARGIN_MOUNTAINS.toPx
-    }
-
     private lateinit var recyclerView: RecyclerView
     private var adapter: CheckInAdapter? = null
     private lateinit var itemTouchHelperCallback: ItemTouchHelperCallback
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private var startPeriod = 0L
-    private var endPeriod = 0L
-    private lateinit var dateRangePicker: MaterialDatePicker<androidx.core.util.Pair<Long, Long>>
     private var isSelectAll = false
 
     @Inject
     lateinit var settingsProvider: SettingsProvider
+
+    private var startPeriod = 0L
+    private var endPeriod = 0L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentHomeBinding.bind(view)
         App.instance.appComponent.inject(this)
 
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.white)
-
+//        @Suppress("DEPRECATION")
+//        requireActivity().window.statusBarColor = resources.getColor(R.color.white)
+        setStatusBarColor()
+        setPeriod()
         initActionBar()
+
         initBottomBar()
         initText()
         initRecyclerView()
         setClickListeners()
-        setDefaultPeriod()
-//        setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
         getCheckInData()
     }
 
+    private fun setStatusBarColor() {
+        if (requireActivity().window.statusBarColor == ContextCompat.getColor(requireContext(), R.color.dark_grey)) {
+            binding.alphaView.alpha = 1f
+            binding.alphaView.animate()
+                .alpha(0f)
+                .setDuration(CHANGE_ALPHA_DURATION)
+                .start()
+            tintSystemBars()
+        }
+    }
+
+    private fun setPeriod() {
+        setFragmentResultListener(SELECTED_PERIOD) { requestKey, bundle ->
+            startPeriod = bundle.getLong(KEY_START_PERIOD)
+            endPeriod = bundle.getLong(KEY_END_PERIOD)
+            clearFragmentResult(SELECTED_PERIOD)
+        }
+
+        if (startPeriod == 0L && endPeriod == 0L) {
+            requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+            setDefaultPeriod()
+        }
+    }
+
+    private fun setDefaultPeriod() {
+        endPeriod = MaterialDatePicker.todayInUtcMilliseconds()
+        Calendar.getInstance().apply {
+            timeInMillis = endPeriod
+            add(Calendar.DAY_OF_YEAR, OFFSET_DAYS_FOR_DEFAULT_PERIOD)
+            startPeriod = timeInMillis
+        }
+    }
 
     private fun initActionBar() {
-        binding.actionBar.enableActionBarButtons(settingsProvider.isMakeFirstCheckIn())
-        binding.actionBar.setActionBarClickListener { button ->
-            when (button) {
-                ActionBar.Button.CALENDAR -> {
-                    showDatePicker()
-                }
+        with(binding.actionBar) {
+            //Выбранный период для календаря
+            initDatePicker(startPeriod, endPeriod)
+            //Активны ли кнопки
+            enableActionBarButtons(settingsProvider.isMakeFirstCheckIn())
+            //Слушатель нажатия кнопок
+            setActionBarClickListener { button ->
+                when (button) {
+                    ActionBar.Button.CALENDAR -> {}
 
-                ActionBar.Button.STATISTIC -> {
-                    createFakeCheckIns()
-                }
+                    ActionBar.Button.STATISTIC -> {
+//                    createFakeCheckIns()
+                        navigateToStatistic()
+                    }
 
-                ActionBar.Button.SELECT_ALL -> {
-                    isSelectAll = !isSelectAll
-                    adapter!!.selectAll(isSelectAll)
-                }
+                    ActionBar.Button.SELECT_ALL -> {
+                        isSelectAll = !isSelectAll
+                        adapter!!.selectAll(isSelectAll)
+                    }
 
-                ActionBar.Button.DELETE -> {
-                    showPopUpDialog()
+                    ActionBar.Button.DELETE -> {
+                        showPopUpDialog()
+                    }
                 }
+            }
+
+            //Слушать выбора периода на календаре
+            setCalendarPeriodSelectionListener(childFragmentManager) { period ->
+                startPeriod = period.first
+                endPeriod = period.second
+                getCheckInData()
+            }
+            //Установка текста выбранного периода
+            setSelectedPeriod(androidx.core.util.Pair(startPeriod, endPeriod))
+        }
+    }
+
+    private fun getCheckInData() {
+        viewModel.getCheckInForPeriod(startPeriod, endPeriod)
+        viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
+
+            val checkIns = event.contentIfNotHandled
+            if (checkIns != null) {
+                adapter!!.setItemsList(checkIns)
+                recyclerView.scheduleLayoutAnimation()
+//                mountainsMarginCorrect()
+                animateMountains()
+                binding.labelInfo.isVisible = checkIns.isEmpty()
+            }
+
+        }
+    }
+
+    private fun animateMountains() {
+        recyclerView.doOnLayout {
+            recyclerView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
+            val rvHeight = recyclerView.measuredHeight
+            val rvFullSize = rvHeight + recyclerView.y
+            if (rvFullSize < screenHeight - DEFAULT_MOUNTAINS_MARGIN.toPx) {
+                val targetY = if (rvFullSize < screenHeight - (binding.mountains.height).toFloat()) {
+                    screenHeight - (binding.mountains.height).toFloat()
+                } else {
+                    rvFullSize + EXTRA_MARGIN_MOUNTAINS.toPx
+                }
+                binding.mountains.animate()
+                    .y(targetY)
+                    .setDuration(300)
+                    .start()
+
+            } else if (binding.mountains.y < rvFullSize) {
+                binding.mountains.animate()
+                    .y(screenHeight.toFloat())
+                    .setDuration(300)
+                    .start()
             }
         }
     }
 
+    private fun navigateToStatistic() {
+        val extras = FragmentNavigatorExtras(
+            binding.actionBar to "statisticActionBar"
+        )
 
-    private fun showDatePicker() {
+        val periods = binding.actionBar.currentPeriod!!
+        val startPeriod = periods.first
+        val endPeriod = periods.second
 
-        dateRangePicker.show(childFragmentManager, DATE_PICKER_TAG)
-
-        dateRangePicker.addOnPositiveButtonClickListener { periods ->
-            binding.actionBar.setSelectedPeriod(periods)
-            startPeriod = periods.first
-            endPeriod = periods.second
-            getCheckInData()
-        }
+        findNavController().navigate(
+            R.id.action_home_to_statistics,
+            bundleOf(
+                Pair(KEY_START_PERIOD, startPeriod),
+                Pair(KEY_END_PERIOD, endPeriod),
+            ),
+            null,
+            extras
+        )
     }
 
     private fun createFakeCheckIns() {
@@ -135,13 +227,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
-
         val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
                 val items = adapter!!.getSelectedItemsAndDelete()
                 viewModel.deleteListOfCheckIns(items)
                 if (isSelectAll) isSelectAll = false
                 initPropertyRV()
+                animateMountains()
                 popUpDialog.dismiss()
             }
 
@@ -252,47 +344,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     Pair(CheckInDetailsFragment.CALLBACK_KEY, CheckInDetailsFragment.CALLBACK_HOME),
                     Pair(POSITION_KEY, position),
                     Pair(LIST_OF_CHECK_IN_KEY, checkIns)
-                ))
-    }
-
-
-    private fun mountainsMarginCorrect() {
-        recyclerView.doOnLayout {
-            val mountainsY = mountainsDefPositionY
-            recyclerView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
-            val rvHeight = recyclerView.measuredHeight
-            val rvFullSize = rvHeight + recyclerView.y
-            if (rvFullSize > mountainsY) {
-                changeMountainsPos(rvFullSize)
-            } else {
-                setMountainsBottomMargin(DEFAULT_MOUNTAINS_MARGIN.toPx)
-            }
-        }
-    }
-
-    private fun changeMountainsPos(rvFullSize: Float) {
-        val mountainsY = binding.mountains.y - EXTRA_MARGIN_MOUNTAINS.toPx
-        val delta = rvFullSize - mountainsY
-        val currentMargin = binding.mountains.marginBottom
-        val newMargin = currentMargin - delta
-        setMountainsBottomMargin(newMargin.toInt())
-    }
-
-    private fun setMountainsBottomMargin(bottomMargin: Int) {
-        val params = (binding.mountains.layoutParams as ViewGroup.MarginLayoutParams)
-        params.updateMargins(bottom = bottomMargin)
-        binding.mountains.requestLayout()
-        val mountainsAnimation = AnimationUtils.loadAnimation(requireActivity(), R.anim.appearance_mountains)
-        binding.mountains.startAnimation(mountainsAnimation)
-    }
-
-    private fun setDefaultPeriod() {
-        endPeriod = MaterialDatePicker.todayInUtcMilliseconds()
-        Calendar.getInstance().apply {
-            timeInMillis = endPeriod
-            add(Calendar.DAY_OF_YEAR, OFFSET_DAYS_FOR_DEFAULT_PERIOD)
-            startPeriod = timeInMillis
-        }
+                )
+            )
     }
 
     private fun setClickListeners() {
@@ -303,44 +356,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun getCheckInData() {
-        viewModel.getCheckInForPeriod(startPeriod, endPeriod)
-        viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
-
-            val checkIns = event.contentIfNotHandled
-            if (checkIns != null) {
-                adapter!!.setItemsList(checkIns)
-                mountainsMarginCorrect()
-                binding.labelInfo.isVisible = checkIns.isEmpty()
-            }
-
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initDatePicker()
-    }
-
-    private fun initDatePicker() {
-        dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
-            .setTitleText(resources.getString(R.string.calendar_tittle))
-            .setPositiveButtonText(resources.getString(R.string.calendar_positive_button))
-            .setNegativeButtonText(resources.getString(R.string.calendar_negative_button))
-            .setTheme(R.style.MiraDatePicker)
-            .setSelection(
-                androidx.core.util.Pair(
-                    startPeriod,
-                    endPeriod
-                )
-            )
-            .setCalendarConstraints(
-                CalendarConstraints.Builder()
-                    .setEnd(endPeriod)
-                    .build()
-            )
-            .build()
-        binding.actionBar.setSelectedPeriod(androidx.core.util.Pair(startPeriod, endPeriod))
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
@@ -354,9 +371,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    private fun tintSystemBars() {
+        val statusBarStartColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
+        val statusBarEndColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+        ValueAnimator.ofFloat(0f, 1f)
+            .apply {
+                duration = CHANGE_ALPHA_DURATION
+                addUpdateListener {
+                    requireActivity().window.statusBarColor =
+                        blendColors(statusBarStartColor, statusBarEndColor, animatedFraction)
+                }
+            }
+            .start()
+    }
+
+    private fun blendColors(from: Int, to: Int, ratio: Float): Int {
+        val inverseRatio = 1f - ratio
+        val r = Color.red(to) * ratio + Color.red(from) * inverseRatio
+        val g = Color.green(to) * ratio + Color.green(from) * inverseRatio
+        val b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
+        return Color.rgb(r.toInt(), g.toInt(), b.toInt())
+    }
+
     companion object {
-        const val DATE_PICKER_TAG = "DATE_PICKER_TAG"
         const val EXTRA_MARGIN_MOUNTAINS = 19
         const val DEFAULT_MOUNTAINS_MARGIN = 72
+        const val KEY_START_PERIOD = "START_PERIOD"
+        const val KEY_END_PERIOD = "END_PERIOD"
+        const val SELECTED_PERIOD = "SELECTED_PERIOD"
+        const val CHANGE_ALPHA_DURATION = 700L
     }
 }
