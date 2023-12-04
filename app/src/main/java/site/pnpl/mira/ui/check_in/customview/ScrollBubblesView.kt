@@ -73,8 +73,6 @@ class ScrollBubblesView @JvmOverloads constructor(
             it.y <= downBorder
         }.height
 
-
-
         forEach { bubbleView ->
             val newPos = bubbleView.y + yOffset
             bubbleView.animate()

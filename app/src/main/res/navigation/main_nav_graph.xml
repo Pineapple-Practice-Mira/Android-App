@@ -128,7 +128,7 @@
     </navigation>
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="site.pnpl.mira.ui.statistic.StatisticsFragment"
+        android:name="site.pnpl.mira.ui.statistic.fragments.StatisticsFragment"
         android:label="StatisticsFragment"
         tools:layout="@layout/fragment_statistics">
         <action

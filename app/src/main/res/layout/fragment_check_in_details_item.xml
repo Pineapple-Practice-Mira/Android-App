@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:text="@string/label_feeling"
+                android:text="@string/label_factor"
                 app:layout_constraintBottom_toTopOf="@id/factor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -176,10 +176,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
+                android:textColor="@color/primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/labelFactor"
-                tools:text="страх" />
+                tools:text="общество" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

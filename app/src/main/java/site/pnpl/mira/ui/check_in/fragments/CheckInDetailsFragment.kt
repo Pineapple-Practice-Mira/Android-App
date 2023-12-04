@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.R
@@ -27,8 +28,7 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCheckInDetailsBinding.bind(view)
 
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
 
         with(findNavController().currentBackStackEntry?.arguments) {
             this?.let {

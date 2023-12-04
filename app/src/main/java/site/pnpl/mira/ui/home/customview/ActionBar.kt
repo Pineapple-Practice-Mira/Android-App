@@ -29,6 +29,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
     }
 
     fun initDatePicker(startPeriod: Long, endPeriod: Long) {
+        println("initDatePicker - startPeriod: ${MiraDateFormat(startPeriod).getDayMonthYear()} endPeriod: ${MiraDateFormat(endPeriod).getDayMonthYear()}")
         val endConstraint = System.currentTimeMillis()
         val startConstraint = Calendar.getInstance().apply {
             timeInMillis = endConstraint
@@ -53,6 +54,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
                     .build()
             )
             .build()
+        setSelectedPeriod(Pair(startPeriod, endPeriod))
     }
 
     fun setActionBarClickListener(listener: (Button) -> Unit) {
@@ -80,6 +82,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
     }
 
     fun setSelectedPeriod(periods: Pair<Long, Long>) {
+        println("setSelectedPeriod - startPeriod: ${MiraDateFormat(periods.first).getDayMonthYear()} endPeriod: ${MiraDateFormat(periods.second).getDayMonthYear()}")
         val dateFirst = MiraDateFormat(periods.first)
         val dateSecond = MiraDateFormat(periods.second)
         val periodString =
@@ -103,6 +106,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     fun enableActionBarButtons(value: Boolean) {
         binding.calendar.isEnabled = value
+        binding.statistic.isEnabled = value
     }
 
     fun trashBoxEnable(value: Boolean) {

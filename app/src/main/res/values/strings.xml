@@ -63,7 +63,7 @@
     <string name="partner">партнер</string>
     <string name="society">общество</string>
     <string name="studies">учеба</string>
-    <string name="friends">учеба</string>
+    <string name="friends">друзья</string>
     <string name="rest">отдых</string>
     <string name="hobby">хобби</string>
     <string name="sport">спорт</string>
@@ -120,5 +120,8 @@
     <string name="pop_up_detail_delete_content">Выбранная запись удалена\nс твоего устройства</string>
     <string name="pop_up_detail_delete_button">Закрыть окно</string>
     <string name="tittle_statistic">Статистика</string>
+    <string name="label_factor">Что повлияло</string>
+    <string name="version_name">версия: %1$s</string>
+    <string name="statistic_info">Шкала отображает соотношение положительных и отрицательных эмоций по каждому из факторов за выбранный период.</string>
 
 </resources>

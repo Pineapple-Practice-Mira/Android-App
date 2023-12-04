@@ -32,8 +32,7 @@ class CheckInDetailsItemFragment(
     private val checkIns: List<CheckInUI>,
     private val position: Int,
     private val onArrowClickListener: CheckInDetailsFragment.ArrowClickListener,
-
-    ) : Fragment(R.layout.fragment_check_in_details_item) {
+) : Fragment(R.layout.fragment_check_in_details_item) {
 
     private var _binding: FragmentCheckInDetailsItemBinding? = null
     private val binding get() = _binding!!
@@ -97,8 +96,6 @@ class CheckInDetailsItemFragment(
                 btnNext.isEnabled = false
                 arrowNext.isEnabled = false
             }
-
-
         }
     }
 
@@ -185,7 +182,8 @@ class CheckInDetailsItemFragment(
                         if (isHidden && oldNote != newNote) {
                             val newCheckInUI = checkInUI.copy(
                                 note = newNote,
-                                editedAt = MiraDateFormat(System.currentTimeMillis()).convertToDataTimeISO8601())
+                                editedAt = MiraDateFormat(System.currentTimeMillis()).convertToDataTimeISO8601()
+                            )
                             viewModel.saveCheckIn(newCheckInUI)
                         }
                         hideAndShowViews(!isHidden)

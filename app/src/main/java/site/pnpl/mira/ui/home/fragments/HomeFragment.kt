@@ -10,16 +10,16 @@ import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.clearFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.R
+import site.pnpl.mira.data.SelectedPeriod
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentHomeBinding
 import site.pnpl.mira.model.CheckInUI
@@ -39,11 +39,9 @@ import site.pnpl.mira.ui.home.recycler_view.ItemClickListener
 import site.pnpl.mira.ui.home.recycler_view.ItemTouchHelperCallback
 import site.pnpl.mira.ui.home.recycler_view.SelectedItemsListener
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
-import site.pnpl.mira.utils.OFFSET_DAYS_FOR_DEFAULT_PERIOD
 import site.pnpl.mira.utils.PopUpDialog
 import site.pnpl.mira.utils.screenHeight
 import site.pnpl.mira.utils.toPx
-import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -59,28 +57,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var isSelectAll = false
 
-    @Inject
-    lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var selectedPeriod: SelectedPeriod
 
-    private var startPeriod = 0L
-    private var endPeriod = 0L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentHomeBinding.bind(view)
         App.instance.appComponent.inject(this)
 
-//        @Suppress("DEPRECATION")
-//        requireActivity().window.statusBarColor = resources.getColor(R.color.white)
         setStatusBarColor()
-        setPeriod()
         initActionBar()
-
         initBottomBar()
         initText()
         initRecyclerView()
         setClickListeners()
         getCheckInData()
+        setViewModelListener()
     }
 
     private fun setStatusBarColor() {
@@ -94,41 +87,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun setPeriod() {
-        setFragmentResultListener(SELECTED_PERIOD) { requestKey, bundle ->
-            startPeriod = bundle.getLong(KEY_START_PERIOD)
-            endPeriod = bundle.getLong(KEY_END_PERIOD)
-            clearFragmentResult(SELECTED_PERIOD)
-        }
-
-        if (startPeriod == 0L && endPeriod == 0L) {
-            requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
-            setDefaultPeriod()
-        }
-    }
-
-    private fun setDefaultPeriod() {
-        endPeriod = MaterialDatePicker.todayInUtcMilliseconds()
-        Calendar.getInstance().apply {
-            timeInMillis = endPeriod
-            add(Calendar.DAY_OF_YEAR, OFFSET_DAYS_FOR_DEFAULT_PERIOD)
-            startPeriod = timeInMillis
-        }
-    }
-
     private fun initActionBar() {
         with(binding.actionBar) {
             //Выбранный период для календаря
-            initDatePicker(startPeriod, endPeriod)
-            //Активны ли кнопки
+            initDatePicker(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
             enableActionBarButtons(settingsProvider.isMakeFirstCheckIn())
-            //Слушатель нажатия кнопок
             setActionBarClickListener { button ->
                 when (button) {
                     ActionBar.Button.CALENDAR -> {}
 
                     ActionBar.Button.STATISTIC -> {
-//                    createFakeCheckIns()
                         navigateToStatistic()
                     }
 
@@ -143,30 +111,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
 
-            //Слушать выбора периода на календаре
             setCalendarPeriodSelectionListener(childFragmentManager) { period ->
-                startPeriod = period.first
-                endPeriod = period.second
+                selectedPeriod.startPeriod = period.first
+                selectedPeriod.endPeriod = period.second
                 getCheckInData()
             }
-            //Установка текста выбранного периода
-            setSelectedPeriod(androidx.core.util.Pair(startPeriod, endPeriod))
         }
     }
 
     private fun getCheckInData() {
-        viewModel.getCheckInForPeriod(startPeriod, endPeriod)
+        viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+        enableProgressBar(true)
+    }
+
+    private fun setViewModelListener() {
         viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
 
             val checkIns = event.contentIfNotHandled
             if (checkIns != null) {
-                adapter!!.setItemsList(checkIns)
-                recyclerView.scheduleLayoutAnimation()
-//                mountainsMarginCorrect()
-                animateMountains()
+                lifecycleScope.launch {
+                    adapter!!.setItemsList(checkIns)
+                    recyclerView.scheduleLayoutAnimation()
+                    animateMountains()
+                }
                 binding.labelInfo.isVisible = checkIns.isEmpty()
             }
-
+            enableProgressBar(false)
         }
     }
 
@@ -353,11 +323,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             binding.settings.setOnClickListener {
                 findNavController().navigate(R.id.action_home_to_setting)
             }
+            binding.hi.setOnClickListener {
+                createFakeCheckIns()
+            }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
@@ -392,6 +361,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val g = Color.green(to) * ratio + Color.green(from) * inverseRatio
         val b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
         return Color.rgb(r.toInt(), g.toInt(), b.toInt())
+    }
+
+    private fun enableProgressBar(value: Boolean) {
+        binding.haze.isVisible = value
+        binding.progressBar.isVisible = value
     }
 
     companion object {

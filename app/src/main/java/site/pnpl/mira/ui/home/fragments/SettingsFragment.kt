@@ -6,12 +6,13 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import site.pnpl.mira.App
+import site.pnpl.mira.BuildConfig
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentSettingsBinding
@@ -36,14 +37,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         _binding = FragmentSettingsBinding.bind(view)
         App.instance.appComponent.inject(this)
 
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
 
         binding.save.isEnabled = false
 
         initInputField()
         setClickListeners()
+        setVersion()
     }
+
 
     private fun initInputField() {
         savedName = settingsProvider.getName()
@@ -132,6 +134,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         return file
     }
 
+    private fun setVersion() {
+        binding.version.text = getString(R.string.version_name, BuildConfig.VERSION_NAME)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
