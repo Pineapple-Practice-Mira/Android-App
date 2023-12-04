@@ -14,11 +14,11 @@ import javax.inject.Inject
 
 class CheckInDetailsViewModel() : ViewModel() {
 
-    private val _isSaved = MutableLiveData<Boolean>()
+    private val _isSaved: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val isSaved: LiveData<Boolean>
         get() = _isSaved
 
-    private val _isDelete = MutableLiveData<Boolean>()
+    private val _isDelete: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val isDelete: LiveData<Boolean>
         get() = _isDelete
 
@@ -34,8 +34,9 @@ class CheckInDetailsViewModel() : ViewModel() {
         viewModelScope.launch {
             val save = async {
                 repository.insertCheckIn(checkIn)
+                return@async true
             }
-            _isSaved.postValue(save.await())
+            this@CheckInDetailsViewModel._isSaved.postValue(save.await())
         }
     }
 
@@ -46,7 +47,7 @@ class CheckInDetailsViewModel() : ViewModel() {
                 repository.deleteListOfCheckIns(listOf(checkIn))
                 return@async true
             }
-            _isDelete.postValue(delete.await())
+            this@CheckInDetailsViewModel._isDelete.postValue(delete.await())
         }
     }
 }

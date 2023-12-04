@@ -10,10 +10,9 @@ import kotlin.coroutines.suspendCoroutine
 
 class CheckInRepository(private val checkInDao: CheckInDao) {
 
-    suspend fun insertCheckIn(checkIn: CheckIn): Boolean {
+    suspend fun insertCheckIn(checkIn: CheckIn) {
         return withContext(Dispatchers.IO) {
             checkInDao.insert(checkIn)
-            return@withContext true
         }
     }
 

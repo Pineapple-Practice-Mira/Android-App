@@ -13,7 +13,7 @@ import site.pnpl.mira.data.entity.CheckIn
 import javax.inject.Inject
 
 class CheckInViewModel : ViewModel() {
-    private val _isSaved = MutableLiveData<Boolean>()
+    private val _isSaved: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val isSaved: LiveData<Boolean>
         get() = _isSaved
 
@@ -29,8 +29,9 @@ class CheckInViewModel : ViewModel() {
             val save = async {
                 settingsProvider.firstCheckInCreated()
                 repository.insertCheckIn(checkIn)
+                return@async true
             }
-            _isSaved.postValue(save.await())
+            this@CheckInViewModel._isSaved.postValue(save.await())
         }
     }
 }

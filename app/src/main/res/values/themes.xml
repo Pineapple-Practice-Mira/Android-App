@@ -88,6 +88,8 @@
 
     <style name="Body14Dark" parent="WixMadeforDisplayMedium">
         <item name="android:textColor">@color/dark</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:lineSpacingExtra">0sp</item>
         <item name="android:textSize">14sp</item>
     </style>
 
