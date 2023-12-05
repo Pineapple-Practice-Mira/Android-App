@@ -29,7 +29,6 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
     }
 
     fun initDatePicker(startPeriod: Long, endPeriod: Long) {
-        println("initDatePicker - startPeriod: ${MiraDateFormat(startPeriod).getDayMonthYear()} endPeriod: ${MiraDateFormat(endPeriod).getDayMonthYear()}")
         val endConstraint = System.currentTimeMillis()
         val startConstraint = Calendar.getInstance().apply {
             timeInMillis = endConstraint
@@ -81,8 +80,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     }
 
-    fun setSelectedPeriod(periods: Pair<Long, Long>) {
-        println("setSelectedPeriod - startPeriod: ${MiraDateFormat(periods.first).getDayMonthYear()} endPeriod: ${MiraDateFormat(periods.second).getDayMonthYear()}")
+    private fun setSelectedPeriod(periods: Pair<Long, Long>) {
         val dateFirst = MiraDateFormat(periods.first)
         val dateSecond = MiraDateFormat(periods.second)
         val periodString =

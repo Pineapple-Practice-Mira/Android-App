@@ -1,12 +1,22 @@
 package site.pnpl.mira.ui.home.fragments
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.transition.Transition
+import android.transition.TransitionListenerAdapter
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.transition.doOnEnd
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,9 +24,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.ChangeBounds
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SelectedPeriod
@@ -35,11 +49,14 @@ import site.pnpl.mira.ui.home.customview.BottomBar.Companion.HOME
 import site.pnpl.mira.ui.home.recycler_view.ChangeExpandedListener
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter.Companion.TYPE_ITEM_VOID
+import site.pnpl.mira.ui.home.recycler_view.CheckInAdapterNew
 import site.pnpl.mira.ui.home.recycler_view.ItemClickListener
 import site.pnpl.mira.ui.home.recycler_view.ItemTouchHelperCallback
 import site.pnpl.mira.ui.home.recycler_view.SelectedItemsListener
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
+import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment
 import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.utils.TranslationListener
 import site.pnpl.mira.utils.screenHeight
 import site.pnpl.mira.utils.toPx
 import javax.inject.Inject
@@ -57,23 +74,51 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var isSelectAll = false
 
-    @Inject lateinit var settingsProvider: SettingsProvider
-    @Inject lateinit var selectedPeriod: SelectedPeriod
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
 
+    @Inject
+    lateinit var selectedPeriod: SelectedPeriod
+    private lateinit var adapterNew: CheckInAdapterNew
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        sharedElementEnterTransition = ChangeBounds().apply {
+            duration = StatisticsFragment.ANIMATION_TRANSITION_DURATION
+            addListener(object : TranslationListener() {
+                override fun onTransitionEnd(transition: androidx.transition.Transition) {
+                    println("onTransitionEnd")
+                }
+            })
+        }
+        _binding = FragmentHomeBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHomeBinding.bind(view)
         App.instance.appComponent.inject(this)
 
         setStatusBarColor()
         initActionBar()
         initBottomBar()
         initText()
-        initRecyclerView()
+//        initRecyclerView()
+        initRecyclerViewNew()
         setClickListeners()
         getCheckInData()
         setViewModelListener()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        view?.animation?.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {}
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                getCheckInsByPeriod()
+            }
+        })
     }
 
     private fun setStatusBarColor() {
@@ -114,29 +159,61 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             setCalendarPeriodSelectionListener(childFragmentManager) { period ->
                 selectedPeriod.startPeriod = period.first
                 selectedPeriod.endPeriod = period.second
-                getCheckInData()
+                getCheckInsByPeriod()
+//                getCheckInData()
             }
         }
     }
 
     private fun getCheckInData() {
-        viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
-        enableProgressBar(true)
+//        viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+//        enableProgressBar(true)
+    }
+
+    private fun initRecyclerViewNew() {
+        adapterNew = CheckInAdapterNew()
+        adapterNew.addOnPagesUpdatedListener {
+            lifecycleScope.launch(Dispatchers.Main) {
+                recyclerView.scheduleLayoutAnimation()
+                binding.labelInfo.isVisible = adapterNew.itemCount == 0
+                animateMountains()
+            }
+
+        }
+        recyclerView = binding.recyclerView.apply {
+            adapter = adapterNew
+            addItemDecoration(TopSpacingItemDecoration(12))
+        }
     }
 
     private fun setViewModelListener() {
-        viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
+//        viewModel.onSaveEvent().observe(viewLifecycleOwner) { event ->
+//
+//            val checkIns = event.contentIfNotHandled
+//            if (checkIns != null) {
+//                lifecycleScope.launch {
+//                    withContext(Dispatchers.Main) {
+//                        adapter!!.setItemsList(checkIns)
+//                        recyclerView.scheduleLayoutAnimation()
+//                        animateMountains()
+//                    }
+//                }
+//                binding.labelInfo.isVisible = checkIns.isEmpty()
+//            }
+//        enableProgressBar(false)
+//        }
+//        viewModel.isLoaded.observe(viewLifecycleOwner) {
+//            enableProgressBar(it)
+//        }
+    }
 
-            val checkIns = event.contentIfNotHandled
-            if (checkIns != null) {
-                lifecycleScope.launch {
-                    adapter!!.setItemsList(checkIns)
-                    recyclerView.scheduleLayoutAnimation()
-                    animateMountains()
+    private fun getCheckInsByPeriod() {
+        adapterNew.submitData(lifecycle, PagingData.empty())
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+                .collect {
+                    adapterNew.submitData(it)
                 }
-                binding.labelInfo.isVisible = checkIns.isEmpty()
-            }
-            enableProgressBar(false)
         }
     }
 
@@ -170,16 +247,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             binding.actionBar to "statisticActionBar"
         )
 
-        val periods = binding.actionBar.currentPeriod!!
-        val startPeriod = periods.first
-        val endPeriod = periods.second
-
         findNavController().navigate(
             R.id.action_home_to_statistics,
-            bundleOf(
-                Pair(KEY_START_PERIOD, startPeriod),
-                Pair(KEY_END_PERIOD, endPeriod),
-            ),
+            null,
             null,
             extras
         )
@@ -329,8 +399,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 
@@ -350,6 +420,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 addUpdateListener {
                     requireActivity().window.statusBarColor =
                         blendColors(statusBarStartColor, statusBarEndColor, animatedFraction)
+                }
+                doOnEnd {
+                    getCheckInsByPeriod()
                 }
             }
             .start()
@@ -371,9 +444,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     companion object {
         const val EXTRA_MARGIN_MOUNTAINS = 19
         const val DEFAULT_MOUNTAINS_MARGIN = 72
-        const val KEY_START_PERIOD = "START_PERIOD"
-        const val KEY_END_PERIOD = "END_PERIOD"
-        const val SELECTED_PERIOD = "SELECTED_PERIOD"
-        const val CHANGE_ALPHA_DURATION = 700L
+        const val CHANGE_ALPHA_DURATION = 300L
     }
 }

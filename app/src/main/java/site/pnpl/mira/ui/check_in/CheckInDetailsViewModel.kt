@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
 import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.mapToCheckIn
+import site.pnpl.mira.model.asCheckIn
 import javax.inject.Inject
 
 class CheckInDetailsViewModel() : ViewModel() {
@@ -30,7 +30,7 @@ class CheckInDetailsViewModel() : ViewModel() {
     }
 
     fun saveCheckIn(checkInUI: CheckInUI) {
-        val checkIn = checkInUI.mapToCheckIn()
+        val checkIn = checkInUI.asCheckIn()
         viewModelScope.launch {
             val save = async {
                 repository.insertCheckIn(checkIn)
@@ -41,7 +41,7 @@ class CheckInDetailsViewModel() : ViewModel() {
     }
 
     fun deleteCheckInById(checkInUI: CheckInUI) {
-        val checkIn = checkInUI.mapToCheckIn()
+        val checkIn = checkInUI.asCheckIn()
         viewModelScope.launch {
             val delete = async {
                 repository.deleteListOfCheckIns(listOf(checkIn))

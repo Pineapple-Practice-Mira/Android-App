@@ -4,17 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
 import site.pnpl.mira.data.entity.CheckIn
-import site.pnpl.mira.data.entity.mapToCheckInUI
+import site.pnpl.mira.data.entity.asCheckInUI
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
-import site.pnpl.mira.model.mapToCheckIn
+import site.pnpl.mira.model.asCheckIn
 import site.pnpl.mira.utils.Event
 import site.pnpl.mira.utils.MiraDateFormat
 import java.util.Calendar
@@ -46,23 +53,23 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long) {
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val checkIns = repository.getCheckInForPeriod(startPeriod, endPeriod)
-                val checkInsUIMap = checkIns.map {
-                    it.mapToCheckInUI()
-                }
-                val checkInSorted = checkInsUIMap.sortedByDescending { it.createdAtLong }
-                newSaveEvent(checkInSorted)
-            }
-        }
-    }
+//    fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long) {
+//
+//        viewModelScope.launch {
+//            withContext(Dispatchers.IO) {
+//                val checkIns = repository.getCheckInForPeriod(startPeriod, endPeriod)
+//                val checkInsUIMap = checkIns.map {
+//                    it.asCheckInUI()
+//                }
+//                val checkInSorted = checkInsUIMap.sortedByDescending { it.createdAtLong }
+//                newSaveEvent(checkInSorted)
+//            }
+//        }
+//    }
 
     fun deleteListOfCheckIns(checkInsUI: List<CheckInUI>){
         viewModelScope.launch {
-            val checkIns = checkInsUI.map { it.mapToCheckIn() }
+            val checkIns = checkInsUI.map { it.asCheckIn() }
             repository.deleteListOfCheckIns(checkIns)
         }
     }
@@ -97,5 +104,23 @@ class HomeViewModel : ViewModel() {
             }
             repository.insertListOfCheckIns(list)
         }
+    }
+
+    private val _isLoaded = MutableLiveData<Boolean>()
+    val isLoaded: LiveData<Boolean> = _isLoaded
+
+    fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long): Flow<PagingData<CheckInUI>> {
+        return Pager(PagingConfig(
+            pageSize = 20,
+            maxSize = 60)) {
+            repository.getCheckInForPeriodP(startPeriod, endPeriod)
+        }.flow
+            .map {
+                _isLoaded.postValue(false)
+                it.map { checkIn ->
+                    checkIn.asCheckInUI()
+                }
+            }
+            .cachedIn(viewModelScope)
     }
 }

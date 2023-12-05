@@ -20,7 +20,7 @@ data class CheckInUI (
     val typeItem: Int = TYPE_ITEM_CHECK_IN
 ) : Parcelable
 
-fun CheckInUI.mapToCheckIn(): CheckIn {
+fun CheckInUI.asCheckIn(): CheckIn {
     return CheckIn(
         id = id,
         emotionId = emotionId,

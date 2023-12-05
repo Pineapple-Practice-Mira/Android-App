@@ -203,10 +203,6 @@
             <action
                 android:id="@+id/action_exercises_list_to_home"
                 app:destination="@id/navigation_home"
-                app:enterAnim="@android:anim/fade_in"
-                app:exitAnim="@android:anim/fade_out"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim"
                 app:popUpTo="@id/exercises_graph"
                 app:popUpToInclusive="true"/>
             <action

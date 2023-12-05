@@ -1,5 +1,6 @@
 package site.pnpl.mira.data
 
+import androidx.paging.PagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.data.dao.CheckInDao
@@ -9,6 +10,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class CheckInRepository(private val checkInDao: CheckInDao) {
+
+    val checkIns: PagingSource<Int, CheckIn> = checkInDao.getAllCheckInP()
 
     suspend fun insertCheckIn(checkIn: CheckIn) {
         return withContext(Dispatchers.IO) {
@@ -51,4 +54,9 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
         }
     }
 
+    fun getCheckInForPeriodP(startPeriod: Long, endPeriod: Long) =
+        checkInDao.getByPeriodP(
+            MiraDateFormat(startPeriod).getFormatForBD(),
+            MiraDateFormat(endPeriod).getFormatForBD()
+        )
 }

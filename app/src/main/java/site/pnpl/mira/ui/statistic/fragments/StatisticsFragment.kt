@@ -1,5 +1,6 @@
 package site.pnpl.mira.ui.statistic.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.transition.ChangeBounds
+import androidx.transition.Transition
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SelectedPeriod
@@ -21,6 +23,7 @@ import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
 import site.pnpl.mira.ui.statistic.StatisticViewModel
 import site.pnpl.mira.ui.statistic.customview.FactorAnalysisView
+import site.pnpl.mira.utils.TranslationListener
 import javax.inject.Inject
 
 class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
@@ -31,10 +34,22 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     @Inject lateinit var selectedPeriod: SelectedPeriod
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().window.sharedElementEnterTransition
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedElementEnterTransition = ChangeBounds().apply {
             duration = ANIMATION_TRANSITION_DURATION
+            addListener(object : TranslationListener() {
+                override fun onTransitionEnd(transition: Transition) {
+                    println("onTransitionEnd")
+                }
+            })
         }
+
+
         sharedElementReturnTransition = ChangeBounds().apply {
             duration = ANIMATION_TRANSITION_DURATION
         }

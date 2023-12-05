@@ -1,5 +1,6 @@
 package site.pnpl.mira.data.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -27,5 +28,11 @@ interface CheckInDao {
     fun getByPeriod(startPeriod: String, endPeriod: String): List<CheckIn>
     @Delete
     fun deleteListOfCheckIns(checkIns: List<CheckIn>)
+
+    @Query("SELECT * FROM ${DBConstants.TABLE_NAME_CHECK_IN} WHERE date(created_at) BETWEEN :startPeriod AND :endPeriod ORDER BY created_at_long DESC")
+    fun getByPeriodP(startPeriod: String, endPeriod: String): PagingSource<Int, CheckIn>
+
+    @Query("SELECT * FROM ${DBConstants.TABLE_NAME_CHECK_IN} ORDER BY created_at DESC")
+    fun getAllCheckInP(): PagingSource<Int, CheckIn>
 
 }

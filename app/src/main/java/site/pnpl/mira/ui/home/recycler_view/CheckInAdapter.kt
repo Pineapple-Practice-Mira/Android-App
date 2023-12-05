@@ -10,6 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ItemCheckInExpandedBinding
@@ -23,7 +26,7 @@ class CheckInAdapter(
     private val changeExpandedListener: ChangeExpandedListener,
     private val onSelectedItemsListener: SelectedItemsListener,
     private val onItemClickListener: ItemClickListener
-) : RecyclerView.Adapter<CheckInAdapter.ViewHolder>() {
+) : PagingDataAdapter<CheckInUI, CheckInAdapter.ViewHolder>(DIFF_CALLBACK) {
     val checkIns = mutableListOf<CheckInUI>()
 
     override fun getItemViewType(position: Int): Int {
@@ -165,11 +168,6 @@ class CheckInAdapter(
         selectAll(false)
     }
 
-    companion object {
-        const val TYPE_ITEM_CHECK_IN = 0
-        const val TYPE_ITEM_VOID = 1
-    }
-
     open inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item)
 
     inner class CheckInViewHolder(private val item: View) : ViewHolder(item) {
@@ -193,6 +191,43 @@ class CheckInAdapter(
 
     inner class VoidViewHolder(item: View) : ViewHolder(item)
 
+
+    companion object {
+
+        const val TYPE_ITEM_CHECK_IN = 0
+        const val TYPE_ITEM_VOID = 1
+
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CheckInUI>() {
+            override fun areItemsTheSame(oldItem: CheckInUI, newItem: CheckInUI): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: CheckInUI, newItem: CheckInUI): Boolean =
+                oldItem == newItem
+        }
+    }
+
+    class CheckInDiffUtils(private val oldList: List<CheckInUI>, private val newList: List<CheckInUI>) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldCheckInUI: CheckInUI = oldList[oldItemPosition]
+            val newCheckInUI: CheckInUI = newList[newItemPosition]
+            return oldCheckInUI.id == newCheckInUI.id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldCheckInUI: CheckInUI = oldList[oldItemPosition]
+            val newCheckInUI: CheckInUI = newList[newItemPosition]
+            return oldCheckInUI.id == newCheckInUI.id
+        }
+
+    }
 }
 
 
