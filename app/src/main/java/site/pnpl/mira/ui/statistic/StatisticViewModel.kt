@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
-import site.pnpl.mira.data.entity.mapToCheckInUI
+import site.pnpl.mira.data.entity.asCheckInUI
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.utils.Event
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class StatisticViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 val checkIns = repository.getCheckInForPeriod(startPeriod, endPeriod)
                 val checkInsUIMap = checkIns.map {
-                    it.mapToCheckInUI()
+                    it.asCheckInUI()
                 }
                 val checkInSorted = checkInsUIMap.sortedByDescending { it.createdAtLong }
                 newGetEvent(checkInSorted)

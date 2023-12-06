@@ -10,11 +10,11 @@ import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
 import site.pnpl.mira.data.entity.CheckIn
-import site.pnpl.mira.data.entity.mapToCheckInUI
+import site.pnpl.mira.data.entity.asCheckInUI
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
-import site.pnpl.mira.model.mapToCheckIn
+import site.pnpl.mira.model.asCheckIn
 import site.pnpl.mira.utils.Event
 import site.pnpl.mira.utils.MiraDateFormat
 import java.util.Calendar
@@ -22,6 +22,11 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 class HomeViewModel : ViewModel() {
+
+    var cachedPeriod: Pair<Long, Long> = Pair(0L, 0L)
+
+    private val _countCheckIns: MutableLiveData<Long> = MutableLiveData<Long>()
+    val countCheckIns: LiveData<Long> get() = _countCheckIns
 
     @Inject
     lateinit var repository: CheckInRepository
@@ -51,10 +56,10 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val checkIns = repository.getCheckInForPeriod(startPeriod, endPeriod)
-                val checkInsUIMap = checkIns.map {
-                    it.mapToCheckInUI()
+                val checkInsUIMapped = checkIns.map {
+                    it.asCheckInUI()
                 }
-                val checkInSorted = checkInsUIMap.sortedByDescending { it.createdAtLong }
+                val checkInSorted = checkInsUIMapped.sortedByDescending { it.createdAtLong }
                 newSaveEvent(checkInSorted)
             }
         }
@@ -62,8 +67,17 @@ class HomeViewModel : ViewModel() {
 
     fun deleteListOfCheckIns(checkInsUI: List<CheckInUI>){
         viewModelScope.launch {
-            val checkIns = checkInsUI.map { it.mapToCheckIn() }
+            val checkIns = checkInsUI.map { it.asCheckIn() }
             repository.deleteListOfCheckIns(checkIns)
+            getCountCheckIns()
+        }
+    }
+
+    private fun getCountCheckIns() {
+        viewModelScope.launch {
+            val count = repository.getCountCheckIns()
+            println("count checkIns: $count")
+            _countCheckIns.postValue(count)
         }
     }
 
@@ -76,7 +90,7 @@ class HomeViewModel : ViewModel() {
     fun insertListOfCheckIns() {
         val list = mutableListOf<CheckIn>()
         viewModelScope.launch {
-            repeat(100) {
+            repeat(50) {
                 val date = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
                     add(Calendar.DAY_OF_YEAR, -it)

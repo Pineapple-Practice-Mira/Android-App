@@ -31,7 +31,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var savedName = ""
     private var newName = ""
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSettingsBinding.bind(view)
@@ -65,10 +64,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 
-
     private fun setClickListeners() {
         with(binding) {
             close.setOnClickListener {
+                close.isClickable = false
                 findNavController().popBackStack()
             }
 
@@ -97,7 +96,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun shareClicked() {
         val url = "https://ссылка_на_наш_лэндинг.net"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val imageUri = FileProvider.getUriForFile(requireContext(), "$APPLICATION_ID.provider", getAssetsFile("mira2.png"))
+            val imageUri = FileProvider.getUriForFile(requireContext(), "${BuildConfig.APPLICATION_ID}.provider", getAssetsFile("mira2.png"))
             val share = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, url)
@@ -140,9 +139,5 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val APPLICATION_ID = "site.pnpl.mira"
     }
 }

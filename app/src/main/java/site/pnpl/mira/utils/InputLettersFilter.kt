@@ -12,11 +12,16 @@ class InputLettersFilter: InputFilter {
         dStart: Int,
         dEnd: Int
     ): CharSequence {
-        var filtered = ""
         if (dStart >= MAX_LENGTH_IN_INPUT_NAME) return ""
 
-        for (i in start until end) {
-            val character = cs[i]
+        var filtered = ""
+        var charSequence = cs
+
+        if (dStart + end > MAX_LENGTH_IN_INPUT_NAME) {
+            charSequence = charSequence.subSequence(0, MAX_LENGTH_IN_INPUT_NAME - dStart)
+        }
+
+        charSequence.forEach { character ->
             if (Character.isLetter(character) || Character.isWhitespace(character) || character == Char('-'.code)) {
                 filtered += character.toString()
             }

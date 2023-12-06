@@ -3,7 +3,9 @@ package site.pnpl.mira.ui.home.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -21,15 +23,11 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     private lateinit var dateRangePicker: MaterialDatePicker<Pair<Long, Long>>
 
-    var currentPeriod: Pair<Long, Long>? = null
-        private set
-
     init {
         _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
     }
 
     fun initDatePicker(startPeriod: Long, endPeriod: Long) {
-        println("initDatePicker - startPeriod: ${MiraDateFormat(startPeriod).getDayMonthYear()} endPeriod: ${MiraDateFormat(endPeriod).getDayMonthYear()}")
         val endConstraint = System.currentTimeMillis()
         val startConstraint = Calendar.getInstance().apply {
             timeInMillis = endConstraint
@@ -57,6 +55,21 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
         setSelectedPeriod(Pair(startPeriod, endPeriod))
     }
 
+    fun setDisplayMode(mode: DisplayMode) {
+        when (mode) {
+            DisplayMode.HOME -> {}
+            DisplayMode.STATISTIC_FIRST -> {
+                binding.statistic.setColorFilter(ContextCompat.getColor(context, R.color.secondary))
+                binding.statistic.isClickable = false
+            }
+            DisplayMode.STATISTIC_SECOND -> {
+                binding.calendar.isEnabled = false
+                binding.statistic.setColorFilter(ContextCompat.getColor(context, R.color.secondary))
+                binding.statistic.isClickable = false
+            }
+        }
+    }
+
     fun setActionBarClickListener(listener: (Button) -> Unit) {
         with(binding) {
             statistic.setOnClickListener { listener(Button.STATISTIC) }
@@ -76,19 +89,15 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
                 setSelectedPeriod(periods)
                 listener(periods)
             }
-
         }
-
     }
 
-    fun setSelectedPeriod(periods: Pair<Long, Long>) {
-        println("setSelectedPeriod - startPeriod: ${MiraDateFormat(periods.first).getDayMonthYear()} endPeriod: ${MiraDateFormat(periods.second).getDayMonthYear()}")
+    private fun setSelectedPeriod(periods: Pair<Long, Long>) {
         val dateFirst = MiraDateFormat(periods.first)
         val dateSecond = MiraDateFormat(periods.second)
         val periodString =
             "${dateFirst.getNameMonthUpper()} ${dateFirst.getDateOfMonth()} - ${dateSecond.getNameMonthUpper()} ${dateSecond.getDateOfMonth()}"
         binding.period.text = periodString
-        currentPeriod = periods
     }
 
     fun setRemoveMode(value: Boolean) {
@@ -98,10 +107,25 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
             selector.isVisible = value
             delete.isVisible = value
             delete.isEnabled = false
+
+            if (value) {
+                changeAlphaAnimation(actionBarDateLabel, REMOVE_MODE_ACTIVE_ALPHA)
+                changeAlphaAnimation(period, REMOVE_MODE_ACTIVE_ALPHA)
+            } else {
+                changeAlphaAnimation(actionBarDateLabel, REMOVE_MODE_INACTIVE_ALPHA)
+                changeAlphaAnimation(period, REMOVE_MODE_INACTIVE_ALPHA)
+            }
         }
         if(!value) {
             binding.selector.isSelected = false
         }
+    }
+
+    private fun changeAlphaAnimation(view: View, targetAlpha: Float) {
+        view.animate()
+            .alpha(targetAlpha)
+            .setDuration(REMOVE_MODE_CHANGE_ALPHA_DURATION)
+            .start()
     }
 
     fun enableActionBarButtons(value: Boolean) {
@@ -109,7 +133,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
         binding.statistic.isEnabled = value
     }
 
-    fun trashBoxEnable(value: Boolean) {
+    fun deleteButtonEnable(value: Boolean) {
         binding.delete.isEnabled = value
     }
 
@@ -120,6 +144,9 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     companion object {
         const val DATE_PICKER_TAG = "DATE_PICKER_TAG"
+        const val REMOVE_MODE_CHANGE_ALPHA_DURATION = 300L
+        const val REMOVE_MODE_ACTIVE_ALPHA = 0.3f
+        const val REMOVE_MODE_INACTIVE_ALPHA = 1f
     }
 
     enum class Button {
@@ -127,5 +154,11 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
         STATISTIC,
         SELECT_ALL,
         DELETE
+    }
+
+    enum class DisplayMode {
+        HOME,
+        STATISTIC_FIRST,
+        STATISTIC_SECOND
     }
 }

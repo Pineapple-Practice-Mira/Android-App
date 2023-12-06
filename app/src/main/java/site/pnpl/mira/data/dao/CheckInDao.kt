@@ -25,7 +25,10 @@ interface CheckInDao {
 
     @Query("SELECT * FROM ${DBConstants.TABLE_NAME_CHECK_IN} WHERE date(created_at) BETWEEN :startPeriod AND :endPeriod")
     fun getByPeriod(startPeriod: String, endPeriod: String): List<CheckIn>
+
     @Delete
     fun deleteListOfCheckIns(checkIns: List<CheckIn>)
 
+    @Query("SELECT COUNT(*) FROM ${DBConstants.TABLE_NAME_CHECK_IN}")
+    fun getCountCheckIns(): Long
 }

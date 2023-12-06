@@ -7,14 +7,12 @@
       android:pathData="M26,14L14,26"
       android:strokeLineJoin="round"
       android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#525FC9"
+      android:strokeColor="@color/button_icon_state"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M14,14L26,26"
       android:strokeLineJoin="round"
       android:strokeWidth="2"
-      android:fillColor="#00000000"
-      android:strokeColor="#525FC9"
+      android:strokeColor="@color/button_icon_state"
       android:strokeLineCap="round"/>
 </vector>
