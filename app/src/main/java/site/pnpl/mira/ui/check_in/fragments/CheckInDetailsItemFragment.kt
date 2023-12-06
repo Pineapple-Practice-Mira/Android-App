@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,6 +25,8 @@ import site.pnpl.mira.model.Emotion
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
 import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
+import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.CALLBACK_STATISTIC
+import site.pnpl.mira.ui.home.fragments.HomeFragment.Companion.KEY_CHECK_IN_FOR_DELETE
 import site.pnpl.mira.utils.MiraDateFormat
 import site.pnpl.mira.utils.PopUpDialog
 
@@ -32,6 +35,7 @@ class CheckInDetailsItemFragment(
     private val checkIns: List<CheckInUI>,
     private val position: Int,
     private val onArrowClickListener: CheckInDetailsFragment.ArrowClickListener,
+    private val callbackKey: String,
 ) : Fragment(R.layout.fragment_check_in_details_item) {
 
     private var _binding: FragmentCheckInDetailsItemBinding? = null
@@ -225,8 +229,18 @@ class CheckInDetailsItemFragment(
                 val dialogClickListener = object : PopUpDialog.PopUpDialogClickListener {
                     override fun onClick(popUpDialog: PopUpDialog) {
                         popUpDialog.dismiss()
-//                        findNavController().currentBackStackEntry?.arguments
-                        findNavController().popBackStack()
+                        findNavController().navigate(
+                            when (callbackKey) {
+                                CALLBACK_STATISTIC -> R.id.action_check_in_details_to_statistic_factor
+                                else -> R.id.action_check_in_details_to_home
+                            },
+                            bundleOf(
+                                Pair(
+                                    KEY_CHECK_IN_FOR_DELETE,
+                                    checkInUI
+                                )
+                            )
+                        )
                     }
                 }
 

@@ -9,13 +9,14 @@ import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsItemFragment
 class DetailAdapter(
     fragment: Fragment,
     private val checkIns: List<CheckInUI>,
-    private val onArrowClickListener: CheckInDetailsFragment.ArrowClickListener
+    private val onArrowClickListener: CheckInDetailsFragment.ArrowClickListener,
+    private val callbackKey: String
 ) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return checkIns.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return CheckInDetailsItemFragment(checkIns, position, onArrowClickListener)
+        return CheckInDetailsItemFragment(checkIns, position, onArrowClickListener, callbackKey)
     }
 }

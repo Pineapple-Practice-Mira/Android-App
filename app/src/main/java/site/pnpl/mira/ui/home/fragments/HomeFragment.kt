@@ -73,6 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().currentBackStackEntry?.arguments?.getParcelable(KEY_CHECK_IN_FOR_DELETE)
         }
         checkIn?.let {
+            println("checkIn $checkIn")
             adapter?.deleteCheckIn(checkIn)
         }
     }

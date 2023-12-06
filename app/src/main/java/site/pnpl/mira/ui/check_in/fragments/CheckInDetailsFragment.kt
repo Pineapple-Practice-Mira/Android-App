@@ -48,7 +48,7 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
 
     private fun initViewPager() {
         viewPager.apply {
-            adapter = DetailAdapter(this@CheckInDetailsFragment, checkIns!!, onArrowClickListener)
+            adapter = DetailAdapter(this@CheckInDetailsFragment, checkIns!!, onArrowClickListener, key!!)
             isUserInputEnabled = false
             setCurrentItem(position!!, false)
         }
