@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.transition.ChangeBounds
 import site.pnpl.mira.App
@@ -19,6 +20,7 @@ import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.Emotion
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
+import site.pnpl.mira.ui.home.customview.ActionBar
 import site.pnpl.mira.ui.statistic.StatisticViewModel
 import site.pnpl.mira.ui.statistic.customview.FactorAnalysisView
 import javax.inject.Inject
@@ -67,11 +69,10 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         with(binding.actionBar) {
             //Выбранный период для календаря
             initDatePicker(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
-
+            setDisplayMode(ActionBar.DisplayMode.STATISTIC_FIRST)
             setCalendarPeriodSelectionListener(childFragmentManager) { period ->
                 selectedPeriod.startPeriod = period.first
                 selectedPeriod.endPeriod = period.second
-//                setCallbackFragmentResult()
                 getCheckIns()
             }
         }
@@ -99,6 +100,14 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     }
 
     private fun fillFactorAnalysisViews(checkIns: List<CheckInUI>) {
+        binding.factorAnalysisContainer.removeAllViews()
+
+        if (checkIns.isEmpty()) {
+            enableNotice(true)
+            return
+        } else {
+            enableNotice(false)
+        }
 
         val factors = mutableListOf<FactorData>()
         checkIns.forEach { checkIn ->
@@ -121,7 +130,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             }
         }
 
-        binding.factorAnalysisContainer.removeAllViews()
         factors.sortByDescending { it.totalCount }
         factors.forEach { factorData ->
             val factorAnalysisView = FactorAnalysisView(
@@ -138,7 +146,13 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         binding.factorAnalysisContainer.startLayoutAnimation()
     }
 
-
+    private fun enableNotice(value: Boolean) {
+        with(binding) {
+            emotionNotice.isVisible = value
+            textViewNotice.isVisible = value
+            textViewInfo.isVisible = !value
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

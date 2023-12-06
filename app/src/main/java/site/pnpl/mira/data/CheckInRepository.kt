@@ -51,4 +51,9 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
         }
     }
 
+    suspend fun getCountCheckIns(): Long =
+        withContext(Dispatchers.IO) {
+            return@withContext checkInDao.getCountCheckIns()
+        }
+
 }

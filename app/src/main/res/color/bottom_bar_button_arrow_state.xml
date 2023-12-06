@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:color="@color/primary" android:state_enabled="true" app:backgroundTint="@color/primary"/>
-    <item android:color="@color/primary_alpha30" android:state_enabled="false" app:backgroundTint="@color/primary_alpha30"/>
+    <item android:color="@color/primary" android:state_enabled="true" android:state_pressed="false" app:backgroundTint="@color/primary"/>
+    <item android:color="@color/primary_deep" android:state_enabled="true" android:state_pressed="true" app:backgroundTint="@color/primary_deep"/>
+    <item android:color="@color/primary_alpha30" android:state_enabled="false" android:state_pressed="false" app:backgroundTint="@color/primary_alpha30"/>
 </selector>

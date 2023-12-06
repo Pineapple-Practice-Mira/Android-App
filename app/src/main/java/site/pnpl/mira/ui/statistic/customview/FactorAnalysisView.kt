@@ -234,11 +234,10 @@ class FactorAnalysisView @JvmOverloads constructor(
         setMeasuredDimension(resolvedWidth, resolvedHeight + bottomOffset)
     }
 
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (negativeCount !=0) canvas.drawPath(negativePath, negativePaint)
+        if (negativeCount != 0) canvas.drawPath(negativePath, negativePaint)
         canvas.drawPath(positivePath, positivePaint)
         drawEmoji(canvas)
         drawTextCentered(width / 2, (height - bottomOffset) / 2, canvas)

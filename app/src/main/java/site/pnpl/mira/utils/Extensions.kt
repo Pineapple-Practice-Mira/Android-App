@@ -21,6 +21,9 @@ val Context.screenHeight: Int
 val Fragment.screenHeight: Int
     get() = requireContext().screenHeight
 
+val Fragment.screenWidth: Int
+    get() = requireContext().screenWidth
+
 /**
  * Pixel and Dp Conversion
  */

@@ -1,7 +1,9 @@
 package site.pnpl.mira.ui.home.fragments
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -57,9 +59,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var isSelectAll = false
 
-    @Inject lateinit var settingsProvider: SettingsProvider
-    @Inject lateinit var selectedPeriod: SelectedPeriod
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
+    @Inject
+    lateinit var selectedPeriod: SelectedPeriod
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val checkIn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            findNavController().currentBackStackEntry?.arguments?.getParcelable(KEY_CHECK_IN_FOR_DELETE, CheckInUI::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            findNavController().currentBackStackEntry?.arguments?.getParcelable(KEY_CHECK_IN_FOR_DELETE)
+        }
+        checkIn?.let {
+            adapter?.deleteCheckIn(checkIn)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,7 +88,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         initText()
         initRecyclerView()
         setClickListeners()
-        getCheckInData()
+        getCheckInData(false)
         setViewModelListener()
     }
 
@@ -106,7 +122,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
 
                     ActionBar.Button.DELETE -> {
-                        showPopUpDialog()
+                        showDeletePopUpDialog()
                     }
                 }
             }
@@ -114,14 +130,42 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             setCalendarPeriodSelectionListener(childFragmentManager) { period ->
                 selectedPeriod.startPeriod = period.first
                 selectedPeriod.endPeriod = period.second
-                getCheckInData()
+                getCheckInData(true)
             }
         }
     }
 
-    private fun getCheckInData() {
-        viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
-        enableProgressBar(true)
+    /**
+     *  Метод перехода на фрагмент статистики. В качестве extras передаем actionBar для shared element transition
+     */
+
+    private fun navigateToStatistic() {
+        val extras = FragmentNavigatorExtras(
+            binding.actionBar to "statisticActionBar"
+        )
+        findNavController().navigate(
+            R.id.action_home_to_statistics,
+            null,
+            null,
+            extras
+        )
+    }
+
+    /**
+     * Метод для запроса чекинов с БД.
+     * Проверяем, если вернулись на главную с другого экрана и период не менялся - не делаем новый запрос
+     */
+
+    private fun getCheckInData(isClearedOld: Boolean) {
+        if (viewModel.cachedPeriod.first == selectedPeriod.startPeriod &&
+            viewModel.cachedPeriod.second == selectedPeriod.endPeriod
+        ) {
+            return
+        }
+
+        if (adapter!!.checkIns.isEmpty() || adapter!!.checkIns.size < 2 || isClearedOld) {
+            viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+        }
     }
 
     private fun setViewModelListener() {
@@ -136,53 +180,48 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
                 binding.labelInfo.isVisible = checkIns.isEmpty()
             }
-            enableProgressBar(false)
+        }
+
+        viewModel.countCheckIns.observe(viewLifecycleOwner) { count ->
+            if (count == 0L) {
+                binding.actionBar.enableActionBarButtons(false)
+            }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getCheckInData(true)
+        animateMountains()
+    }
+
+    /**
+     * Метод для анимации гор. Двиагаем горы:
+     * - если размер recyclerView + его позиция по Y меньше, чем максимальная позиция для гор
+     * - если горы выше чем recyclerView
+     */
     private fun animateMountains() {
         recyclerView.doOnLayout {
-            recyclerView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
-            val rvHeight = recyclerView.measuredHeight
-            val rvFullSize = rvHeight + recyclerView.y
+            val rvFullSize = recyclerView.computeVerticalScrollRange() + recyclerView.y
             if (rvFullSize < screenHeight - DEFAULT_MOUNTAINS_MARGIN.toPx) {
                 val targetY = if (rvFullSize < screenHeight - (binding.mountains.height).toFloat()) {
                     screenHeight - (binding.mountains.height).toFloat()
                 } else {
                     rvFullSize + EXTRA_MARGIN_MOUNTAINS.toPx
                 }
-                binding.mountains.animate()
-                    .y(targetY)
-                    .setDuration(300)
-                    .start()
+                startMountainsAnimation(targetY)
 
             } else if (binding.mountains.y < rvFullSize) {
-                binding.mountains.animate()
-                    .y(screenHeight.toFloat())
-                    .setDuration(300)
-                    .start()
+                startMountainsAnimation(screenHeight.toFloat())
             }
         }
     }
 
-    private fun navigateToStatistic() {
-        val extras = FragmentNavigatorExtras(
-            binding.actionBar to "statisticActionBar"
-        )
-
-        val periods = binding.actionBar.currentPeriod!!
-        val startPeriod = periods.first
-        val endPeriod = periods.second
-
-        findNavController().navigate(
-            R.id.action_home_to_statistics,
-            bundleOf(
-                Pair(KEY_START_PERIOD, startPeriod),
-                Pair(KEY_END_PERIOD, endPeriod),
-            ),
-            null,
-            extras
-        )
+    private fun startMountainsAnimation(targetY: Float) {
+        binding.mountains.animate()
+            .y(targetY)
+            .setDuration(MOUNTAINS_ANIMATION_DURATION)
+            .start()
     }
 
     private fun createFakeCheckIns() {
@@ -190,7 +229,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showPopUpDialog() {
+    private fun showDeletePopUpDialog() {
         val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
                 popUpDialog.dismiss()
@@ -255,9 +294,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initRecyclerView() {
-
         recyclerView = binding.recyclerView.apply {
-            addItemDecoration(TopSpacingItemDecoration(12))
+            addItemDecoration(TopSpacingItemDecoration(ITEM_DECORATOR_SIZE))
         }
 
         itemTouchHelperCallback = ItemTouchHelperCallback(onChangeExpandedListener)
@@ -277,7 +315,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val onSelectedItemsListener = object : SelectedItemsListener {
             override fun notify(isHaveSelected: Boolean) {
-                binding.actionBar.trashBoxEnable(isHaveSelected)
+                binding.actionBar.deleteButtonEnable(isHaveSelected)
             }
         }
         val onItemClickListener = object : ItemClickListener {
@@ -301,9 +339,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         adapter!!.setItemsList(items)
         itemTouchHelperCallback.isExpanded = isExpanded
 
-        binding.actionBar.setRemoveMode(isExpanded)
+        setRemoveMode(isExpanded)
+
         //Меньше 2ух так как в списке есть всегда 1 элемент - CheckIn Void
         binding.labelInfo.isVisible = adapter!!.checkIns.size < 2
+    }
+
+    private fun setRemoveMode(value: Boolean) {
+        with(binding) {
+            actionBar.setRemoveMode(value)
+            if (value) {
+                changeAlphaAnimation(settings, REMOVE_MODE_ACTIVE_ALPHA)
+                changeAlphaAnimation(hi, REMOVE_MODE_ACTIVE_ALPHA)
+                changeAlphaAnimation(name, REMOVE_MODE_ACTIVE_ALPHA)
+            } else {
+                changeAlphaAnimation(settings, REMOVE_MODE_INACTIVE_ALPHA)
+                changeAlphaAnimation(hi, REMOVE_MODE_INACTIVE_ALPHA)
+                changeAlphaAnimation(name, REMOVE_MODE_INACTIVE_ALPHA)
+            }
+        }
+    }
+
+    private fun changeAlphaAnimation(view: View, targetAlpha: Float) {
+        view.animate()
+            .alpha(targetAlpha)
+            .setDuration(REMOVE_MODE_CHANGE_ALPHA_DURATION)
+            .start()
     }
 
     private fun navigateToCheckInDetails(position: Int, checkIns: List<CheckInUI>) {
@@ -327,6 +388,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 createFakeCheckIns()
             }
         }
+    }
+
+    override fun onPause() {
+        viewModel.cachedPeriod = Pair(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+        super.onPause()
     }
 
     override fun onDestroyView() {
@@ -363,17 +429,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return Color.rgb(r.toInt(), g.toInt(), b.toInt())
     }
 
-    private fun enableProgressBar(value: Boolean) {
-        binding.haze.isVisible = value
-        binding.progressBar.isVisible = value
-    }
-
     companion object {
+        const val ITEM_DECORATOR_SIZE = 12
         const val EXTRA_MARGIN_MOUNTAINS = 19
         const val DEFAULT_MOUNTAINS_MARGIN = 72
-        const val KEY_START_PERIOD = "START_PERIOD"
-        const val KEY_END_PERIOD = "END_PERIOD"
-        const val SELECTED_PERIOD = "SELECTED_PERIOD"
         const val CHANGE_ALPHA_DURATION = 700L
+        const val MOUNTAINS_ANIMATION_DURATION = 300L
+
+        const val REMOVE_MODE_CHANGE_ALPHA_DURATION = 300L
+        const val REMOVE_MODE_ACTIVE_ALPHA = 0.3f
+        const val REMOVE_MODE_INACTIVE_ALPHA = 1f
+
+        const val KEY_CHECK_IN_FOR_DELETE = "CHECK_IN_FOR_DELETE"
+
     }
 }

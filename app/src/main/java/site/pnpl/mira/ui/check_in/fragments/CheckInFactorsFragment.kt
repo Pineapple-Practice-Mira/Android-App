@@ -14,8 +14,6 @@ import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFactorsBinding
 import site.pnpl.mira.model.FactorsList
 import site.pnpl.mira.ui.check_in.customview.FactorView
-import site.pnpl.mira.utils.KeyboardUtils
-
 
 class CheckInFactorsFragment(
     private val onArrowClickListener: CheckInFragment.OnArrowClickListener,
@@ -126,7 +124,6 @@ class CheckInFactorsFragment(
 
     override fun onDestroyView() {
         super.onDestroyView()
-        KeyboardUtils.removeAllKeyboardToggleListeners()
         _binding = null
     }
 }
