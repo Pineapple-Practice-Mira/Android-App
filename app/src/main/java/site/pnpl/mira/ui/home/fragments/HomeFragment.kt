@@ -1,9 +1,7 @@
 package site.pnpl.mira.ui.home.fragments
 
 import android.animation.ValueAnimator
-import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -59,24 +57,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var isSelectAll = false
 
-    @Inject
-    lateinit var settingsProvider: SettingsProvider
-    @Inject
-    lateinit var selectedPeriod: SelectedPeriod
+    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var selectedPeriod: SelectedPeriod
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val checkIn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            findNavController().currentBackStackEntry?.arguments?.getParcelable(KEY_CHECK_IN_FOR_DELETE, CheckInUI::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            findNavController().currentBackStackEntry?.arguments?.getParcelable(KEY_CHECK_IN_FOR_DELETE)
-        }
-        checkIn?.let {
-            println("checkIn $checkIn")
-            adapter?.deleteCheckIn(checkIn)
-        }
-    }
+    /**
+     * Флаг, если фрагмент не убивался - отправляем запрос в БД в onStart, если первый инстанс в onViewCreated
+     */
+    private var isUpdateInOnCreate = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,10 +76,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         initText()
         initRecyclerView()
         setClickListeners()
-        getCheckInData(false)
+        getCheckInData().also {
+            isUpdateInOnCreate = true
+        }
         setViewModelListener()
     }
 
+    /**
+     * Метод анимации "появления" экрана при переходе с экранов с темный беграундом
+     */
     private fun setStatusBarColor() {
         if (requireActivity().window.statusBarColor == ContextCompat.getColor(requireContext(), R.color.dark_grey)) {
             binding.alphaView.alpha = 1f
@@ -102,6 +94,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 .start()
             tintSystemBars()
         }
+    }
+
+    /**
+     * Метод для анимации смены фона статус бара
+     */
+    private fun tintSystemBars() {
+        val statusBarStartColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
+        val statusBarEndColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+        ValueAnimator.ofFloat(0f, 1f)
+            .apply {
+                duration = CHANGE_ALPHA_DURATION
+                addUpdateListener {
+                    requireActivity().window.statusBarColor =
+                        blendColors(statusBarStartColor, statusBarEndColor, animatedFraction)
+                }
+            }
+            .start()
+    }
+
+    /**
+     * Метод для плавного перехода цвета
+     */
+    private fun blendColors(from: Int, to: Int, ratio: Float): Int {
+        val inverseRatio = 1f - ratio
+        val r = Color.red(to) * ratio + Color.red(from) * inverseRatio
+        val g = Color.green(to) * ratio + Color.green(from) * inverseRatio
+        val b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
+        return Color.rgb(r.toInt(), g.toInt(), b.toInt())
     }
 
     private fun initActionBar() {
@@ -131,7 +152,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             setCalendarPeriodSelectionListener(childFragmentManager) { period ->
                 selectedPeriod.startPeriod = period.first
                 selectedPeriod.endPeriod = period.second
-                getCheckInData(true)
+                getCheckInData()
             }
         }
     }
@@ -153,19 +174,186 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     /**
-     * Метод для запроса чекинов с БД.
-     * Проверяем, если вернулись на главную с другого экрана и период не менялся - не делаем новый запрос
+     * Метод создания и показа диалога перед удалением чекинов
      */
-
-    private fun getCheckInData(isClearedOld: Boolean) {
-        if (viewModel.cachedPeriod.first == selectedPeriod.startPeriod &&
-            viewModel.cachedPeriod.second == selectedPeriod.endPeriod
-        ) {
-            return
+    private fun showDeletePopUpDialog() {
+        val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
+            override fun onClick(popUpDialog: PopUpDialog) {
+                popUpDialog.dismiss()
+            }
         }
 
-        if (adapter!!.checkIns.isEmpty() || adapter!!.checkIns.size < 2 || isClearedOld) {
-            viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+        val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
+            override fun onClick(popUpDialog: PopUpDialog) {
+                deleteCheckIns()
+                popUpDialog.dismiss()
+            }
+        }
+
+        val popUpDialog = PopUpDialog.Builder()
+            .title(resources.getString(R.string.pop_up_home_title))
+            .content(resources.getString(R.string.pop_up_home_content))
+            .leftButtonText(resources.getString(R.string.pop_up_home_left))
+            .rightButtonText((resources.getString(R.string.pop_up_home_right)))
+            .leftButtonListener(popUpDialogClickListenerLeft)
+            .rightButtonListener(popUpDialogClickListenerRight)
+            .animationType(PopUpDialog.AnimationType.RIGHT)
+            .build()
+        popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
+    }
+
+    /**
+     * Метод удаления выбранных чекинов
+     */
+    private fun deleteCheckIns() {
+        val items = adapter!!.getSelectedItemsAndDelete()
+        viewModel.deleteListOfCheckIns(items)
+        if (isSelectAll) isSelectAll = false
+        initPropertyRV()
+        animateMountains()
+    }
+
+    /**
+     * Метод для запроса чекинов с БД.
+     */
+    private fun getCheckInData() {
+        viewModel.getCheckInForPeriod(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
+    }
+
+    private fun initBottomBar() {
+        with(binding) {
+            floatingArrow.isVisible = !settingsProvider.isMakeFirstCheckIn()
+            bottomBar.setSelectedButton(HOME)
+            bottomBar.setBottomBarClickListener { button ->
+                when (button) {
+                    BottomBar.Button.HOME -> {}
+                    BottomBar.Button.EXERCISES_LIST -> {
+                        findNavController().navigate(R.id.action_home_to_exercises)
+                    }
+
+                    BottomBar.Button.CHECK_IN -> {
+                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initText() {
+        val name = settingsProvider.getName()
+        if (name.isNotEmpty()) {
+            binding.name.text = name
+            val newHi = "${binding.hi.text},"
+            binding.hi.text = newHi
+        }
+
+        binding.labelInfo.text =
+            if (settingsProvider.isMakeFirstCheckIn())
+                resources.getString(R.string.label_info_2)
+            else
+                resources.getString(R.string.label_info_1)
+    }
+
+    private val onChangeExpandedListener = object : ChangeExpandedListener {
+        override fun expandAll(value: Boolean) {
+            initPropertyRV(value)
+        }
+    }
+
+    private fun initRecyclerView() {
+        recyclerView = binding.recyclerView.apply {
+            addItemDecoration(TopSpacingItemDecoration(ITEM_DECORATOR_SIZE))
+        }
+
+        itemTouchHelperCallback = ItemTouchHelperCallback(onChangeExpandedListener)
+        val touchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        touchHelper.attachToRecyclerView(recyclerView)
+
+        initPropertyRV()
+
+    }
+
+    private fun initPropertyRV(isExpanded: Boolean = false) {
+
+        var items = emptyList<CheckInUI>()
+        if (adapter != null) {
+            items = adapter!!.checkIns
+        }
+
+        val onSelectedItemsListener = object : SelectedItemsListener {
+            override fun notify(isHaveSelected: Boolean) {
+                binding.actionBar.deleteButtonEnable(isHaveSelected)
+            }
+        }
+
+        val onItemClickListener = object : ItemClickListener {
+            override fun onItemClick(position: Int) {
+                val checkIns = adapter!!.checkIns
+
+                //Убираем пустой элемент
+                if (checkIns[0].typeItem == TYPE_ITEM_VOID) {
+                    checkIns.removeAt(0)
+                }
+
+                //сортировка в обратном порядке
+                checkIns.sortBy { it.createdAtLong }
+                val posInNewList = checkIns.size - position
+                navigateToCheckInDetails(posInNewList, checkIns)
+            }
+        }
+        adapter = CheckInAdapter(isExpanded, onChangeExpandedListener, onSelectedItemsListener, onItemClickListener)
+        recyclerView.adapter = adapter
+        adapter!!.setItemsList(items.toMutableList())
+        itemTouchHelperCallback.isExpanded = isExpanded
+
+        setRemoveMode(isExpanded)
+
+        //Меньше 2ух так как в списке есть всегда 1 элемент - CheckIn Void
+        binding.labelInfo.isVisible = adapter!!.checkIns.size < 2
+    }
+
+    private fun navigateToCheckInDetails(position: Int, checkIns: List<CheckInUI>) {
+        findNavController()
+            .navigate(
+                R.id.action_home_to_details,
+                bundleOf(
+                    Pair(CheckInDetailsFragment.CALLBACK_KEY, CheckInDetailsFragment.CALLBACK_HOME),
+                    Pair(POSITION_KEY, position),
+                    Pair(LIST_OF_CHECK_IN_KEY, checkIns)
+                )
+            )
+    }
+
+    private fun setRemoveMode(value: Boolean) {
+        with(binding) {
+            actionBar.setRemoveMode(value)
+            if (value) {
+                changeAlphaAnimation(settings, REMOVE_MODE_ACTIVE_ALPHA)
+                changeAlphaAnimation(hi, REMOVE_MODE_ACTIVE_ALPHA)
+                changeAlphaAnimation(name, REMOVE_MODE_ACTIVE_ALPHA)
+            } else {
+                changeAlphaAnimation(settings, REMOVE_MODE_INACTIVE_ALPHA)
+                changeAlphaAnimation(hi, REMOVE_MODE_INACTIVE_ALPHA)
+                changeAlphaAnimation(name, REMOVE_MODE_INACTIVE_ALPHA)
+            }
+        }
+    }
+
+    private fun changeAlphaAnimation(view: View, targetAlpha: Float) {
+        view.animate()
+            .alpha(targetAlpha)
+            .setDuration(REMOVE_MODE_CHANGE_ALPHA_DURATION)
+            .start()
+    }
+
+    private fun setClickListeners() {
+        binding.root.doOnLayout {
+            binding.settings.setOnClickListener {
+                findNavController().navigate(R.id.action_home_to_setting)
+            }
+            binding.hi.setOnClickListener {
+                createFakeCheckIns()
+            }
         }
     }
 
@@ -175,7 +363,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val checkIns = event.contentIfNotHandled
             if (checkIns != null) {
                 lifecycleScope.launch {
-                    adapter!!.setItemsList(checkIns)
+                    adapter!!.setItemsList(checkIns.toMutableList())
                     recyclerView.scheduleLayoutAnimation()
                     animateMountains()
                 }
@@ -190,9 +378,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!isUpdateInOnCreate) {
+            getCheckInData()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        getCheckInData(true)
         animateMountains()
     }
 
@@ -230,204 +424,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showDeletePopUpDialog() {
-        val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
-            override fun onClick(popUpDialog: PopUpDialog) {
-                popUpDialog.dismiss()
-            }
-        }
-
-        val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
-            override fun onClick(popUpDialog: PopUpDialog) {
-                val items = adapter!!.getSelectedItemsAndDelete()
-                viewModel.deleteListOfCheckIns(items)
-                if (isSelectAll) isSelectAll = false
-                initPropertyRV()
-                animateMountains()
-                popUpDialog.dismiss()
-            }
-
-        }
-        val popUpDialog = PopUpDialog.Builder()
-            .title(resources.getString(R.string.pop_up_home_title))
-            .content(resources.getString(R.string.pop_up_home_content))
-            .leftButtonText(resources.getString(R.string.pop_up_home_left))
-            .rightButtonText((resources.getString(R.string.pop_up_home_right)))
-            .leftButtonListener(popUpDialogClickListenerLeft)
-            .rightButtonListener(popUpDialogClickListenerRight)
-            .animationType(PopUpDialog.AnimationType.RIGHT)
-            .build()
-        popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
-    }
-
-    private fun initBottomBar() {
-        with(binding) {
-            floatingArrow.isVisible = !settingsProvider.isMakeFirstCheckIn()
-            bottomBar.setSelectedButton(HOME)
-            bottomBar.setBottomBarClickListener { button ->
-                when (button) {
-                    BottomBar.Button.HOME -> {}
-                    BottomBar.Button.EXERCISES_LIST -> {
-                        findNavController().navigate(R.id.action_home_to_exercises)
-                    }
-
-                    BottomBar.Button.CHECK_IN -> {
-                        findNavController().navigate(R.id.createCheckIn, bundleOf(Pair(CALLBACK_KEY, CALLBACK_HOME)))
-                    }
-                }
-            }
-        }
-    }
-
-    private fun initText() {
-        val name = settingsProvider.getName()
-        if (name.isNotEmpty()) {
-            binding.name.text = name
-            val newHi = "${binding.hi.text},"
-            binding.hi.text = newHi
-        }
-
-        binding.labelInfo.text =
-            if (settingsProvider.isMakeFirstCheckIn())
-                resources.getString(R.string.label_info_2)
-            else
-                resources.getString(R.string.label_info_1)
-    }
-
-    private fun initRecyclerView() {
-        recyclerView = binding.recyclerView.apply {
-            addItemDecoration(TopSpacingItemDecoration(ITEM_DECORATOR_SIZE))
-        }
-
-        itemTouchHelperCallback = ItemTouchHelperCallback(onChangeExpandedListener)
-        val touchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        touchHelper.attachToRecyclerView(recyclerView)
-
-        initPropertyRV()
-
-    }
-
-    private fun initPropertyRV(isExpanded: Boolean = false) {
-
-        var items = emptyList<CheckInUI>()
-        if (adapter != null) {
-            items = adapter!!.checkIns
-        }
-
-        val onSelectedItemsListener = object : SelectedItemsListener {
-            override fun notify(isHaveSelected: Boolean) {
-                binding.actionBar.deleteButtonEnable(isHaveSelected)
-            }
-        }
-        val onItemClickListener = object : ItemClickListener {
-            override fun onItemClick(position: Int) {
-                val checkIns = adapter!!.checkIns
-
-                //Убираем пустой элемент
-                if (checkIns[0].typeItem == TYPE_ITEM_VOID) {
-                    checkIns.removeAt(0)
-                }
-
-                //сортировка в обратном порядке
-                checkIns.sortBy { it.createdAtLong }
-                val posInNewList = checkIns.size - position
-                navigateToCheckInDetails(posInNewList, checkIns)
-            }
-
-        }
-        adapter = CheckInAdapter(isExpanded, onChangeExpandedListener, onSelectedItemsListener, onItemClickListener)
-        recyclerView.adapter = adapter
-        adapter!!.setItemsList(items)
-        itemTouchHelperCallback.isExpanded = isExpanded
-
-        setRemoveMode(isExpanded)
-
-        //Меньше 2ух так как в списке есть всегда 1 элемент - CheckIn Void
-        binding.labelInfo.isVisible = adapter!!.checkIns.size < 2
-    }
-
-    private fun setRemoveMode(value: Boolean) {
-        with(binding) {
-            actionBar.setRemoveMode(value)
-            if (value) {
-                changeAlphaAnimation(settings, REMOVE_MODE_ACTIVE_ALPHA)
-                changeAlphaAnimation(hi, REMOVE_MODE_ACTIVE_ALPHA)
-                changeAlphaAnimation(name, REMOVE_MODE_ACTIVE_ALPHA)
-            } else {
-                changeAlphaAnimation(settings, REMOVE_MODE_INACTIVE_ALPHA)
-                changeAlphaAnimation(hi, REMOVE_MODE_INACTIVE_ALPHA)
-                changeAlphaAnimation(name, REMOVE_MODE_INACTIVE_ALPHA)
-            }
-        }
-    }
-
-    private fun changeAlphaAnimation(view: View, targetAlpha: Float) {
-        view.animate()
-            .alpha(targetAlpha)
-            .setDuration(REMOVE_MODE_CHANGE_ALPHA_DURATION)
-            .start()
-    }
-
-    private fun navigateToCheckInDetails(position: Int, checkIns: List<CheckInUI>) {
-        findNavController()
-            .navigate(
-                R.id.action_home_to_details,
-                bundleOf(
-                    Pair(CheckInDetailsFragment.CALLBACK_KEY, CheckInDetailsFragment.CALLBACK_HOME),
-                    Pair(POSITION_KEY, position),
-                    Pair(LIST_OF_CHECK_IN_KEY, checkIns)
-                )
-            )
-    }
-
-    private fun setClickListeners() {
-        binding.root.doOnLayout {
-            binding.settings.setOnClickListener {
-                findNavController().navigate(R.id.action_home_to_setting)
-            }
-            binding.hi.setOnClickListener {
-                createFakeCheckIns()
-            }
-        }
-    }
-
-    override fun onPause() {
-        viewModel.cachedPeriod = Pair(selectedPeriod.startPeriod, selectedPeriod.endPeriod)
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
+        isUpdateInOnCreate = false
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private val onChangeExpandedListener = object : ChangeExpandedListener {
-        override fun expandAll(value: Boolean) {
-            initPropertyRV(value)
-        }
-    }
-
-    private fun tintSystemBars() {
-        val statusBarStartColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
-        val statusBarEndColor = ContextCompat.getColor(requireContext(), R.color.white)
-
-        ValueAnimator.ofFloat(0f, 1f)
-            .apply {
-                duration = CHANGE_ALPHA_DURATION
-                addUpdateListener {
-                    requireActivity().window.statusBarColor =
-                        blendColors(statusBarStartColor, statusBarEndColor, animatedFraction)
-                }
-            }
-            .start()
-    }
-
-    private fun blendColors(from: Int, to: Int, ratio: Float): Int {
-        val inverseRatio = 1f - ratio
-        val r = Color.red(to) * ratio + Color.red(from) * inverseRatio
-        val g = Color.green(to) * ratio + Color.green(from) * inverseRatio
-        val b = Color.blue(to) * ratio + Color.blue(from) * inverseRatio
-        return Color.rgb(r.toInt(), g.toInt(), b.toInt())
     }
 
     companion object {
@@ -440,8 +444,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         const val REMOVE_MODE_CHANGE_ALPHA_DURATION = 300L
         const val REMOVE_MODE_ACTIVE_ALPHA = 0.3f
         const val REMOVE_MODE_INACTIVE_ALPHA = 1f
-
-        const val KEY_CHECK_IN_FOR_DELETE = "CHECK_IN_FOR_DELETE"
-
     }
 }

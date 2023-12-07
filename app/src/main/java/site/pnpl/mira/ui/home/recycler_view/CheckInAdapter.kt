@@ -124,18 +124,17 @@ class CheckInAdapter(
         onSelectedItemsListener.notify(isHaveSelected)
     }
 
-    fun setItemsList(items: List<CheckInUI>) {
+    fun setItemsList(items: MutableList<CheckInUI>) {
+        if (items.isNotEmpty() && items[0].typeItem != TYPE_ITEM_VOID) {
+            items.add(0, getVoidCheckIn())
+        }
+
         val diff = CheckInDiff(checkIns, items)
         val diffResult = DiffUtil.calculateDiff(diff)
 
         checkIns.clear()
         checkIns.addAll(items)
 
-        diffResult.dispatchUpdatesTo(this)
-
-        if (checkIns.isNotEmpty() && checkIns[0].typeItem != TYPE_ITEM_VOID) {
-            checkIns.add(0, getVoidCheckIn())
-        }
         if (!isExpanded) {
             checkIns.forEach {
                 if (it.typeItem == TYPE_ITEM_CHECK_IN) {
@@ -143,13 +142,15 @@ class CheckInAdapter(
                 }
             }
         }
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     private fun getVoidCheckIn(): CheckInUI {
         return CheckInUI(
-            id = 0,
-            emotionId = 0,
-            factorId = 0,
+            id = -1,
+            emotionId = -1,
+            factorId = -1,
             exercisesId = 0,
             note = "",
             createdAt = "",
@@ -180,18 +181,6 @@ class CheckInAdapter(
     private fun removeSelectedItems(list: List<CheckInUI>) {
         checkIns.removeAll(list)
         selectAll(false)
-    }
-
-    fun deleteCheckIn(checkInUI: CheckInUI) {
-        val position = checkIns.indexOf(checkInUI)
-        if (position != -1) {
-            checkIns.removeAt(position)
-            notifyItemRemoved(position)
-        }
-    }
-
-    fun clearCheckIns() {
-        checkIns.clear()
     }
 
     companion object {
@@ -238,9 +227,7 @@ class CheckInAdapter(
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition] == newList[newItemPosition]
         }
-
     }
-
 }
 
 
