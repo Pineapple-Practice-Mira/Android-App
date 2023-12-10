@@ -7,6 +7,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorRes
@@ -14,6 +16,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import site.pnpl.mira.R
@@ -45,10 +48,10 @@ class FactorAnalysisView @JvmOverloads constructor(
     private var arrowIcon: Int = R.drawable.icon_arrow_factor_view
 
     @ColorRes
-    private var colorNegative: Int = R.color.primary_dark
+    var colorPositive: Int = R.color.primary
 
     @ColorRes
-    private var colorPositive: Int = R.color.primary
+    private var colorNegative: Int = R.color.primary_dark
 
     @ColorRes
     private var colorText: Int = R.color.white
@@ -60,21 +63,59 @@ class FactorAnalysisView @JvmOverloads constructor(
 
     private var cornerRadius: Int = 18.toPx
 
-    private var factorName: String = ""
+    var factorName: String = ""
 
-    /***********************************/
+    init {
+
+//        if (attrs != null) {
+//            val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.FactorAnalysisView, 0, 0)
+//
+//            fixHeight = attributes.getInt(R.styleable.FactorAnalysisView_favHeight, fixHeight)
+//            bottomOffset = attributes.getInt(R.styleable.FactorAnalysisView_favBottomOffset, bottomOffset)
+//            offsetEmotion = attributes.getInt(R.styleable.FactorAnalysisView_favOffsetEmotion, offsetEmotion)
+//            emotionIconSize = attributes.getInt(R.styleable.FactorAnalysisView_favEmotionIconSize, emotionIconSize)
+//
+//            positiveCount = attributes.getInt(R.styleable.FactorAnalysisView_favPositiveCount, positiveCount)
+//            negativeCount = attributes.getInt(R.styleable.FactorAnalysisView_favNegativeCount, negativeCount)
+//            animationDuration = attributes.getInt(R.styleable.FactorAnalysisView_favAnimationDuration, animationDuration.toInt()).toLong()
+//
+//            positiveSmileResId = attributes.getResourceId(R.styleable.FactorAnalysisView_favPositiveIconResId, positiveSmileResId)
+//            negativeSmileResId = attributes.getResourceId(R.styleable.FactorAnalysisView_favNegativeIconResId, negativeSmileResId)
+//            arrowIcon = attributes.getResourceId(R.styleable.FactorAnalysisView_favArrowResId, arrowIcon)
+//
+//            colorPositive = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorPositive, colorPositive)
+//            colorNegative = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorNegative, colorNegative)
+//            colorText = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorText, colorText)
+//            colorArrow = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorArrow, colorArrow)
+//
+//            sizeText = attributes.getDimension(R.styleable.FactorAnalysisView_favTextSize, sizeText)
+//            cornerRadius = attributes.getInt(R.styleable.FactorAnalysisView_favCornerRadius, cornerRadius)
+//
+//            factorName = attributes.getString(R.styleable.FactorAnalysisView_favFactorName) ?: factorName
+//
+//            attributes.recycle()
+//
+//        }
+
+    }
 
     private var resolvedWidth = 0
     private var resolvedHeight = fixHeight
 
-    private lateinit var positiveEmoji: Bitmap
-    private lateinit var negativeEmoji: Bitmap
-    private lateinit var arrow: Bitmap
+    private val positiveEmoji: Bitmap by lazy {
+        ContextCompat.getDrawable(context, positiveSmileResId)?.toBitmap()!!
+    }
+    private val negativeEmoji: Bitmap by lazy {
+        ContextCompat.getDrawable(context, negativeSmileResId)?.toBitmap()!!
+    }
+    private val arrow: Bitmap by lazy {
+        ContextCompat.getDrawable(context, arrowIcon)?.toBitmap()!!
+    }
 
-    private val negativePaint = Paint()
-    private val positivePaint = Paint()
-    private val textPaint = Paint()
-    private val arrowPaint = Paint()
+    private var negativePaint = Paint()
+    private var positivePaint = Paint()
+    private var textPaint = Paint()
+    private var arrowPaint = Paint()
 
     private val negativePath = Path()
     private val positivePath = Path()
@@ -105,19 +146,26 @@ class FactorAnalysisView @JvmOverloads constructor(
 
     constructor(
         context: Context,
-        negativeCount: Int,
         positiveCount: Int,
+        negativeCount: Int,
         factorName: String,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
     ) : this(context, attrs, defStyleAttr) {
 
-        this.negativeCount = negativeCount
+        initialization(positiveCount, negativeCount, factorName)
+    }
+
+    fun init(positiveCount: Int, negativeCount: Int, factorName: String, ) {
+        initialization(positiveCount, negativeCount, factorName)
+    }
+
+    private fun initialization(positiveCount: Int, negativeCount: Int, factorName: String,) {
         this.positiveCount = positiveCount
+        this.negativeCount = negativeCount
         this.factorName = factorName
 
         initPaints()
-        initDrawables()
         initValues()
         invalidate()
     }
@@ -148,34 +196,30 @@ class FactorAnalysisView @JvmOverloads constructor(
         }
     }
 
-    private fun initDrawables() {
-        positiveEmoji = ContextCompat.getDrawable(context, positiveSmileResId)?.toBitmap()!!
-        negativeEmoji = ContextCompat.getDrawable(context, negativeSmileResId)?.toBitmap()!!
-        arrow = ContextCompat.getDrawable(context, arrowIcon)?.toBitmap()!!
-    }
-
     private fun initPaints() {
-        negativePaint.apply {
+
+        negativePaint = Paint().apply {
             color = ContextCompat.getColor(context, colorNegative)
             style = Paint.Style.FILL
         }
-        positivePaint.apply {
+        positivePaint = Paint().apply {
             color = ContextCompat.getColor(context, colorPositive)
             style = Paint.Style.FILL
         }
-        textPaint.apply {
+        textPaint = Paint().apply {
             color = ContextCompat.getColor(context, colorText)
             style = Paint.Style.FILL
             typeface = ResourcesCompat.getFont(context, R.font.wix_madefor_display_medium)
             textSize = sizeText
         }
-        arrowPaint.apply {
+        arrowPaint = Paint().apply {
             color = ContextCompat.getColor(context, colorArrow)
             style = Paint.Style.FILL
         }
     }
 
-    fun startAnimation() {
+    fun startAnimation(maxValue: Int? = null) {
+        if (maxValue != null) animatorMaxValue = maxValue
         if (positiveCount == 0) animatorMaxValue = 1
         val animator = ValueAnimator.ofInt(1, animatorMaxValue).apply {
             duration = animationDuration
@@ -253,5 +297,41 @@ class FactorAnalysisView @JvmOverloads constructor(
         val xPos = x - (textPaint.measureText(resultText) / 2).toInt()
         val yPos = (y - (textPaint.descent() + textPaint.ascent()) / 2).toInt()
         canvas.drawText(resultText, xPos.toFloat(), yPos.toFloat(), textPaint)
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        super.onSaveInstanceState()
+//        println("onSaveInstanceState positiveCount $positiveCount negativeCount $negativeCount factorName $factorName")
+        return bundleOf(
+            Pair(KEY_STATE, super.onSaveInstanceState()),
+            Pair(KEY_POSITIVE_COUNT, positiveCount),
+            Pair(KEY_NEGATIVE_COUNT, negativeCount),
+            Pair(KEY_FACTOR_NAME, factorName),
+            Pair(KEY_MAX_ANIMATOR_VALUE, animatorMaxValue)
+        )
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        var viewState = state
+        if (state != null && state is Bundle) {
+            @Suppress("DEPRECATION")
+            viewState = state.getParcelable(KEY_STATE)
+            positiveCount = state.getInt(KEY_POSITIVE_COUNT)
+            negativeCount = state.getInt(KEY_NEGATIVE_COUNT)
+            factorName = state.getString(KEY_FACTOR_NAME).toString()
+            animatorMaxValue = state.getInt(KEY_MAX_ANIMATOR_VALUE)
+//            println("onRestoreInstanceState positiveCount $positiveCount negativeCount $negativeCount factorName $factorName")
+            init(positiveCount, negativeCount, factorName)
+            startAnimation(animatorMaxValue)
+        }
+        super.onRestoreInstanceState(viewState)
+    }
+
+    companion object {
+        const val KEY_STATE = "KEY_STATE"
+        const val KEY_POSITIVE_COUNT = "KEY_POSITIVE_COUNT"
+        const val KEY_NEGATIVE_COUNT = "KEY_NEGATIVE_COUNT"
+        const val KEY_FACTOR_NAME = "KEY_FACTOR_NAME"
+        const val KEY_MAX_ANIMATOR_VALUE = "KEY_MAX_ANIMATOR_VALUE"
     }
 }

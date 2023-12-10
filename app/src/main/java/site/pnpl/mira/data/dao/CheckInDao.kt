@@ -24,11 +24,19 @@ interface CheckInDao {
     fun deleteAll()
 
     @Query("SELECT * FROM ${DBConstants.TABLE_NAME_CHECK_IN} WHERE date(created_at) BETWEEN :startPeriod AND :endPeriod")
-    fun getByPeriod(startPeriod: String, endPeriod: String): List<CheckIn>
+    fun getForPeriod(startPeriod: String, endPeriod: String): List<CheckIn>
 
     @Delete
     fun deleteListOfCheckIns(checkIns: List<CheckIn>)
 
     @Query("SELECT COUNT(*) FROM ${DBConstants.TABLE_NAME_CHECK_IN}")
     fun getCountCheckIns(): Long
+
+    @Query("SELECT COUNT(factor_id) FROM ${DBConstants.TABLE_NAME_CHECK_IN} WHERE factor_id LIKE :factorId")
+    fun getCountCheckInsByFactor(factorId: Int): Long
+
+    @Query("SELECT * FROM ${DBConstants.TABLE_NAME_CHECK_IN} " +
+            "WHERE (date(created_at) BETWEEN :startPeriod AND :endPeriod) " +
+            "AND factor_id LIKE :factorId")
+    fun getForPeriodByFactorId(startPeriod: String, endPeriod: String, factorId: Int): List<CheckIn>
 }
