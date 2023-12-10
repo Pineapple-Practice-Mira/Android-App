@@ -39,6 +39,8 @@ import site.pnpl.mira.ui.home.recycler_view.ItemClickListener
 import site.pnpl.mira.ui.home.recycler_view.ItemTouchHelperCallback
 import site.pnpl.mira.ui.home.recycler_view.SelectedItemsListener
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
+import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION
+import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION_HOME
 import site.pnpl.mira.utils.PopUpDialog
 import site.pnpl.mira.utils.screenHeight
 import site.pnpl.mira.utils.toPx
@@ -167,7 +169,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         )
         findNavController().navigate(
             R.id.action_home_to_statistics,
-            null,
+            bundleOf(
+                Pair(KEY_TRANSITION, KEY_TRANSITION_HOME)
+            ),
             null,
             extras
         )

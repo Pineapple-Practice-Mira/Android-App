@@ -27,7 +27,7 @@ class FactorAnalysisView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private var fixHeight: Int = 46.toPx
-    private var bottomOffset = 12.toPx
+    private val bottomOffset = 12.toPx
     private var offsetEmotion: Int = 8.toPx
     private var emotionIconSize: Int = 46.toPx
 
@@ -45,7 +45,7 @@ class FactorAnalysisView @JvmOverloads constructor(
     private var arrowIcon: Int = R.drawable.icon_arrow_factor_view
 
     @ColorRes
-    private var colorPositive: Int = R.color.primary
+    var colorPositive: Int = R.color.primary
 
     @ColorRes
     private var colorNegative: Int = R.color.primary_dark
@@ -60,40 +60,41 @@ class FactorAnalysisView @JvmOverloads constructor(
 
     private var cornerRadius: Int = 18.toPx
 
-    private var factorName: String = ""
+    var factorName: String = ""
 
     init {
-        if (attrs != null) {
-            val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.FactorAnalysisView, 0, 0)
 
-            fixHeight = attributes.getInt(R.styleable.FactorAnalysisView_favHeight, fixHeight)
-            bottomOffset = attributes.getInt(R.styleable.FactorAnalysisView_favBottomOffset, bottomOffset)
-            offsetEmotion = attributes.getInt(R.styleable.FactorAnalysisView_favOffsetEmotion, offsetEmotion)
-            emotionIconSize = attributes.getInt(R.styleable.FactorAnalysisView_favEmotionIconSize, emotionIconSize)
+//        if (attrs != null) {
+//            val attributes = context.theme.obtainStyledAttributes(attrs, R.styleable.FactorAnalysisView, 0, 0)
+//
+//            fixHeight = attributes.getInt(R.styleable.FactorAnalysisView_favHeight, fixHeight)
+//            bottomOffset = attributes.getInt(R.styleable.FactorAnalysisView_favBottomOffset, bottomOffset)
+//            offsetEmotion = attributes.getInt(R.styleable.FactorAnalysisView_favOffsetEmotion, offsetEmotion)
+//            emotionIconSize = attributes.getInt(R.styleable.FactorAnalysisView_favEmotionIconSize, emotionIconSize)
+//
+//            positiveCount = attributes.getInt(R.styleable.FactorAnalysisView_favPositiveCount, positiveCount)
+//            negativeCount = attributes.getInt(R.styleable.FactorAnalysisView_favNegativeCount, negativeCount)
+//            animationDuration = attributes.getInt(R.styleable.FactorAnalysisView_favAnimationDuration, animationDuration.toInt()).toLong()
+//
+//            positiveSmileResId = attributes.getResourceId(R.styleable.FactorAnalysisView_favPositiveIconResId, positiveSmileResId)
+//            negativeSmileResId = attributes.getResourceId(R.styleable.FactorAnalysisView_favNegativeIconResId, negativeSmileResId)
+//            arrowIcon = attributes.getResourceId(R.styleable.FactorAnalysisView_favArrowResId, arrowIcon)
+//
+//            colorPositive = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorPositive, colorPositive)
+//            colorNegative = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorNegative, colorNegative)
+//            colorText = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorText, colorText)
+//            colorArrow = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorArrow, colorArrow)
+//
+//            sizeText = attributes.getDimension(R.styleable.FactorAnalysisView_favTextSize, sizeText)
+//            cornerRadius = attributes.getInt(R.styleable.FactorAnalysisView_favCornerRadius, cornerRadius)
+//
+//            factorName = attributes.getString(R.styleable.FactorAnalysisView_favFactorName) ?: factorName
+//
+//            attributes.recycle()
+//
+//        }
 
-            positiveCount = attributes.getInt(R.styleable.FactorAnalysisView_favPositiveCount, positiveCount)
-            negativeCount = attributes.getInt(R.styleable.FactorAnalysisView_favNegativeCount, negativeCount)
-            animationDuration = attributes.getInt(R.styleable.FactorAnalysisView_favAnimationDuration, animationDuration.toInt()).toLong()
-
-            positiveSmileResId = attributes.getResourceId(R.styleable.FactorAnalysisView_favPositiveIconResId, positiveSmileResId)
-            negativeSmileResId = attributes.getResourceId(R.styleable.FactorAnalysisView_favNegativeIconResId, negativeSmileResId)
-            arrowIcon = attributes.getResourceId(R.styleable.FactorAnalysisView_favArrowResId, arrowIcon)
-
-            colorPositive = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorPositive, colorPositive)
-            colorNegative = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorNegative, colorNegative)
-            colorText = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorText, colorText)
-            colorArrow = attributes.getResourceId(R.styleable.FactorAnalysisView_favColorArrow, colorArrow)
-
-            sizeText = attributes.getDimension(R.styleable.FactorAnalysisView_favTextSize, sizeText)
-            cornerRadius = attributes.getInt(R.styleable.FactorAnalysisView_favCornerRadius, cornerRadius)
-
-            factorName = attributes.getString(R.styleable.FactorAnalysisView_favFactorName) ?: factorName
-
-            attributes.recycle()
-        }
     }
-
-    /***********************************/
 
     private var resolvedWidth = 0
     private var resolvedHeight = fixHeight
@@ -102,10 +103,10 @@ class FactorAnalysisView @JvmOverloads constructor(
     private lateinit var negativeEmoji: Bitmap
     private lateinit var arrow: Bitmap
 
-    private val negativePaint = Paint()
-    private val positivePaint = Paint()
-    private val textPaint = Paint()
-    private val arrowPaint = Paint()
+    private var negativePaint = Paint()
+    private var positivePaint = Paint()
+    private var textPaint = Paint()
+    private var arrowPaint = Paint()
 
     private val negativePath = Path()
     private val positivePath = Path()
@@ -136,15 +137,23 @@ class FactorAnalysisView @JvmOverloads constructor(
 
     constructor(
         context: Context,
-        negativeCount: Int,
         positiveCount: Int,
+        negativeCount: Int,
         factorName: String,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
     ) : this(context, attrs, defStyleAttr) {
 
-        this.negativeCount = negativeCount
+        initialization(positiveCount, negativeCount, factorName)
+    }
+
+    fun init(positiveCount: Int, negativeCount: Int, factorName: String, ) {
+        initialization(positiveCount, negativeCount, factorName)
+    }
+
+    private fun initialization(positiveCount: Int, negativeCount: Int, factorName: String,) {
         this.positiveCount = positiveCount
+        this.negativeCount = negativeCount
         this.factorName = factorName
 
         initPaints()
@@ -186,27 +195,29 @@ class FactorAnalysisView @JvmOverloads constructor(
     }
 
     private fun initPaints() {
-        negativePaint.apply {
+
+        negativePaint = Paint().apply {
             color = ContextCompat.getColor(context, colorNegative)
             style = Paint.Style.FILL
         }
-        positivePaint.apply {
+        positivePaint = Paint().apply {
             color = ContextCompat.getColor(context, colorPositive)
             style = Paint.Style.FILL
         }
-        textPaint.apply {
+        textPaint = Paint().apply {
             color = ContextCompat.getColor(context, colorText)
             style = Paint.Style.FILL
             typeface = ResourcesCompat.getFont(context, R.font.wix_madefor_display_medium)
             textSize = sizeText
         }
-        arrowPaint.apply {
+        arrowPaint = Paint().apply {
             color = ContextCompat.getColor(context, colorArrow)
             style = Paint.Style.FILL
         }
     }
 
-    fun startAnimation() {
+    fun startAnimation(maxValue: Int? = null) {
+        if (maxValue != null) animatorMaxValue = maxValue
         if (positiveCount == 0) animatorMaxValue = 1
         val animator = ValueAnimator.ofInt(1, animatorMaxValue).apply {
             duration = animationDuration

@@ -136,16 +136,15 @@
     </fragment>
     <fragment
         android:id="@+id/statisticsByFactorFragment"
-        android:name="site.pnpl.mira.ui.statistic.StatisticsByFactorFragment"
+        android:name="site.pnpl.mira.ui.statistic.fragments.StatisticsByFactorFragment"
         android:label="StatisticsByFactorFragment"
         tools:layout="@layout/fragment_statistics_by_factor">
         <action
             android:id="@+id/action_stat_by_factor_to_details"
             app:destination="@id/checkInDetailsFragment" />
         <action
-            android:id="@+id/action_stat_by_factor_to_home"
-            app:destination="@id/navigation_home"
-            app:launchSingleTop="true"
+            android:id="@+id/action_stat_by_factor_to_statistic"
+            app:destination="@id/statisticsFragment"
             app:popUpTo="@id/statisticsFragment"
             app:popUpToInclusive="true" />
     </fragment>
