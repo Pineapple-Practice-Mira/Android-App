@@ -20,7 +20,6 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         binding.viewPager
     }
 
-    private var key: String? = null
     private var position: Int? = null
     private var checkIns: List<CheckInUI>? = null
 
@@ -32,7 +31,6 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
 
         with(findNavController().currentBackStackEntry?.arguments) {
             this?.let {
-                key = getString(CALLBACK_KEY)
                 position = getInt(POSITION_KEY)
                 checkIns = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     getParcelableArrayList(LIST_OF_CHECK_IN_KEY, CheckInUI::class.java)
@@ -48,9 +46,10 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
 
     private fun initViewPager() {
         viewPager.apply {
-            adapter = DetailAdapter(this@CheckInDetailsFragment, checkIns!!, onArrowClickListener, key!!)
+            adapter = DetailAdapter(this@CheckInDetailsFragment, checkIns!!, onArrowClickListener)
             isUserInputEnabled = false
             setCurrentItem(position!!, false)
+            println("initViewPager position: $position checkIns: $checkIns")
         }
     }
 
@@ -63,10 +62,10 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         override fun onClick(direction: Direction) {
             when(direction) {
                 Direction.LEFT -> {
-                    viewPager.setCurrentItem(viewPager.currentItem - 1, 300L)
+                    viewPager.setCurrentItem(viewPager.currentItem - 1, ANIMATION_DURATION)
                 }
                 Direction.RIGHT -> {
-                    viewPager.setCurrentItem(viewPager.currentItem + 1, 300L)
+                    viewPager.setCurrentItem(viewPager.currentItem + 1, ANIMATION_DURATION)
                 }
             }
         }
@@ -82,6 +81,7 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         const val CALLBACK_STATISTIC = "STATISTIC"
         const val POSITION_KEY = "POSITION"
         const val LIST_OF_CHECK_IN_KEY = "CHECK_INS"
+        const val ANIMATION_DURATION = 300L
     }
 
     enum class Direction {

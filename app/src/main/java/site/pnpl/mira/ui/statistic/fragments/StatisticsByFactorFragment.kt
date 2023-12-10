@@ -113,9 +113,8 @@ class StatisticsByFactorFragment : Fragment(R.layout.fragment_statistics_by_fact
 
             //сортировка в обратном порядке
             checkIns.sortBy { it.createdAtLong }
-            val posInNewList = checkIns.size - position
+            val posInNewList = (checkIns.size - 1) - position
 
-            println("oldPosition: $position newPosition: $posInNewList checkIns.size ${checkIns.size}")
             navigateToCheckInDetails(posInNewList, checkIns)
         }
 

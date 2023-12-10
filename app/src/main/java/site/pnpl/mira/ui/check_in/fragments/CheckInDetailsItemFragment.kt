@@ -24,7 +24,6 @@ import site.pnpl.mira.model.Emotion
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
 import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
-import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.CALLBACK_STATISTIC
 import site.pnpl.mira.utils.MiraDateFormat
 import site.pnpl.mira.utils.PopUpDialog
 
@@ -33,7 +32,6 @@ class CheckInDetailsItemFragment(
     private val checkIns: List<CheckInUI>,
     private val position: Int,
     private val onArrowClickListener: CheckInDetailsFragment.ArrowClickListener,
-    private val callbackKey: String,
 ) : Fragment(R.layout.fragment_check_in_details_item) {
 
     private var _binding: FragmentCheckInDetailsItemBinding? = null
@@ -227,12 +225,7 @@ class CheckInDetailsItemFragment(
                 val dialogClickListener = object : PopUpDialog.PopUpDialogClickListener {
                     override fun onClick(popUpDialog: PopUpDialog) {
                         popUpDialog.dismiss()
-                        findNavController().navigate(
-                            when (callbackKey) {
-                                CALLBACK_STATISTIC -> R.id.action_check_in_details_to_statistic_factor
-                                else -> R.id.action_check_in_details_to_home
-                            }
-                        )
+                        findNavController().popBackStack()
                     }
                 }
 

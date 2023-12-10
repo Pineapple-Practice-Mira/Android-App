@@ -301,6 +301,7 @@ class FactorAnalysisView @JvmOverloads constructor(
 
     override fun onSaveInstanceState(): Parcelable {
         super.onSaveInstanceState()
+//        println("onSaveInstanceState positiveCount $positiveCount negativeCount $negativeCount factorName $factorName")
         return bundleOf(
             Pair(KEY_STATE, super.onSaveInstanceState()),
             Pair(KEY_POSITIVE_COUNT, positiveCount),
@@ -319,6 +320,7 @@ class FactorAnalysisView @JvmOverloads constructor(
             negativeCount = state.getInt(KEY_NEGATIVE_COUNT)
             factorName = state.getString(KEY_FACTOR_NAME).toString()
             animatorMaxValue = state.getInt(KEY_MAX_ANIMATOR_VALUE)
+//            println("onRestoreInstanceState positiveCount $positiveCount negativeCount $negativeCount factorName $factorName")
             init(positiveCount, negativeCount, factorName)
             startAnimation(animatorMaxValue)
         }
