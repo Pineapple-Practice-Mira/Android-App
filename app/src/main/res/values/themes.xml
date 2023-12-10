@@ -98,6 +98,9 @@
     </style>
 
     <style name="Notion12" parent="WixMadeforDisplayBold">
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:translationY">-0.44sp</item>
+        <item name="android:letterSpacing">0.04</item>
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">12sp</item>
     </style>
@@ -110,6 +113,8 @@
     <style name="DateNumber24" parent="WixMadeforDisplayBold">
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:lineSpacingExtra">-8sp</item>
+        <item name="android:letterSpacing">0.02</item>
     </style>
 
     <style name="Links16Primary" parent="WixMadeforDisplayMedium">

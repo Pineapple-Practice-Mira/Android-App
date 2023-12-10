@@ -54,8 +54,6 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         }
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

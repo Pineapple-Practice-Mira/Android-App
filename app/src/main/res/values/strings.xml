@@ -125,5 +125,8 @@
     <string name="statistic_info">Шкала отображает соотношение положительных и отрицательных эмоций по каждому из факторов за выбранный период.</string>
     <string name="statistic_notice">За выбранный период нет записей\nВыбери другие даты, используя календарь</string>
     <string name="statistic_factor_name">/ %1$s</string>
+    <string name="statistic_label">Записей с фактором</string>
+    <string name="statistic_label_count_period">за выбранный период</string>
+    <string name="statistic_label_count_total">за всё время</string>
 
 </resources>

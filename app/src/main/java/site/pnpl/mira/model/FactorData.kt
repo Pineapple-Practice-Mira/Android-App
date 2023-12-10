@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FactorData(
-    val id: Int,
+    val factorId: Int,
     @StringRes val nameIdRes: Int,
     var positiveCount: Int = 0,
     var negativeCount: Int = 0,

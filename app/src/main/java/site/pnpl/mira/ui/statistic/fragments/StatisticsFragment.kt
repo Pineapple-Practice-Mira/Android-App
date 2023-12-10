@@ -117,7 +117,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         val factors = mutableListOf<FactorData>()
         checkIns.forEach { checkIn ->
-            var factor = factors.find { it.id == checkIn.factorId }
+            var factor = factors.find { it.factorId == checkIn.factorId }
             if (factor == null) {
                 factors.add(
                     FactorData(

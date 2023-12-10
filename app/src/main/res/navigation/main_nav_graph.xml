@@ -141,7 +141,9 @@
         tools:layout="@layout/fragment_statistics_by_factor">
         <action
             android:id="@+id/action_stat_by_factor_to_details"
-            app:destination="@id/checkInDetailsFragment" />
+            app:destination="@id/checkInDetailsFragment"
+            app:enterAnim="@anim/check_in_up"
+            app:popExitAnim="@anim/check_in_down"/>
         <action
             android:id="@+id/action_stat_by_factor_to_statistic"
             app:destination="@id/statisticsFragment"

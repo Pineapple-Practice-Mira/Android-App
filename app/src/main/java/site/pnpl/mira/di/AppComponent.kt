@@ -13,6 +13,7 @@ import site.pnpl.mira.ui.greeting.fragments.SplashFragment
 import site.pnpl.mira.ui.home.fragments.HomeFragment
 import site.pnpl.mira.ui.home.HomeViewModel
 import site.pnpl.mira.ui.home.fragments.SettingsFragment
+import site.pnpl.mira.ui.statistic.StatisticByFactorViewModel
 import site.pnpl.mira.ui.statistic.StatisticViewModel
 import site.pnpl.mira.ui.statistic.fragments.StatisticsByFactorFragment
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment
@@ -39,5 +40,6 @@ interface AppComponent {
     fun inject(statisticViewModel: StatisticViewModel)
     fun inject(statisticsFragment: StatisticsFragment)
     fun inject(statisticsByFactorFragment: StatisticsByFactorFragment)
+    fun inject(statisticByFactorViewModel: StatisticByFactorViewModel)
 
 }
