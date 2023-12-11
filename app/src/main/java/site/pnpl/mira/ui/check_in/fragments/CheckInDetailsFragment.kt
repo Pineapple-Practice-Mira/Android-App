@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.R
@@ -19,7 +20,6 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         binding.viewPager
     }
 
-    private var key: String? = null
     private var position: Int? = null
     private var checkIns: List<CheckInUI>? = null
 
@@ -27,12 +27,10 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCheckInDetailsBinding.bind(view)
 
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
 
         with(findNavController().currentBackStackEntry?.arguments) {
             this?.let {
-                key = getString(CALLBACK_KEY)
                 position = getInt(POSITION_KEY)
                 checkIns = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     getParcelableArrayList(LIST_OF_CHECK_IN_KEY, CheckInUI::class.java)
@@ -51,10 +49,9 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
             adapter = DetailAdapter(this@CheckInDetailsFragment, checkIns!!, onArrowClickListener)
             isUserInputEnabled = false
             setCurrentItem(position!!, false)
+            println("initViewPager position: $position checkIns: $checkIns")
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -65,10 +62,10 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         override fun onClick(direction: Direction) {
             when(direction) {
                 Direction.LEFT -> {
-                    viewPager.setCurrentItem(viewPager.currentItem - 1, 300L)
+                    viewPager.setCurrentItem(viewPager.currentItem - 1, ANIMATION_DURATION)
                 }
                 Direction.RIGHT -> {
-                    viewPager.setCurrentItem(viewPager.currentItem + 1, 300L)
+                    viewPager.setCurrentItem(viewPager.currentItem + 1, ANIMATION_DURATION)
                 }
             }
         }
@@ -84,6 +81,7 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         const val CALLBACK_STATISTIC = "STATISTIC"
         const val POSITION_KEY = "POSITION"
         const val LIST_OF_CHECK_IN_KEY = "CHECK_INS"
+        const val ANIMATION_DURATION = 300L
     }
 
     enum class Direction {

@@ -29,7 +29,7 @@ data class CheckIn(
     @ColumnInfo(name = "is_synchronized", defaultValue = "0") val isSynchronized: Int = 0
 ) : Parcelable
 
-fun CheckIn.mapToCheckInUI(): CheckInUI {
+fun CheckIn.asCheckInUI(): CheckInUI {
     return CheckInUI(
         id = id,
         emotionId = emotionId,

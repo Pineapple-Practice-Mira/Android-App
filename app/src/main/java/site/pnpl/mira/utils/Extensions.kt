@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.view.animation.LinearInterpolator
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 
@@ -16,6 +17,12 @@ val Context.screenWidth: Int
 
 val Context.screenHeight: Int
     get() = resources.displayMetrics.heightPixels
+
+val Fragment.screenHeight: Int
+    get() = requireContext().screenHeight
+
+val Fragment.screenWidth: Int
+    get() = requireContext().screenWidth
 
 /**
  * Pixel and Dp Conversion

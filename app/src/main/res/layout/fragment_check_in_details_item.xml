@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:text="@string/label_feeling"
+                android:text="@string/label_factor"
                 app:layout_constraintBottom_toTopOf="@id/factor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -176,10 +176,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
+                android:textColor="@color/primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/labelFactor"
-                tools:text="страх" />
+                tools:text="общество" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -258,7 +259,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="20dp"
         android:src="@drawable/icon_trash"
-        app:tint="@color/button_delete_icon_state"
+        app:tint="@color/button_icon_state"
         android:background="@drawable/button_delete_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -305,7 +306,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/icon_arrow"
         android:includeFontPadding="false"
         android:padding="0dp"
         android:textColor="@color/bottom_bar_button_arrow_state"
@@ -332,7 +332,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/icon_arrow"
         android:includeFontPadding="false"
         android:padding="0dp"
         android:textColor="@color/bottom_bar_button_arrow_state"

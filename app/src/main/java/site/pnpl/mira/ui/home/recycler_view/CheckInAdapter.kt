@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ItemCheckInExpandedBinding
@@ -70,21 +71,33 @@ class CheckInAdapter(
                 )
             )
 
-            holder.itemView.setOnLongClickListener {
+            holder.root.setOnLongClickListener {
                 changeExpandedListener.expandAll(!isExpanded)
                 true
             }
 
-            holder.itemView.setOnClickListener {
+            holder.root.setOnClickListener {
                 if (isExpanded) {
                     holder.selected()
                 } else {
                     onItemClickListener.onItemClick(position)
                 }
             }
+
+
             if (isExpanded) {
-                holder.itemView.findViewById<ImageButton>(R.id.selector).isSelected = isSelected
+                val selector: ImageView = holder.itemView.findViewById<ImageButton>(R.id.selector)
+                selector.isSelected = isSelected
                 holder.itemView.findViewById<ConstraintLayout>(R.id.main).isSelected = isSelected
+
+                selector.setOnLongClickListener {
+                    changeExpandedListener.expandAll(!isExpanded)
+                    true
+                }
+
+                selector.setOnClickListener {
+                        holder.selected()
+                }
             }
 
         }
@@ -111,12 +124,17 @@ class CheckInAdapter(
         onSelectedItemsListener.notify(isHaveSelected)
     }
 
-    fun setItemsList(items: List<CheckInUI>) {
+    fun setItemsList(items: MutableList<CheckInUI>) {
+        if (items.isNotEmpty() && items[0].typeItem != TYPE_ITEM_VOID) {
+            items.add(0, getVoidCheckIn())
+        }
+
+        val diff = CheckInDiff(checkIns, items)
+        val diffResult = DiffUtil.calculateDiff(diff)
+
         checkIns.clear()
         checkIns.addAll(items)
-        if (checkIns.isNotEmpty() && checkIns[0].typeItem != TYPE_ITEM_VOID) {
-            checkIns.add(0, getVoidCheckIn())
-        }
+
         if (!isExpanded) {
             checkIns.forEach {
                 if (it.typeItem == TYPE_ITEM_CHECK_IN) {
@@ -124,14 +142,15 @@ class CheckInAdapter(
                 }
             }
         }
-        update()
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     private fun getVoidCheckIn(): CheckInUI {
         return CheckInUI(
-            id = 0,
-            emotionId = 0,
-            factorId = 0,
+            id = -1,
+            emotionId = -1,
+            factorId = -1,
             exercisesId = 0,
             note = "",
             createdAt = "",
@@ -146,7 +165,6 @@ class CheckInAdapter(
     @SuppressLint("NotifyDataSetChanged")
     private fun update() {
         notifyDataSetChanged()
-//        notifyItemInserted(items.size - 1)
     }
 
     fun getSelectedItemsAndDelete(): List<CheckInUI> {
@@ -172,8 +190,9 @@ class CheckInAdapter(
 
     open inner class ViewHolder(item: View) : RecyclerView.ViewHolder(item)
 
-    inner class CheckInViewHolder(private val item: View) : ViewHolder(item) {
+    inner class CheckInViewHolder(val item: View) : ViewHolder(item) {
         val context: Context = item.context
+        val root: ConstraintLayout = item.findViewById(R.id.rootContainer)
         val day: TextView = item.findViewById(R.id.day)
         val month: TextView = item.findViewById(R.id.month)
         val dayOfWeekAndTime: TextView = item.findViewById(R.id.dayOfWeekAndTime)
@@ -193,6 +212,22 @@ class CheckInAdapter(
 
     inner class VoidViewHolder(item: View) : ViewHolder(item)
 
+    class CheckInDiff(
+        private val oldList: List<CheckInUI>,
+        private val newList: List<CheckInUI>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
 }
 
 

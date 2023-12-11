@@ -10,10 +10,9 @@ import kotlin.coroutines.suspendCoroutine
 
 class CheckInRepository(private val checkInDao: CheckInDao) {
 
-    suspend fun insertCheckIn(checkIn: CheckIn): Boolean {
+    suspend fun insertCheckIn(checkIn: CheckIn) {
         return withContext(Dispatchers.IO) {
             checkInDao.insert(checkIn)
-            return@withContext true
         }
     }
 
@@ -32,9 +31,20 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
     suspend fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long): List<CheckIn> =
         suspendCoroutine { continuation ->
             continuation.resume(
-                checkInDao.getByPeriod(
+                checkInDao.getForPeriod(
                     MiraDateFormat(startPeriod).getFormatForBD(),
-                    MiraDateFormat(endPeriod).getFormatForBD()
+                    MiraDateFormat(endPeriod).getFormatForBD(),
+                )
+            )
+        }
+
+    suspend fun getCheckInForPeriodByFactorId(startPeriod: Long, endPeriod: Long, factorId: Int): List<CheckIn> =
+        suspendCoroutine { continuation ->
+            continuation.resume(
+                checkInDao.getForPeriodByFactorId(
+                    MiraDateFormat(startPeriod).getFormatForBD(),
+                    MiraDateFormat(endPeriod).getFormatForBD(),
+                    factorId
                 )
             )
         }
@@ -51,5 +61,15 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
             checkInDao.deleteListOfCheckIns(checkIns)
         }
     }
+
+    suspend fun getCountCheckIns(): Long =
+        withContext(Dispatchers.IO) {
+            return@withContext checkInDao.getCountCheckIns()
+        }
+
+    suspend fun getCountCheckInsByFactor(factorId: Int): Long =
+        withContext(Dispatchers.IO) {
+            return@withContext checkInDao.getCountCheckInsByFactor(factorId)
+        }
 
 }

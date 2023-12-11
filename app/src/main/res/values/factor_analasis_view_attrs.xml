@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FactorAnalysisView">
+        <attr name="favHeight" format="integer"/>
+        <attr name="favBottomOffset" format="integer"/>
+        <attr name="favOffsetEmotion" format="integer"/>
+        <attr name="favEmotionIconSize" format="integer"/>
+
+        <attr name="favNegativeCount" format="integer"/>
+        <attr name="favPositiveCount" format="integer"/>
+        <attr name="favAnimationDuration" format="integer"/>
+
+        <attr name="favPositiveIconResId" format="integer"/>
+        <attr name="favNegativeIconResId" format="integer"/>
+        <attr name="favArrowResId" format="integer"/>
+
+        <attr name="favColorPositive" format="color"/>
+        <attr name="favColorNegative" format="color"/>
+        <attr name="favColorText" format="color"/>
+        <attr name="favColorArrow" format="color"/>
+
+        <attr name="favTextSize" format="dimension"/>
+        <attr name="favCornerRadius" format="integer"/>
+        <attr name="favFactorName" format="string"/>
+    </declare-styleable>
+</resources>
