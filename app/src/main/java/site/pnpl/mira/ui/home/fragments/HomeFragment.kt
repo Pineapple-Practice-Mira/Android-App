@@ -285,8 +285,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         val onSelectedItemsListener = object : SelectedItemsListener {
-            override fun notify(isHaveSelected: Boolean) {
+            override fun notify(isHaveSelected: Boolean, allItemSelected: Boolean) {
                 binding.actionBar.deleteButtonEnable(isHaveSelected)
+                if (allItemSelected) {
+                    isSelectAll = true
+                    binding.actionBar.selectSelector(true)
+                } else {
+                    isSelectAll = false
+                    binding.actionBar.selectSelector(false)
+                }
             }
         }
 

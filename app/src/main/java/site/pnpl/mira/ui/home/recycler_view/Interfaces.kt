@@ -1,7 +1,7 @@
 package site.pnpl.mira.ui.home.recycler_view
 
 interface SelectedItemsListener {
-    fun notify(isHaveSelected: Boolean)
+    fun notify(isHaveSelected: Boolean, allItemSelected: Boolean)
 }
 
 
