@@ -92,10 +92,10 @@
         app:boxStrokeWidth="0dp"
         app:hintEnabled="false"
         app:hintTextColor="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/start"
-        app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end"
+        app:layout_constraintStart_toEndOf="@id/start"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.397">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -104,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/frame_input_field"
+            android:digits="@string/input_symbol_filter"
             android:hint="@string/enter_name"
             android:imeOptions="actionDone"
             android:inputType="text"

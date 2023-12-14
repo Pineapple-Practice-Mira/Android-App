@@ -128,5 +128,6 @@
     <string name="statistic_label">Записей с фактором</string>
     <string name="statistic_label_count_period">за выбранный период</string>
     <string name="statistic_label_count_total">за всё время</string>
+    <string name="input_symbol_filter">-0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя</string>
 
 </resources>

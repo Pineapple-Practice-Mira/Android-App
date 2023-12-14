@@ -3,9 +3,11 @@ package site.pnpl.mira.ui.greeting.fragments
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.text.InputType
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.App
@@ -14,7 +16,6 @@ import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME_ALPHA
-import site.pnpl.mira.utils.InputLettersFilter
 import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
 import javax.inject.Inject
 
@@ -38,9 +39,10 @@ class InterNameFragment : Fragment(R.layout.fragment_inter_name) {
 
             confirm.isEnabled = name.length >= MIN_LENGTH_IN_INPUT_NAME
 
+            inputName.imeOptions = EditorInfo.IME_ACTION_DONE
+            inputName.setRawInputType(InputType.TYPE_CLASS_TEXT)
             inputName.apply {
                 text = SpannableStringBuilder(name)
-                filters = arrayOf(InputLettersFilter())
             }
 
             inputName.doAfterTextChanged { editable ->

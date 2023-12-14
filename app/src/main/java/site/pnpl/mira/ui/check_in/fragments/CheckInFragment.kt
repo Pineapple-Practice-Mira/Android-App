@@ -2,6 +2,7 @@ package site.pnpl.mira.ui.check_in.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,8 +35,7 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
         _binding = FragmentCheckInBinding.bind(view)
         initViewPager()
 
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.dark_grey)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
 
         viewModel.isSaved.observe(viewLifecycleOwner) {
             val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
