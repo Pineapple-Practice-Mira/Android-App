@@ -55,6 +55,13 @@
     <style name="WixMadeforDisplaySimiBold" parent="BaseTextTheme">
         <item name="fontFamily">@font/wix_madefor_display_semi_bold</item>
     </style>
+    
+    <style name="BubbleText" parent="WixMadeforDisplayMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">14sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:lineSpacingExtra">-1sp</item>
+    </style>
 
     <style name="Title18Dark" parent="WixMadeforDisplayRegular">
         <item name="android:textColor">@color/black</item>

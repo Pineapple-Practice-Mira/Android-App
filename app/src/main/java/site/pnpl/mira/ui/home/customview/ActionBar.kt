@@ -81,6 +81,10 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
         }
     }
 
+    fun selectSelector(value: Boolean) {
+        binding.selector.isSelected = value
+    }
+
     fun setCalendarPeriodSelectionListener(childFragmentManager: FragmentManager, listener: (Pair<Long, Long>) -> Unit) {
         binding.calendar.setOnClickListener {
             dateRangePicker.show(childFragmentManager, DATE_PICKER_TAG)

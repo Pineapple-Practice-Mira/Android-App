@@ -12,11 +12,11 @@
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toTopOf="@id/downBarrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/downBarrier">
+        app:layout_constraintVertical_bias="0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,8 +35,7 @@
                 android:paddingStart="8dp"
                 android:paddingTop="14dp"
                 android:paddingBottom="4dp"
-                tools:ignore="RtlSymmetry">
-            </LinearLayout>
+                tools:ignore="RtlSymmetry" />
 
             <LinearLayout
                 android:id="@+id/rightContainer"
@@ -48,8 +47,7 @@
                 android:orientation="vertical"
                 android:paddingTop="14dp"
                 android:paddingEnd="4dp"
-                tools:ignore="RtlSymmetry">
-            </LinearLayout>
+                tools:ignore="RtlSymmetry" />
         </LinearLayout>
     </ScrollView>
 
@@ -59,7 +57,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="textViewLabelFactors, maxScrollView"/>
+        app:constraint_referenced_ids="textViewLabelFactors, maxScrollView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/maxScrollView"
@@ -80,30 +78,37 @@
         android:text="@string/label_factors"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scrollView"/>
+        app:layout_constraintTop_toBottomOf="@id/scrollView" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/noteInputLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/check_in_input_note_background"
+        android:orientation="vertical"
         app:counterEnabled="true"
-        app:counterMaxLength="10"
+        app:counterMaxLength="500"
+        app:counterTextAppearance="@style/BubbleText"
+        app:counterTextColor="@color/dark_grey"
         app:hintEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/textViewLabelFactors"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHeight_min="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewLabelFactors">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/noteInput"
             style="@style/Body14Primary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/check_in_input_note_background"
+            android:layout_marginBottom="-16dp"
+            android:layout_weight="0.7"
+            android:background="@android:color/transparent"
             android:cursorVisible="true"
             android:gravity="start|top"
             android:hint="@string/note_text"
@@ -111,6 +116,7 @@
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:maxLength="500"
+            android:minHeight="50dp"
             android:paddingStart="16dp"
             android:paddingTop="8dp"
             android:paddingEnd="16dp"

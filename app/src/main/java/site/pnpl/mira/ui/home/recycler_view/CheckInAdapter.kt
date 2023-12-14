@@ -114,14 +114,14 @@ class CheckInAdapter(
     }
 
     fun notifyIfHaveSelectedItems() {
-        var isHaveSelected = false
-        checkIns.forEach { checkIn ->
-            if (checkIn.isSelected) {
-                isHaveSelected = true
-                return@forEach
-            }
+        val isHaveSelected = checkIns.any { checkIn ->
+            checkIn.isSelected
         }
-        onSelectedItemsListener.notify(isHaveSelected)
+        val allItemSelected = checkIns.all { checkIn ->
+            checkIn.isSelected
+        }
+
+        onSelectedItemsListener.notify(isHaveSelected, allItemSelected)
     }
 
     fun setItemsList(items: MutableList<CheckInUI>) {
@@ -157,7 +157,7 @@ class CheckInAdapter(
             createdAtLong = 0,
             editedAt = "",
             isSynchronized = false,
-            isSelected = false,
+            isSelected = true,
             typeItem = TYPE_ITEM_VOID
         )
     }
@@ -170,7 +170,7 @@ class CheckInAdapter(
     fun getSelectedItemsAndDelete(): List<CheckInUI> {
         val list = mutableListOf<CheckInUI>()
         checkIns.forEach { checkIn ->
-            if (checkIn.isSelected) {
+            if (checkIn.typeItem == TYPE_ITEM_CHECK_IN && checkIn.isSelected) {
                 list.add(checkIn)
             }
         }

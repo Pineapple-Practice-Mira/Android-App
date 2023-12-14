@@ -4,8 +4,10 @@ import android.content.ClipData
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.text.SpannableStringBuilder
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.widget.doAfterTextChanged
@@ -16,7 +18,6 @@ import site.pnpl.mira.BuildConfig
 import site.pnpl.mira.R
 import site.pnpl.mira.data.SettingsProvider
 import site.pnpl.mira.databinding.FragmentSettingsBinding
-import site.pnpl.mira.utils.InputLettersFilter
 import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
 import java.io.File
 import javax.inject.Inject
@@ -47,10 +48,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
 
     private fun initInputField() {
+        binding.inputName.imeOptions = EditorInfo.IME_ACTION_DONE
+        binding.inputName.setRawInputType(InputType.TYPE_CLASS_TEXT)
+
         savedName = settingsProvider.getName()
         binding.inputName.apply {
             text = SpannableStringBuilder(savedName)
-            filters = arrayOf(InputLettersFilter())
         }
 
         binding.inputName.doAfterTextChanged { editable ->
