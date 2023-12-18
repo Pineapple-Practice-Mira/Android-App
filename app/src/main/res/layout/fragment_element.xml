@@ -7,13 +7,23 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <com.airbnb.lottie.LottieAnimationView
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--        android:id="@+id/animation"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:lottie_rawRes="@raw/cro_gif"-->
+<!--        app:lottie_autoPlay="true"-->
+<!--        app:lottie_loop="true"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/title"/>-->
+
+    <ImageView
         android:id="@+id/animation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:lottie_rawRes="@raw/cro_gif"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
+        android:src="@drawable/gif_greeting1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

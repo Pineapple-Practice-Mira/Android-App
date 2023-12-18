@@ -4,7 +4,7 @@ import site.pnpl.mira.R
 
 object VpElementsGenerator {
     fun generate() = listOf<VpElement>(
-        VpElement(R.raw.mira, R.string.acquaintance_title_1, R.string.acquaintance_text_1),
+        VpElement(R.drawable.gif_greeting1, R.string.acquaintance_title_1, R.string.acquaintance_text_1),
         VpElement(R.raw.mira, R.string.acquaintance_title_2, R.string.acquaintance_text_2),
         VpElement(R.raw.mira, R.string.acquaintance_title_3, R.string.acquaintance_text_3),
         VpElement(R.raw.mira, R.string.acquaintance_title_4, R.string.acquaintance_text_4),

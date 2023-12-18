@@ -115,7 +115,7 @@ class CheckInAdapter(
 
     fun notifyIfHaveSelectedItems() {
         val isHaveSelected = checkIns.any { checkIn ->
-            checkIn.isSelected
+            checkIn.typeItem == TYPE_ITEM_CHECK_IN && checkIn.isSelected
         }
         val allItemSelected = checkIns.all { checkIn ->
             checkIn.isSelected
