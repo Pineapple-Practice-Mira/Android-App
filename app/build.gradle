@@ -17,7 +17,7 @@ android {
         targetSdk 34
         versionCode 1
         //global_version.number_sprint.version_in_sprint
-        versionName "0.4.5"
+        versionName "0.4.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -84,6 +84,9 @@ dependencies {
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+    //android-gif-drawable
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.28"
 
     //KeyboardVisibilityEvent
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
