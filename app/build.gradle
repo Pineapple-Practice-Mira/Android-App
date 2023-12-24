@@ -17,7 +17,7 @@ android {
         targetSdk 34
         versionCode 1
         //global_version.number_sprint.version_in_sprint
-        versionName "0.4.5"
+        versionName "0.4.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
