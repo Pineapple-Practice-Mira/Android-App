@@ -30,20 +30,28 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
         _binding = FragmentAcquaintanceBinding.bind(view)
         App.instance.appComponent.inject(this)
 
+        initViewPager()
+        setViewPagerListener()
+        setOnClickListeners()
+    }
+
+    private fun initViewPager() {
         adapter = VpAdapter(requireActivity(), vpElements)
         viewPager = binding.viewPager
         viewPager.adapter = adapter
 
         binding.indicator.setViewPager(viewPager)
         adapter.registerAdapterDataObserver(binding.indicator.adapterDataObserver)
+    }
 
+    private fun setViewPagerListener() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 with(binding) {
                     btnPrevious.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
                     btnNext.visibility = if (position == vpElements.size - 1) View.INVISIBLE else View.VISIBLE
-                    btnSkip2.visibility= if (position == vpElements.size - 1) View.VISIBLE else View.INVISIBLE
+                    btnSkip2.visibility = if (position == vpElements.size - 1) View.VISIBLE else View.INVISIBLE
 
                     btnSkip.text = if (position == vpElements.size - 1) resources.getString(R.string.complete) else resources.getString(R.string.skip)
                     btnSkip.paintFlags = Paint.UNDERLINE_TEXT_FLAG
@@ -51,7 +59,6 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
                 }
             }
         })
-        setOnClickListeners()
     }
 
     private fun setOnClickListeners() {
