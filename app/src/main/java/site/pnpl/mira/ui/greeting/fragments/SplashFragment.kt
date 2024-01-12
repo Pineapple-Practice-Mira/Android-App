@@ -34,3 +34,4 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         FragmentSplashBinding.bind(view).animation.setImageDrawable(gifDrawable)
     }
 }
+

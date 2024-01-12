@@ -2,9 +2,8 @@ package site.pnpl.mira.ui.exercise
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,32 +11,34 @@ import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentExercisesListBinding
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
+import site.pnpl.mira.ui.exercise.customview.EmotionButton
 import site.pnpl.mira.ui.home.customview.BottomBar
 
-class ExercisesListFragment : Fragment() {
+class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     private var _binding: FragmentExercisesListBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ExercisesListViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentExercisesListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        stubClickListener()
-        @Suppress("DEPRECATION")
-        requireActivity().window.statusBarColor = resources.getColor(R.color.white)
+        _binding = FragmentExercisesListBinding.bind(view)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+//        stubClickListener()
         initBottomBar()
-//        Glide.with(requireContext())
-//            .asGif()
-//            .load(URL("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGhkd3N5MTdvOHF5Z3VlOGpybTBzcnhvNzYzYnV1cWE3MjV0dHd5bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2yLNN4wTy7Zr8JSXHB/giphy.gif"))
-//            .into(binding.gif)
+        fillEmotionButtons()
+    }
+
+    private fun fillEmotionButtons() {
+        binding.emotionContainer.apply {
+            addView(EmotionButton(requireContext(), "Радость"))
+            addView(EmotionButton(requireContext(), "Любовь"))
+            addView(EmotionButton(requireContext(), "Грусть"))
+            addView(EmotionButton(requireContext(), "Злость"))
+            addView(EmotionButton(requireContext(), "Верность"))
+            addView(EmotionButton(requireContext(), "Тоска"))
+        }
 
     }
 
@@ -57,11 +58,11 @@ class ExercisesListFragment : Fragment() {
         }
     }
 
-    private fun stubClickListener() {
-        binding.openExercise.setOnClickListener {
-            findNavController().navigate(R.id.action_exercises_list_to_exercise)
-        }
-    }
+//    private fun stubClickListener() {
+//        binding.openExercise.setOnClickListener {
+//            findNavController().navigate(R.id.action_exercises_list_to_exercise)
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

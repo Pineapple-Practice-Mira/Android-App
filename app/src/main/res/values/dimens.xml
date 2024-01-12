@@ -5,4 +5,9 @@
 
     <dimen name="width_margin_16dp">0.044</dimen>
     <dimen name="width_margin_16dp_from_end">0.956</dimen>
+    <dimen name="item_exercise_height">72dp</dimen>
+    <dimen name="item_exercise_corner_radius">18dp</dimen>
+    <dimen name="item_exercise_elevation">2dp</dimen>
+    <dimen name="emotion_container_height">54dp</dimen>
+    <item name="item_exercise_image_background_corner_radius" type="dimen" format="float">9.16</item>
 </resources>
