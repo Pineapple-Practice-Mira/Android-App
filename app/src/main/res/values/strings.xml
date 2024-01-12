@@ -129,5 +129,8 @@
     <string name="statistic_label_count_period">за выбранный период</string>
     <string name="statistic_label_count_total">за всё время</string>
     <string name="input_symbol_filter">-abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя</string>
+    <string name="about_app">О приложении</string>
+    <string name="label_exercise">Упражнения</string>
+    <string name="exercise_sub_head">Выполняй упражнения, чтобы улучшить свое эмоциональное состояние</string>
 
 </resources>
