@@ -22,7 +22,7 @@ import site.pnpl.mira.R
 import site.pnpl.mira.domain.SelectedPeriod
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentHomeBinding
-import site.pnpl.mira.model.CheckInUI
+import site.pnpl.mira.models.CheckInUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.LIST_OF_CHECK_IN_KEY
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.POSITION_KEY

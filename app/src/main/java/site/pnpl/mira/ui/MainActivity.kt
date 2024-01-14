@@ -10,6 +10,7 @@ import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ActivityMainBinding
 import site.pnpl.mira.domain.EmotionCreator
+import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.utils.HideNavigationBars
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private val navHostFragment:  NavHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
     }
+
+    @Inject lateinit var emotionProvider: EmotionProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         HideNavigationBars.hide(window, binding.root)
 
+        emotionProvider.init()
     }
 
     @Inject

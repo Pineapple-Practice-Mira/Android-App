@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FactorViewBinding
-import site.pnpl.mira.model.Factor
+import site.pnpl.mira.models.Factor
 
 class FactorView constructor(context: Context) : LinearLayout(context) {
 

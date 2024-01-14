@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFactorsBinding
-import site.pnpl.mira.model.FactorsList
+import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.customview.FactorView
 
 class CheckInFactorsFragment(

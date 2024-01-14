@@ -8,8 +8,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.asCheckIn
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.models.asCheckIn
 import javax.inject.Inject
 
 class CheckInDetailsViewModel() : ViewModel() {

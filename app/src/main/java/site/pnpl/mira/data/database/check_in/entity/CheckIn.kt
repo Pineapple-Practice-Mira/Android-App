@@ -7,7 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import site.pnpl.mira.data.database.DBConstants
-import site.pnpl.mira.model.CheckInUI
+import site.pnpl.mira.models.CheckInUI
 
 @Parcelize
 @Entity(

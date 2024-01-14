@@ -1,4 +1,4 @@
-package site.pnpl.mira.model
+package site.pnpl.mira.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

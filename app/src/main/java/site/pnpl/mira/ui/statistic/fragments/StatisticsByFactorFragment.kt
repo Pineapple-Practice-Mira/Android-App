@@ -16,9 +16,9 @@ import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.domain.SelectedPeriod
 import site.pnpl.mira.databinding.FragmentStatisticsByFactorBinding
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.FactorData
-import site.pnpl.mira.model.FactorsList
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.models.FactorData
+import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
 import site.pnpl.mira.ui.home.customview.ActionBar
 import site.pnpl.mira.ui.statistic.StatisticByFactorViewModel

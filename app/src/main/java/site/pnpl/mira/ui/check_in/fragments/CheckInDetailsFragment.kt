@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInDetailsBinding
-import site.pnpl.mira.model.CheckInUI
+import site.pnpl.mira.models.CheckInUI
 import site.pnpl.mira.ui.check_in.viewpager.DetailAdapter
 import site.pnpl.mira.ui.extensions.setCurrentItem
 

@@ -6,6 +6,7 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import site.pnpl.mira.data.EmotionRepository
 import site.pnpl.mira.domain.EmotionCreator
+import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.domain.SelectedPeriod
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.domain.SettingsProviderImpl
@@ -45,4 +46,11 @@ class DomainModule(val context: Context, val applicationScope: CoroutineScope) {
         repository: EmotionRepository,
         applicationScope: CoroutineScope
     ): EmotionCreator = EmotionCreator(context, repository, applicationScope)
+
+    @Singleton
+    @Provides
+    fun provideEmotionProvider(
+        repository: EmotionRepository,
+        applicationScope: CoroutineScope
+    ): EmotionProvider = EmotionProvider(repository, applicationScope)
 }
