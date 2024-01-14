@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.App
 import site.pnpl.mira.BuildConfig
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SettingsProvider
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentSettingsBinding
 import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
 import java.io.File

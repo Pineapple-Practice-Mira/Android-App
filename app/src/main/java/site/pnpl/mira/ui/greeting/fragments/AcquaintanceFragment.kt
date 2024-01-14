@@ -11,7 +11,7 @@ import site.pnpl.mira.ui.greeting.viewpager.VpAdapter
 import site.pnpl.mira.ui.greeting.viewpager.VpElement
 import site.pnpl.mira.ui.greeting.viewpager.VpElementsGenerator
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SettingsProvider
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentAcquaintanceBinding
 import javax.inject.Inject
 

@@ -9,12 +9,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
-import site.pnpl.mira.data.entity.CheckIn
-import site.pnpl.mira.data.entity.asCheckInUI
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.EmotionsList
-import site.pnpl.mira.model.FactorsList
-import site.pnpl.mira.model.asCheckIn
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
+import site.pnpl.mira.data.database.check_in.entity.asCheckInUI
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.models.FactorsList
+import site.pnpl.mira.models.asCheckIn
 import site.pnpl.mira.utils.Event
 import site.pnpl.mira.utils.MiraDateFormat
 import java.util.Calendar
@@ -23,13 +23,11 @@ import kotlin.random.Random
 
 class HomeViewModel : ViewModel() {
 
-    var cachedPeriod: Pair<Long, Long> = Pair(0L, 0L)
-
     private val _countCheckIns: MutableLiveData<Long> = MutableLiveData<Long>()
     val countCheckIns: LiveData<Long> get() = _countCheckIns
 
-    @Inject
-    lateinit var repository: CheckInRepository
+    @Inject lateinit var repository: CheckInRepository
+    @Inject lateinit var emotionProvider: EmotionProvider
 
     init {
         App.instance.appComponent.inject(this)
@@ -43,12 +41,6 @@ class HomeViewModel : ViewModel() {
 
     fun onSaveEvent(): LiveData<Event<List<CheckInUI>>> {
         return saveEvent
-    }
-
-    fun getAllCheckIns() {
-        viewModelScope.launch {
-            repository.getAllCheckIns()
-        }
     }
 
     fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long) {
@@ -81,12 +73,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun deleteAll() {
-        viewModelScope.launch {
-            repository.deleteAll()
-        }
-    }
-
     fun insertListOfCheckIns() {
         val list = mutableListOf<CheckIn>()
         viewModelScope.launch {
@@ -98,7 +84,7 @@ class HomeViewModel : ViewModel() {
 
                 val checkIn = CheckIn(
                     id = 0,
-                    emotionId = EmotionsList.emotions[Random.nextInt(0, EmotionsList.emotions.size - 1)].id,
+                    emotionId = emotionProvider.emotions[Random.nextInt(0, emotionProvider.emotions.size - 1)].id,
                     factorId = FactorsList.factors[Random.nextInt(0, FactorsList.factors.size - 1)].id,
                     exercisesId = 0,
                     note = "",

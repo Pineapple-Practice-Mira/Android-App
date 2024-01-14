@@ -12,7 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SettingsProvider
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME_ALPHA

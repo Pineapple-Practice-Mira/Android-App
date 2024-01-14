@@ -12,12 +12,14 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ItemCheckInExpandedBinding
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.Emotion
-import site.pnpl.mira.model.EmotionsList
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.ui.extensions.setSvg
 import site.pnpl.mira.utils.MiraDateFormat
+import javax.inject.Inject
 
 class CheckInAdapter(
     private val isExpanded: Boolean,
@@ -26,6 +28,12 @@ class CheckInAdapter(
     private val onItemClickListener: ItemClickListener
 ) : RecyclerView.Adapter<CheckInAdapter.ViewHolder>() {
     val checkIns = mutableListOf<CheckInUI>()
+
+    @Inject lateinit var emotionProvider: EmotionProvider
+
+    init {
+        App.instance.appComponent.inject(this)
+    }
 
     override fun getItemViewType(position: Int): Int {
         return checkIns[position].typeItem
@@ -46,6 +54,7 @@ class CheckInAdapter(
     override fun getItemCount(): Int = checkIns.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        println(emotionProvider.getName(5))
         if (checkIns[position].typeItem == TYPE_ITEM_VOID) return
         holder as CheckInViewHolder
         checkIns[position].apply {
@@ -55,21 +64,16 @@ class CheckInAdapter(
             holder.dayOfWeekAndTime.text = date.getDayOfWeekAndTime()
 
             holder.emotion.apply {
-                val emotionText = "#${holder.context.resources.getString(EmotionsList.emotions[emotionId].nameResId)}"
+                val emotionText = "#${emotionProvider.getName(emotionId)}"
                 text = emotionText
                 setTextColor(
-                    when (EmotionsList.emotions[emotionId].type) {
-                        Emotion.Type.POSITIVE -> AppCompatResources.getColorStateList(context, R.color.primary)
-                        Emotion.Type.NEGATIVE -> AppCompatResources.getColorStateList(context, R.color.third)
-                    }
+                    if (emotionProvider.isPositive(emotionId))
+                        AppCompatResources.getColorStateList(context, R.color.primary)
+                    else
+                        AppCompatResources.getColorStateList(context, R.color.third)
                 )
             }
-            holder.emotionDrawable.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    holder.itemView.context,
-                    EmotionsList.emotions[emotionId].emojiResId
-                )
-            )
+            holder.emotionDrawable.setSvg(emotionProvider.getPathToEmoji(emotionId))
 
             holder.root.setOnLongClickListener {
                 changeExpandedListener.expandAll(!isExpanded)
@@ -96,7 +100,7 @@ class CheckInAdapter(
                 }
 
                 selector.setOnClickListener {
-                        holder.selected()
+                    holder.selected()
                 }
             }
 

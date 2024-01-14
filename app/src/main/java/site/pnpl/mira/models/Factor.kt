@@ -1,4 +1,4 @@
-package site.pnpl.mira.model
+package site.pnpl.mira.models
 
 import androidx.annotation.StringRes
 import site.pnpl.mira.R

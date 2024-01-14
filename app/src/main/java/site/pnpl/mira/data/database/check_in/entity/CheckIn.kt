@@ -1,4 +1,4 @@
-package site.pnpl.mira.data.entity
+package site.pnpl.mira.data.database.check_in.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -6,8 +6,8 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-import site.pnpl.mira.data.DBConstants
-import site.pnpl.mira.model.CheckInUI
+import site.pnpl.mira.data.database.DBConstants
+import site.pnpl.mira.models.CheckInUI
 
 @Parcelize
 @Entity(

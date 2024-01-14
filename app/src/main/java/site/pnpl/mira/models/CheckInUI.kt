@@ -1,8 +1,8 @@
-package site.pnpl.mira.model
+package site.pnpl.mira.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter.Companion.TYPE_ITEM_CHECK_IN
 
 @Parcelize

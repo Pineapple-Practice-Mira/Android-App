@@ -1,4 +1,4 @@
-package site.pnpl.mira.data
+package site.pnpl.mira.domain
 
 interface SettingsProvider {
     fun saveName(name: String)

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootContainer"
-    android:layout_height="72dp"
+    android:layout_height="@dimen/item_check_in_height"
     android:layout_width="match_parent">
 
     <ImageButton
         android:id="@+id/selector"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/item_check_in_selector_size"
+        android:layout_height="@dimen/item_check_in_selector_size"
         android:src="@drawable/item_selector_state"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
@@ -104,8 +104,8 @@
 
         <ImageView
             android:id="@+id/emotionDrawable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/item_check_in_emoji_size"
+            android:layout_height="@dimen/item_check_in_emoji_size"
             android:src="@drawable/emo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"

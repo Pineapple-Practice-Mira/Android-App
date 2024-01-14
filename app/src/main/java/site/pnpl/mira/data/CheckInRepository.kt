@@ -2,8 +2,8 @@ package site.pnpl.mira.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import site.pnpl.mira.data.dao.CheckInDao
-import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.data.database.check_in.dao.CheckInDao
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import site.pnpl.mira.utils.MiraDateFormat
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -13,18 +13,6 @@ class CheckInRepository(private val checkInDao: CheckInDao) {
     suspend fun insertCheckIn(checkIn: CheckIn) {
         return withContext(Dispatchers.IO) {
             checkInDao.insert(checkIn)
-        }
-    }
-
-    suspend fun getAllCheckIns() {
-        return withContext(Dispatchers.IO) {
-            checkInDao.getAllCheckIn()
-        }
-    }
-
-    suspend fun deleteAll() {
-        withContext(Dispatchers.IO) {
-            checkInDao.deleteAll()
         }
     }
 
