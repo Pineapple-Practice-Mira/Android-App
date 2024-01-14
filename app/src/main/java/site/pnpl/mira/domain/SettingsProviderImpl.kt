@@ -1,4 +1,4 @@
-package site.pnpl.mira.data
+package site.pnpl.mira.domain
 
 import android.content.Context
 import javax.inject.Inject

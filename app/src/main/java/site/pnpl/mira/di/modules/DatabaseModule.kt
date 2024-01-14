@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import site.pnpl.mira.data.CheckInRepository
-import site.pnpl.mira.data.DBConstants
-import site.pnpl.mira.data.MiraDatabase
-import site.pnpl.mira.data.dao.CheckInDao
+import site.pnpl.mira.data.database.DBConstants
+import site.pnpl.mira.data.database.MiraDatabase
 import javax.inject.Singleton
 
 @Module
@@ -23,6 +21,11 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideCheckInRepository(checkInDao: CheckInDao) = CheckInRepository(checkInDao)
+    fun provideEmotionDao(context: Context) =
+        Room.databaseBuilder(
+            context,
+            MiraDatabase::class.java,
+            DBConstants.NAME
+        ).build().emotionDao()
 
 }

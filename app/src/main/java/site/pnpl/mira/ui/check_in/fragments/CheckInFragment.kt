@@ -9,16 +9,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.R
-import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInBinding
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.customview.BubbleView
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CHECK_IN_KEY
 import site.pnpl.mira.ui.check_in.viewpager.Adapter
+import site.pnpl.mira.ui.extensions.setCurrentItem
 import site.pnpl.mira.utils.MiraDateFormat
 import site.pnpl.mira.utils.PopUpDialog
-import site.pnpl.mira.utils.setCurrentItem
 
 class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     private var _binding: FragmentCheckInBinding? = null

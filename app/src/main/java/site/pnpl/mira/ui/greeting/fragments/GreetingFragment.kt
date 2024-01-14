@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SettingsProvider
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentGreetingBinding
 import javax.inject.Inject
 

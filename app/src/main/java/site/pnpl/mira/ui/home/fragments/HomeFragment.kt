@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SelectedPeriod
-import site.pnpl.mira.data.SettingsProvider
+import site.pnpl.mira.domain.SelectedPeriod
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentHomeBinding
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
@@ -42,8 +42,8 @@ import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION_HOME
 import site.pnpl.mira.utils.PopUpDialog
-import site.pnpl.mira.utils.screenHeight
-import site.pnpl.mira.utils.toPx
+import site.pnpl.mira.ui.extensions.screenHeight
+import site.pnpl.mira.ui.extensions.toPx
 import javax.inject.Inject
 
 

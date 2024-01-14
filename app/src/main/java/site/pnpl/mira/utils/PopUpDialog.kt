@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.PopUpDialogBinding
+import site.pnpl.mira.ui.extensions.toPx
 
 class PopUpDialog private constructor(
     private val title: String? = null,

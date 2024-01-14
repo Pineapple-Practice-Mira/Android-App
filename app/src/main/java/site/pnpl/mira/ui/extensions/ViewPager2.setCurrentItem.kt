@@ -1,37 +1,10 @@
-package site.pnpl.mira.utils
+package site.pnpl.mira.ui.extensions
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.content.Context
-import android.content.res.Resources
 import android.view.animation.LinearInterpolator
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-
-val Int.px: Int
-    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
-
-val Context.screenWidth: Int
-    get() = resources.displayMetrics.widthPixels
-
-val Context.screenHeight: Int
-    get() = resources.displayMetrics.heightPixels
-
-val Fragment.screenHeight: Int
-    get() = requireContext().screenHeight
-
-val Fragment.screenWidth: Int
-    get() = requireContext().screenWidth
-
-/**
- * Pixel and Dp Conversion
- */
-val Float.toPx get() = this * Resources.getSystem().displayMetrics.density
-val Float.toDp get() = this / Resources.getSystem().displayMetrics.density
-
-val Int.toPx get() = (this * Resources.getSystem().displayMetrics.density).toInt()
-val Int.toDp get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
 fun ViewPager2.setCurrentItem(
     index: Int,

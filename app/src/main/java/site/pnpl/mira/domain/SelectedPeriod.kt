@@ -1,4 +1,4 @@
-package site.pnpl.mira.data
+package site.pnpl.mira.domain
 
 class SelectedPeriod(
     var startPeriod: Long = 0,

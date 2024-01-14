@@ -3,6 +3,9 @@ package site.pnpl.mira.di
 import dagger.Component
 import site.pnpl.mira.di.modules.DatabaseModule
 import site.pnpl.mira.di.modules.DomainModule
+import site.pnpl.mira.di.modules.RemoteModule
+import site.pnpl.mira.di.modules.RepositoryModule
+import site.pnpl.mira.ui.MainActivity
 import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.exercise.ExercisesListViewModel
@@ -23,7 +26,9 @@ import javax.inject.Singleton
 @Component(
     modules = [
         DomainModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        RemoteModule::class,
+        RepositoryModule::class
     ]
 )
 interface AppComponent {
@@ -41,5 +46,6 @@ interface AppComponent {
     fun inject(statisticsFragment: StatisticsFragment)
     fun inject(statisticsByFactorFragment: StatisticsByFactorFragment)
     fun inject(statisticByFactorViewModel: StatisticByFactorViewModel)
+    fun inject(mainActivity: MainActivity)
 
 }

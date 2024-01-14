@@ -15,7 +15,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.transition.ChangeBounds
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SelectedPeriod
+import site.pnpl.mira.domain.SelectedPeriod
 import site.pnpl.mira.databinding.FragmentStatisticsBinding
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.Emotion

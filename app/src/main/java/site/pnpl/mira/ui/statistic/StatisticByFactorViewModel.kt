@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
-import site.pnpl.mira.data.entity.asCheckInUI
+import site.pnpl.mira.data.database.check_in.entity.asCheckInUI
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.utils.Event
 import javax.inject.Inject

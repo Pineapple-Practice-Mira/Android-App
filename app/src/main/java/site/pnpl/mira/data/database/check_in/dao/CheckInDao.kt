@@ -1,4 +1,4 @@
-package site.pnpl.mira.data.dao
+package site.pnpl.mira.data.database.check_in.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import site.pnpl.mira.data.DBConstants
-import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.data.database.DBConstants
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
 
 @Dao
 interface CheckInDao {

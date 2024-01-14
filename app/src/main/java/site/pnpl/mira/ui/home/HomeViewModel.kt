@@ -9,8 +9,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.CheckInRepository
-import site.pnpl.mira.data.entity.CheckIn
-import site.pnpl.mira.data.entity.asCheckInUI
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
+import site.pnpl.mira.data.database.check_in.entity.asCheckInUI
 import site.pnpl.mira.model.CheckInUI
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
@@ -22,8 +22,6 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 class HomeViewModel : ViewModel() {
-
-    var cachedPeriod: Pair<Long, Long> = Pair(0L, 0L)
 
     private val _countCheckIns: MutableLiveData<Long> = MutableLiveData<Long>()
     val countCheckIns: LiveData<Long> get() = _countCheckIns
@@ -43,12 +41,6 @@ class HomeViewModel : ViewModel() {
 
     fun onSaveEvent(): LiveData<Event<List<CheckInUI>>> {
         return saveEvent
-    }
-
-    fun getAllCheckIns() {
-        viewModelScope.launch {
-            repository.getAllCheckIns()
-        }
     }
 
     fun getCheckInForPeriod(startPeriod: Long, endPeriod: Long) {
@@ -78,12 +70,6 @@ class HomeViewModel : ViewModel() {
             val count = repository.getCountCheckIns()
             println("count checkIns: $count")
             _countCheckIns.postValue(count)
-        }
-    }
-
-    fun deleteAll() {
-        viewModelScope.launch {
-            repository.deleteAll()
         }
     }
 

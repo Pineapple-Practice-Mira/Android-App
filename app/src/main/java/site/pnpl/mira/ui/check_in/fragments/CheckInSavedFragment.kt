@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import site.pnpl.mira.R
-import site.pnpl.mira.data.entity.CheckIn
+import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInSavedBinding
 import site.pnpl.mira.model.EmotionsList
 import site.pnpl.mira.model.FactorsList
