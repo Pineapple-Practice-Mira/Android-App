@@ -44,8 +44,9 @@ class DomainModule(val context: Context, val applicationScope: CoroutineScope) {
     fun provideEmotionCreator(
         context: Context,
         repository: EmotionRepository,
-        applicationScope: CoroutineScope
-    ): EmotionCreator = EmotionCreator(context, repository, applicationScope)
+        applicationScope: CoroutineScope,
+        emotionProvider: EmotionProvider
+    ): EmotionCreator = EmotionCreator(context, repository, applicationScope, emotionProvider)
 
     @Singleton
     @Provides

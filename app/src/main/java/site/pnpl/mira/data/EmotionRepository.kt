@@ -14,7 +14,7 @@ class EmotionRepository @Inject constructor(
         try {
             val response = retrofitService.getEmotions()
             if (response.isSuccessful) {
-                response.body()?.map { it.toEmotionModel() }
+                response.body()?.map { it.toEmotionDataModel() }
             } else {
                 null
             }
@@ -27,6 +27,14 @@ class EmotionRepository @Inject constructor(
 
     fun writeEmotionToDb(emotion: EmotionDataModel) =
         emotionDao.insertEmotions(listOf(emotion.toEmotionEntity()))
+
+    fun deleteEmotions(emotions: List<EmotionDataModel>) {
+        emotionDao.deleteEmotions(emotions.map { it.toEmotionEntity() })
+    }
+
+    fun openEmotion(emotionId: Int) {
+        emotionDao.updateOpenedFlag(emotionId,true)
+    }
 
 }
 
@@ -53,7 +61,7 @@ fun EmotionEntity.toEmotionDataModel(): EmotionDataModel =
         isOpened = isOpened == 1
     )
 
-fun EmotionDtoItem.toEmotionModel() =
+fun EmotionDtoItem.toEmotionDataModel(): EmotionDataModel =
     EmotionDataModel(
         emotionId = id,
         name = name,

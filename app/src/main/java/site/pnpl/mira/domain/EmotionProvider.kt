@@ -25,6 +25,16 @@ class EmotionProvider @Inject constructor(
         }
     }
 
+    fun open(emotionId: Int) {
+        getEmotion(emotionId)?.let { emotionUI ->
+            if (!emotionUI.isOpened) {
+                applicationScope.launch {
+                    repository.openEmotion(emotionId)
+                }
+            }
+        }
+    }
+
     fun getNameGenitive(emotionId: Int): String {
         val emotion = getEmotion(emotionId)
         return emotion?.nameGenitive ?: ""

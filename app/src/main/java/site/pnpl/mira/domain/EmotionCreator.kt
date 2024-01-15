@@ -17,7 +17,8 @@ import javax.inject.Inject
 class EmotionCreator @Inject constructor(
     private val context: Context,
     private val repository: EmotionRepository,
-    private val applicationScope: CoroutineScope
+    private val applicationScope: CoroutineScope,
+    private val emotionProvider: EmotionProvider
 ) {
 
     private val directoryToSaveEmoji: String
@@ -30,14 +31,23 @@ class EmotionCreator @Inject constructor(
     fun update() {
         applicationScope.launch {
             val emotionsApi = getEmotionListFromApi()
-            val emotionsDb = getEmotionListFromDb()
+            val emotionsDb = getEmotionListFromDb().toMutableList()
 
             emotionsApi.forEach { emotion ->
-                if (!emotionsDb.contains(emotion)) {
+                if (!emotionsDb.remove(emotion)) {
                     saveEmotion(emotion)
                 }
             }
+
+            if (emotionsDb.isNotEmpty()) {
+                deleteEmotionsFromBd(emotionsDb)
+            }
+            emotionProvider.init()
         }
+    }
+
+    private fun deleteEmotionsFromBd(emotions: List<EmotionDataModel>) {
+        repository.deleteEmotions(emotions)
     }
 
     private suspend fun getEmotionListFromApi(): List<EmotionDataModel> {
@@ -69,9 +79,7 @@ class EmotionCreator @Inject constructor(
             try {
                 val file = File(directoryToSaveEmoji, url.parseFileName())
                 if (!file.exists()) {
-                    // Открываем InputStream из URL
                     val inputStream = URL(url).openStream()
-                    // Сохраняем InputStream в файл
                     saveInputStreamToFile(inputStream, file)
                 }
                 file.absolutePath
