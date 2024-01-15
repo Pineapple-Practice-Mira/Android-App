@@ -54,7 +54,6 @@ class CheckInAdapter(
     override fun getItemCount(): Int = checkIns.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        println(emotionProvider.getName(5))
         if (checkIns[position].typeItem == TYPE_ITEM_VOID) return
         holder as CheckInViewHolder
         checkIns[position].apply {
@@ -88,7 +87,6 @@ class CheckInAdapter(
                 }
             }
 
-
             if (isExpanded) {
                 val selector: ImageView = holder.itemView.findViewById<ImageButton>(R.id.selector)
                 selector.isSelected = isSelected
@@ -103,7 +101,6 @@ class CheckInAdapter(
                     holder.selected()
                 }
             }
-
         }
     }
 

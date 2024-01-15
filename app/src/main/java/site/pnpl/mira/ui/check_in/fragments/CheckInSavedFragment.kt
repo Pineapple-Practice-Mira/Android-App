@@ -44,6 +44,8 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
                 //open exercise
             }
             initScrollBubbleView(scrollBubbleView, checkIn)
+
+            checkIn?.emotionId?.let { emotionProvider.open(it) }
         }
     }
 

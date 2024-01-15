@@ -29,4 +29,7 @@ interface EmotionDao {
 
     @Query("SELECT is_opened FROM ${DBConstants.TABLE_NAME_EMOTION} WHERE emotion_id LIKE :id")
     fun getOpenedFlagById(id: Int): Int
+
+    @Query("UPDATE emotion_table SET is_opened=:flag WHERE emotion_id = :emotionId")
+    fun updateOpenedFlag(emotionId: Int, flag: Boolean)
 }
