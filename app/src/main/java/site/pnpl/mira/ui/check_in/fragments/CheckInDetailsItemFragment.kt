@@ -26,7 +26,7 @@ import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
 import site.pnpl.mira.ui.extensions.setSvg
 import site.pnpl.mira.utils.MiraDateFormat
-import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.ui.customview.PopUpDialog
 import javax.inject.Inject
 
 

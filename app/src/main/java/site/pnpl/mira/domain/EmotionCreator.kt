@@ -6,8 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import site.pnpl.mira.data.EmotionDataModel
-import site.pnpl.mira.data.EmotionRepository
+import site.pnpl.mira.data.models.EmotionDataModel
+import site.pnpl.mira.data.repositories.EmotionRepository
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream

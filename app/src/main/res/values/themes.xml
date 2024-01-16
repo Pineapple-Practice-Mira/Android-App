@@ -131,11 +131,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Buttons16" parent="WixMadeforDisplayBold">
+    <style name="Buttons16" parent="WixMadeforDisplaySimiBold">
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">16sp</item>
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:letterSpacing">0.01</item>
+        <item name="android:translationY">-1.92sp</item>
     </style>
 
     <style name="Button16White" parent="WixMadeforDisplaySimiBold">

@@ -21,7 +21,7 @@ import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.models.CheckInUI
 import site.pnpl.mira.models.FactorData
 import site.pnpl.mira.models.FactorsList
-import site.pnpl.mira.ui.home.customview.ActionBar
+import site.pnpl.mira.ui.customview.ActionBar
 import site.pnpl.mira.ui.statistic.StatisticViewModel
 import site.pnpl.mira.ui.statistic.customview.FactorAnalysisView
 import javax.inject.Inject

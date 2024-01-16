@@ -2,8 +2,8 @@ package site.pnpl.mira.domain
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import site.pnpl.mira.data.EmotionDataModel
-import site.pnpl.mira.data.EmotionRepository
+import site.pnpl.mira.data.models.EmotionDataModel
+import site.pnpl.mira.data.repositories.EmotionRepository
 import site.pnpl.mira.models.EmotionUI
 import javax.inject.Inject
 
@@ -30,6 +30,7 @@ class EmotionProvider @Inject constructor(
             if (!emotionUI.isOpened) {
                 applicationScope.launch {
                     repository.openEmotion(emotionId)
+                    emotionUI.isOpened = true
                 }
             }
         }

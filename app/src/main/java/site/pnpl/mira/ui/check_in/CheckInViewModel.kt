@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import site.pnpl.mira.App
-import site.pnpl.mira.data.CheckInRepository
+import site.pnpl.mira.data.repositories.CheckInRepository
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import javax.inject.Inject

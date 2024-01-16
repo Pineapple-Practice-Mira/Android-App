@@ -6,12 +6,25 @@ import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ItemEmotionButtonBinding
 
 class EmotionButton(context: Context) : LinearLayout(context) {
+
+    private lateinit var binding: ItemEmotionButtonBinding
+    var emotionId = -1
+        private set
+
     constructor(
         context: Context,
-        emotionName: String
-        ) : this(context) {
-            inflate(context, R.layout.item_emotion_button, this).also {
-                ItemEmotionButtonBinding.bind(it).itemEmotionTextView.text = emotionName
-            }
+        emotionName: String,
+        emotionId: Int
+    ) : this(context) {
+        binding = ItemEmotionButtonBinding.bind(inflate(context, R.layout.item_emotion_button, this))
+        this.emotionId = emotionId
+        binding.itemEmotionTextView.text = emotionName
+    }
+
+    fun onClickListener(listener: (EmotionButton) -> Unit) {
+        binding.root.setOnClickListener {
+            isSelected = !isSelected
+            listener(this)
         }
+    }
 }
