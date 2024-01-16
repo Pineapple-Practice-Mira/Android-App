@@ -1,4 +1,4 @@
-package site.pnpl.mira.ui.home.customview
+package site.pnpl.mira.ui.customview
 
 import android.content.Context
 import android.util.AttributeSet

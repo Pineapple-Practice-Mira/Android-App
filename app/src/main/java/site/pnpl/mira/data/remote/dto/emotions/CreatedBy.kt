@@ -1,9 +1,9 @@
-package site.pnpl.mira.data.remote.dto
+package site.pnpl.mira.data.remote.dto.emotions
 
 
 import com.google.gson.annotations.SerializedName
 
-data class EditedBy(
+data class CreatedBy(
     @SerializedName("email")
     val email: String,
     @SerializedName("first_name")

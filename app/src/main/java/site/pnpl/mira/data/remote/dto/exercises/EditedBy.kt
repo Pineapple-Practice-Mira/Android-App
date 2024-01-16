@@ -1,9 +1,9 @@
-package site.pnpl.mira.data.remote.dto
+package site.pnpl.mira.data.remote.dto.exercises
 
 
 import com.google.gson.annotations.SerializedName
 
-data class CreatedBy(
+data class EditedBy(
     @SerializedName("email")
     val email: String,
     @SerializedName("first_name")

@@ -29,9 +29,9 @@ import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.POS
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.home.HomeViewModel
-import site.pnpl.mira.ui.home.customview.ActionBar
-import site.pnpl.mira.ui.home.customview.BottomBar
-import site.pnpl.mira.ui.home.customview.BottomBar.Companion.HOME
+import site.pnpl.mira.ui.customview.ActionBar
+import site.pnpl.mira.ui.customview.BottomBar
+import site.pnpl.mira.ui.customview.BottomBar.Companion.HOME
 import site.pnpl.mira.ui.home.recycler_view.ChangeExpandedListener
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter
 import site.pnpl.mira.ui.home.recycler_view.CheckInAdapter.Companion.TYPE_ITEM_VOID
@@ -41,7 +41,7 @@ import site.pnpl.mira.ui.home.recycler_view.SelectedItemsListener
 import site.pnpl.mira.ui.home.recycler_view.TopSpacingItemDecoration
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION_HOME
-import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.ui.customview.PopUpDialog
 import site.pnpl.mira.ui.extensions.screenHeight
 import site.pnpl.mira.ui.extensions.toPx
 import javax.inject.Inject

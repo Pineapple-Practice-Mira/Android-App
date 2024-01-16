@@ -4,7 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
-import site.pnpl.mira.data.EmotionRepository
+import site.pnpl.mira.data.repositories.EmotionRepository
 import site.pnpl.mira.domain.EmotionCreator
 import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.domain.SelectedPeriod

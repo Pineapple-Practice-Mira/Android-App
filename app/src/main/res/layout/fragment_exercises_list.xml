@@ -111,7 +111,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         tools:listitem="@layout/item_exercise"/>
 
-    <site.pnpl.mira.ui.home.customview.BottomBar
+    <site.pnpl.mira.ui.customview.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

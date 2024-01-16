@@ -18,7 +18,7 @@ import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CHECK
 import site.pnpl.mira.ui.check_in.viewpager.Adapter
 import site.pnpl.mira.ui.extensions.setCurrentItem
 import site.pnpl.mira.utils.MiraDateFormat
-import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.ui.customview.PopUpDialog
 
 class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     private var _binding: FragmentCheckInBinding? = null

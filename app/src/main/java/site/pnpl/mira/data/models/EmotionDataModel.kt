@@ -1,4 +1,4 @@
-package site.pnpl.mira.data
+package site.pnpl.mira.data.models
 
 data class EmotionDataModel(
     val emotionId: Int,

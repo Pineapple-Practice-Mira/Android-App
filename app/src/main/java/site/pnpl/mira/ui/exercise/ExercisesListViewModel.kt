@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import site.pnpl.mira.App
-import site.pnpl.mira.data.CheckInRepository
+import site.pnpl.mira.data.repositories.CheckInRepository
 import javax.inject.Inject
 
 class ExercisesListViewModel : ViewModel() {

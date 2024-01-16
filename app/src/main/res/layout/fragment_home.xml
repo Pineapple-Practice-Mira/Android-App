@@ -95,7 +95,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"/>
 
-    <site.pnpl.mira.ui.home.customview.ActionBar
+    <site.pnpl.mira.ui.customview.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="gone"/>
 
-    <site.pnpl.mira.ui.home.customview.BottomBar
+    <site.pnpl.mira.ui.customview.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="100dp"

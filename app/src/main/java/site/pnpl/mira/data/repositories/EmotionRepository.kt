@@ -1,9 +1,10 @@
-package site.pnpl.mira.data
+package site.pnpl.mira.data.repositories
 
 import site.pnpl.mira.data.database.emotions.EmotionDao
 import site.pnpl.mira.data.database.emotions.EmotionEntity
+import site.pnpl.mira.data.models.EmotionDataModel
 import site.pnpl.mira.data.remote.MiraApi
-import site.pnpl.mira.data.remote.dto.EmotionDtoItem
+import site.pnpl.mira.data.remote.dto.emotions.EmotionDtoItem
 import javax.inject.Inject
 
 class EmotionRepository @Inject constructor(

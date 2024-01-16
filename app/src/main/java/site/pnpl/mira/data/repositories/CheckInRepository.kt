@@ -1,4 +1,4 @@
-package site.pnpl.mira.data
+package site.pnpl.mira.data.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package site.pnpl.mira.data.remote.dto
+package site.pnpl.mira.data.remote.dto.emotions
 
 
 import com.google.gson.annotations.SerializedName

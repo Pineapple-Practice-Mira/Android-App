@@ -12,7 +12,7 @@ import site.pnpl.mira.databinding.FragmentExercisesListBinding
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.exercise.customview.EmotionButton
-import site.pnpl.mira.ui.home.customview.BottomBar
+import site.pnpl.mira.ui.customview.BottomBar
 
 class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     private var _binding: FragmentExercisesListBinding? = null

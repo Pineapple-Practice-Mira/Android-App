@@ -20,7 +20,7 @@ import site.pnpl.mira.models.CheckInUI
 import site.pnpl.mira.models.FactorData
 import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
-import site.pnpl.mira.ui.home.customview.ActionBar
+import site.pnpl.mira.ui.customview.ActionBar
 import site.pnpl.mira.ui.statistic.StatisticByFactorViewModel
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_FACTOR_DATA
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION

@@ -1,4 +1,4 @@
-package site.pnpl.mira.utils
+package site.pnpl.mira.ui.customview
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
