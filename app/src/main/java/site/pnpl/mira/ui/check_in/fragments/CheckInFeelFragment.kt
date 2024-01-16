@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.LinearLayout
+import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFeelingBinding
-import site.pnpl.mira.model.Emotion
-import site.pnpl.mira.model.EmotionsList
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.models.EmotionUI
 import site.pnpl.mira.ui.check_in.customview.EmotionView
+import javax.inject.Inject
 
 class CheckInFeelFragment(
     private val onArrowClickListener: CheckInFragment.OnArrowClickListener,
@@ -19,8 +21,13 @@ class CheckInFeelFragment(
     private val emotionsButtons = mutableListOf<EmotionView>()
     private var emotionId = -1
 
+    @Inject
+    lateinit var emotionProvider: EmotionProvider
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        App.instance.appComponent.inject(this)
+
         _binding = FragmentCheckInFeelingBinding.bind(view)
         binding.btnNext.isEnabled = false
 
@@ -29,17 +36,14 @@ class CheckInFeelFragment(
     }
 
     private fun fillEmotions() {
-        EmotionsList.emotions.forEach { emotion: Emotion ->
+        emotionProvider.emotions.forEach { emotion: EmotionUI ->
             val emotionView = EmotionView(requireContext()).apply {
                 setData(emotion)
             }
-            when(emotion.type) {
-                Emotion.Type.POSITIVE -> {
-                    binding.positiveContainer.addView(emotionView)
-                }
-                Emotion.Type.NEGATIVE -> {
-                    binding.negativeContainer.addView(emotionView)
-                }
+            if (emotion.isPositive) {
+                binding.positiveContainer.addView(emotionView)
+            } else {
+                binding.negativeContainer.addView(emotionView)
             }
             emotionsButtons.add(emotionView)
         }
@@ -55,13 +59,13 @@ class CheckInFeelFragment(
                         it.isSelected = false
                     }
                 }
-                emotionView.isSelected= !emotionView.isSelected
+                emotionView.isSelected = !emotionView.isSelected
                 emotionsButtons.forEach {
                     if (it.isSelected) {
                         binding.btnNext.isEnabled = true
                         emotionId = it.emotionId
 
-                        onEmotionClickListener.onClick(resources.getString(EmotionsList.emotions[emotionId].nameParentCaseResId))
+                        onEmotionClickListener.onClick(emotionProvider.getNameGenitive(emotionId))
                     }
                 }
 

@@ -6,9 +6,13 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ActivityMainBinding
+import site.pnpl.mira.domain.EmotionCreator
+import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.utils.HideNavigationBars
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -17,14 +21,23 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
     }
 
+    @Inject lateinit var emotionProvider: EmotionProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.instance.appComponent.inject(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         HideNavigationBars.hide(window, binding.root)
+        emotionProvider.init()
+    }
 
+    @Inject
+    fun updateEmotion(emotionCreator: EmotionCreator) {
+        emotionCreator.update()
     }
 
     private val onBackPressedCallback: OnBackPressedCallback =
@@ -45,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, resources.getString(R.string.alert_double_tap_exit), Toast.LENGTH_SHORT).show()
         }
         backPressed = System.currentTimeMillis()
-
     }
 
     companion object {

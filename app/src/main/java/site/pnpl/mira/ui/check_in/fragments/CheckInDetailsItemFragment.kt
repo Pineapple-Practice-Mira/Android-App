@@ -17,15 +17,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInDetailsItemBinding
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.Emotion
-import site.pnpl.mira.model.EmotionsList
-import site.pnpl.mira.model.FactorsList
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
+import site.pnpl.mira.ui.extensions.setSvg
 import site.pnpl.mira.utils.MiraDateFormat
-import site.pnpl.mira.utils.PopUpDialog
+import site.pnpl.mira.ui.customview.PopUpDialog
+import javax.inject.Inject
 
 
 class CheckInDetailsItemFragment(
@@ -42,10 +44,12 @@ class CheckInDetailsItemFragment(
     private var newNote: String = ""
 
     private val viewModel: CheckInDetailsViewModel by viewModels()
+    @Inject lateinit var emotionProvider: EmotionProvider
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCheckInDetailsItemBinding.bind(view)
+        App.instance.appComponent.inject(this)
 
         binding.noteInput.imeOptions = EditorInfo.IME_ACTION_DONE
         binding.noteInput.setRawInputType(InputType.TYPE_CLASS_TEXT)
@@ -65,16 +69,16 @@ class CheckInDetailsItemFragment(
             tittleDayTime.text = date.getDayOfWeekAndTime()
 
             emotion.apply {
-                text = getString(EmotionsList.emotions[checkInUI.emotionId].nameResId)
+                text = emotionProvider.getName(checkInUI.emotionId)
                 setTextColor(
-                    when (EmotionsList.emotions[checkInUI.emotionId].type) {
-                        Emotion.Type.POSITIVE -> AppCompatResources.getColorStateList(context, R.color.primary)
-                        Emotion.Type.NEGATIVE -> AppCompatResources.getColorStateList(context, R.color.third)
-                    }
+                    if (emotionProvider.isPositive(checkInUI.emotionId))
+                        AppCompatResources.getColorStateList(context, R.color.primary)
+                    else
+                        AppCompatResources.getColorStateList(context, R.color.third)
                 )
             }
 
-            emoji.setImageDrawable(AppCompatResources.getDrawable(requireContext(), EmotionsList.emotions[checkInUI.emotionId].emojiResId))
+            emoji.setSvg(emotionProvider.getPathToEmoji(checkInUI.emotionId))
             factor.text = getString(FactorsList.factors[checkInUI.factorId].nameResId)
 
             noteInput.text = SpannableStringBuilder(checkInUI.note)
@@ -132,7 +136,7 @@ class CheckInDetailsItemFragment(
     private fun generateClipText(): String {
         val date = MiraDateFormat(checkInUI.createdAtLong)
         return "${getString(R.string.clip_date)}: ${date.getDayMonthYearShort()}, ${date.getTime()}, ${date.getNameDayOfWeek()}\n" +
-                "${getString(R.string.clip_feel)}: ${getString(EmotionsList.emotions[checkInUI.emotionId].nameResId)}\n" +
+                "${getString(R.string.clip_feel)}: ${emotionProvider.getName(checkInUI.emotionId)}\n" +
                 "${getString(R.string.clip_factor)}: ${getString(FactorsList.factors[checkInUI.factorId].nameResId)}\n" +
                 "${getString(R.string.clip_note)}: \"${checkInUI.note}\""
     }

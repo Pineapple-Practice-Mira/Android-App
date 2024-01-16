@@ -3,18 +3,25 @@ package site.pnpl.mira.di.modules
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import site.pnpl.mira.data.SelectedPeriod
-import site.pnpl.mira.data.SettingsProvider
-import site.pnpl.mira.data.SettingsProviderImpl
+import kotlinx.coroutines.CoroutineScope
+import site.pnpl.mira.data.repositories.EmotionRepository
+import site.pnpl.mira.domain.EmotionCreator
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.domain.SelectedPeriod
+import site.pnpl.mira.domain.SettingsProvider
+import site.pnpl.mira.domain.SettingsProviderImpl
 import site.pnpl.mira.utils.OFFSET_DAYS_FOR_DEFAULT_PERIOD
 import java.util.Calendar
 import javax.inject.Singleton
 
 @Module
-class DomainModule(val context: Context) {
+class DomainModule(val context: Context, val applicationScope: CoroutineScope) {
 
     @Provides
     fun provideContext() = context
+
+    @Provides
+    fun provideApplicationScope() = applicationScope
 
     @Provides
     fun provideSettingsProvider(context: Context): SettingsProvider = SettingsProviderImpl(context)
@@ -31,4 +38,20 @@ class DomainModule(val context: Context) {
         }
         return SelectedPeriod(startPeriod, endPeriod)
     }
+
+    @Singleton
+    @Provides
+    fun provideEmotionCreator(
+        context: Context,
+        repository: EmotionRepository,
+        applicationScope: CoroutineScope,
+        emotionProvider: EmotionProvider
+    ): EmotionCreator = EmotionCreator(context, repository, applicationScope, emotionProvider)
+
+    @Singleton
+    @Provides
+    fun provideEmotionProvider(
+        repository: EmotionRepository,
+        applicationScope: CoroutineScope
+    ): EmotionProvider = EmotionProvider(repository, applicationScope)
 }

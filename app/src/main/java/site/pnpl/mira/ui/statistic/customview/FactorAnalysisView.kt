@@ -20,7 +20,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import site.pnpl.mira.R
-import site.pnpl.mira.utils.toPx
+import site.pnpl.mira.ui.extensions.toPx
 
 
 class FactorAnalysisView @JvmOverloads constructor(

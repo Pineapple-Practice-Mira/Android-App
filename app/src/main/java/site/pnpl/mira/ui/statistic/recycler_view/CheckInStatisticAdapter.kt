@@ -10,15 +10,26 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.Emotion
-import site.pnpl.mira.model.EmotionsList
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.ui.extensions.setSvg
 import site.pnpl.mira.utils.MiraDateFormat
+import javax.inject.Inject
 
-class CheckInStatisticAdapter(private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<CheckInStatisticAdapter.ViewHolder>() {
+class CheckInStatisticAdapter(
+    private val onItemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<CheckInStatisticAdapter.ViewHolder>() {
 
     val checkIns = mutableListOf<CheckInUI>()
+
+    @Inject lateinit var emotionProvider: EmotionProvider
+
+    init {
+        App.instance.appComponent.inject(this)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_check_in, parent, false))
 
@@ -32,21 +43,16 @@ class CheckInStatisticAdapter(private val onItemClickListener: OnItemClickListen
             holder.dayOfWeekAndTime.text = date.getDayOfWeekAndTime()
 
             holder.emotion.apply {
-                val emotionText = "#${holder.context.resources.getString(EmotionsList.emotions[emotionId].nameResId)}"
+                val emotionText = "#${emotionProvider.getName(emotionId)}"
                 text = emotionText
                 setTextColor(
-                    when (EmotionsList.emotions[emotionId].type) {
-                        Emotion.Type.POSITIVE -> AppCompatResources.getColorStateList(context, R.color.primary)
-                        Emotion.Type.NEGATIVE -> AppCompatResources.getColorStateList(context, R.color.third)
-                    }
+                    if (emotionProvider.isPositive(emotionId))
+                        AppCompatResources.getColorStateList(context, R.color.primary)
+                    else
+                        AppCompatResources.getColorStateList(context, R.color.third)
                 )
             }
-            holder.emotionDrawable.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    holder.itemView.context,
-                    EmotionsList.emotions[emotionId].emojiResId
-                )
-            )
+            holder.emotionDrawable.setSvg(emotionProvider.getPathToEmoji(emotionId))
             holder.root.setOnClickListener {
                 onItemClickListener.onClick(position)
             }

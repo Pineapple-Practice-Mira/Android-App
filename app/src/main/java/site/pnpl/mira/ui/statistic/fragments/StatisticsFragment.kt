@@ -15,14 +15,13 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.transition.ChangeBounds
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.data.SelectedPeriod
+import site.pnpl.mira.domain.SelectedPeriod
 import site.pnpl.mira.databinding.FragmentStatisticsBinding
-import site.pnpl.mira.model.CheckInUI
-import site.pnpl.mira.model.Emotion
-import site.pnpl.mira.model.EmotionsList
-import site.pnpl.mira.model.FactorData
-import site.pnpl.mira.model.FactorsList
-import site.pnpl.mira.ui.home.customview.ActionBar
+import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.models.CheckInUI
+import site.pnpl.mira.models.FactorData
+import site.pnpl.mira.models.FactorsList
+import site.pnpl.mira.ui.customview.ActionBar
 import site.pnpl.mira.ui.statistic.StatisticViewModel
 import site.pnpl.mira.ui.statistic.customview.FactorAnalysisView
 import javax.inject.Inject
@@ -34,6 +33,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private val viewModel: StatisticViewModel by viewModels()
 
     @Inject lateinit var selectedPeriod: SelectedPeriod
+    @Inject lateinit var emotionProvider: EmotionProvider
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedElementEnterTransition = ChangeBounds().apply {
@@ -128,9 +128,10 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                 factor = factors[factors.size - 1]
             }
             factor.apply {
-                when (EmotionsList.emotions[checkIn.emotionId].type) {
-                    Emotion.Type.POSITIVE -> positiveCount++
-                    Emotion.Type.NEGATIVE -> negativeCount++
+                if (emotionProvider.isPositive(checkIn.emotionId)) {
+                    positiveCount++
+                } else {
+                    negativeCount++
                 }
                 totalCount++
             }

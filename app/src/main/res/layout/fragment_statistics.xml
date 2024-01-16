@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <site.pnpl.mira.ui.home.customview.ActionBar
+    <site.pnpl.mira.ui.customview.ActionBar
         android:id="@+id/actionBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

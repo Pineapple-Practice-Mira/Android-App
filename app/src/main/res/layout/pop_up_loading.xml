@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="220dp"
+    android:layout_height="140dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/popUpDialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="@drawable/pop_up_dialog_background"
+        android:elevation="6dp">
+
+        <ImageView
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/pop_up_loading_progress_bar_size"
+            android:layout_height="@dimen/pop_up_loading_progress_bar_size"
+            android:src="@drawable/progress_bar"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/imageview_content_progress_bar" />
+
+        <TextView
+            android:id="@+id/body"
+            style="@style/Buttons16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:textAlignment="center"
+            android:visibility="visible"
+            android:layout_marginTop="24dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/pop_up_loading_body_1" />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Buttons16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:letterSpacing="0.01"
+            android:textColor="@color/primary"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/body"
+            tools:text="Пока пропустить" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

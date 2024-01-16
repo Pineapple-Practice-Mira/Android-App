@@ -129,5 +129,15 @@
     <string name="statistic_label_count_period">за выбранный период</string>
     <string name="statistic_label_count_total">за всё время</string>
     <string name="input_symbol_filter">-abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя</string>
+    <string name="about_app">О приложении</string>
+    <string name="label_exercise">Упражнения</string>
+    <string name="exercise_sub_head">Выполняй упражнения, чтобы улучшить свое эмоциональное состояние</string>
+    <string name="pop_up_loading_body_1">Сейчас не удалось загрузить Знакомство</string>
+    <string name="pop_up_loading_button_1">Пока пропустить</string>
+    <string name="imageview_content_progress_bar">Анимация загрузки</string>
+    <string name="loading_exercise">Идет загрузка упражнения...</string>
+    <string name="error_loading_exercise">Не удалось загрузить :(</string>
+    <string name="exercise_start_subhead">Подходит при состояниях</string>
+    <string name="start">Начать</string>
 
 </resources>

@@ -6,19 +6,20 @@ import android.view.View
 import com.bumptech.glide.Glide
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentElementBinding
+import site.pnpl.mira.models.ScreenUI
 
-class ElementFragment(private val vpElement: VpElement) : Fragment(R.layout.fragment_element) {
+class ElementFragment(private val screenUI: ScreenUI) : Fragment(R.layout.fragment_element) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         FragmentElementBinding.bind(view).apply {
-            title.text = resources.getString(vpElement.title)
-            text.text = resources.getString(vpElement.text)
+            text.text = screenUI.text
+            title.text = screenUI.title
 
             Glide.with(requireContext())
                 .asGif()
-                .load(vpElement.animation)
+                .load(screenUI.animationLink)
                 .into(animation)
         }
     }

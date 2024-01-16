@@ -45,6 +45,10 @@
     <action
         android:id="@+id/action_home_to_exercises"
         app:destination="@id/exercises_graph"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
         app:popUpTo="@id/navigation_home"
         app:popUpToInclusive="true" />
 
@@ -203,15 +207,29 @@
         app:startDestination="@id/exercisesListFragment">
         <fragment
             android:id="@+id/exerciseFragment"
-            android:name="site.pnpl.mira.ui.exercise.ExerciseFragment"
-            android:label="ExerciseFragment"></fragment>
+            android:name="site.pnpl.mira.ui.exercise.fragments.ExerciseFragment"
+            android:label="ExerciseFragment">
+
+            <action
+                android:id="@+id/action_exerciseFragment_to_exerciseDetailsFragment"
+                app:destination="@id/exerciseDetailsFragment"
+                app:popUpTo="@id/exerciseFragment"
+                app:popUpToInclusive="true"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popExitAnim="@anim/check_in_down"
+                />
+        </fragment>
+
         <fragment
             android:id="@+id/exercisesListFragment"
-            android:name="site.pnpl.mira.ui.exercise.ExercisesListFragment"
+            android:name="site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment"
             android:label="ExercisesListFragment">
             <action
                 android:id="@+id/action_exercises_list_to_exercise"
-                app:destination="@id/exerciseFragment" />
+                app:destination="@id/exerciseFragment"
+                app:enterAnim="@anim/check_in_up"
+                app:popExitAnim="@anim/check_in_down"/>
             <action
                 android:id="@+id/action_exercises_list_to_home"
                 app:destination="@id/navigation_home"
@@ -223,8 +241,15 @@
                 app:popUpToInclusive="true" />
             <action
                 android:id="@+id/action_exercises_list_to_start_check_in"
-                app:destination="@id/check_in_graph" />
+                app:destination="@id/check_in_graph"
+                app:enterAnim="@anim/check_in_up"
+                app:popExitAnim="@anim/check_in_down"/>
         </fragment>
+
+        <fragment
+            android:id="@+id/exerciseDetailsFragment"
+            android:name="site.pnpl.mira.ui.exercise.fragments.ExerciseDetailsFragment"
+            android:label="ExerciseDetailsFragment" />
     </navigation>
 
 </navigation>
