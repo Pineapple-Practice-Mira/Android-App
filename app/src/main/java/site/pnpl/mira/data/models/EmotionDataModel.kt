@@ -31,7 +31,6 @@ data class EmotionDataModel(
         if (nameGenitive != other.nameGenitive) return false
         if (remoteEmojiLink != other.remoteEmojiLink) return false
         if (isPositive != other.isPositive) return false
-        if (isOpened != other.isOpened) return false
 
         return true
     }

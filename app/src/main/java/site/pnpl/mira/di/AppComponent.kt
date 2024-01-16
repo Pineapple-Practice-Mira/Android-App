@@ -11,7 +11,10 @@ import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsItemFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInFeelFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment
+import site.pnpl.mira.ui.exercise.fragments.ExerciseFragment
+import site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment
 import site.pnpl.mira.ui.exercise.ExercisesListViewModel
+import site.pnpl.mira.ui.exercise.fragments.ExerciseDetailsFragment
 import site.pnpl.mira.ui.greeting.GreetingViewModel
 import site.pnpl.mira.ui.greeting.fragments.AcquaintanceFragment
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment
@@ -59,5 +62,8 @@ interface AppComponent {
     fun inject(checkInAdapter: CheckInAdapter)
     fun inject(checkInStatisticAdapter: CheckInStatisticAdapter)
     fun inject(greetingViewModel: GreetingViewModel)
+    fun inject(exercisesListFragment: ExercisesListFragment)
+    fun inject(exerciseFragment: ExerciseFragment)
+    fun inject(exerciseDetailsFragment: ExerciseDetailsFragment)
 
 }

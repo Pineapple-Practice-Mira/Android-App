@@ -30,6 +30,7 @@ class EmotionProvider @Inject constructor(
             if (!emotionUI.isOpened) {
                 applicationScope.launch {
                     repository.openEmotion(emotionId)
+                    emotionUI.isOpened = true
                 }
             }
         }

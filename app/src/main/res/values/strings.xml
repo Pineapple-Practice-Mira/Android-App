@@ -135,5 +135,9 @@
     <string name="pop_up_loading_body_1">Сейчас не удалось загрузить Знакомство</string>
     <string name="pop_up_loading_button_1">Пока пропустить</string>
     <string name="imageview_content_progress_bar">Анимация загрузки</string>
+    <string name="loading_exercise">Идет загрузка упражнения...</string>
+    <string name="error_loading_exercise">Не удалось загрузить :(</string>
+    <string name="exercise_start_subhead">Подходит при состояниях</string>
+    <string name="start">Начать</string>
 
 </resources>

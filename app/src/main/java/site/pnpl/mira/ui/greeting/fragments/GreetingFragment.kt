@@ -45,10 +45,10 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
         setTextName()
         setClickListener()
         setAnimation()
-        flowListener()
+        responseListener()
     }
 
-    private fun flowListener() {
+    private fun responseListener() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.resultFlow.collect { apiResult ->
                 apiResult.doOnSuccess { exercise ->

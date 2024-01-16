@@ -6,5 +6,5 @@ data class EmotionUI(
     val nameGenitive: String,
     val isPositive: Boolean,
     val emojiLink: String,
-    val isOpened: Boolean
+    var isOpened: Boolean
 )
