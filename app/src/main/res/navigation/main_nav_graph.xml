@@ -217,6 +217,7 @@
                 app:popUpToInclusive="true"
                 app:enterAnim="@android:anim/fade_in"
                 app:exitAnim="@android:anim/fade_out"
+                app:popExitAnim="@anim/check_in_down"
                 />
         </fragment>
 
@@ -240,7 +241,9 @@
                 app:popUpToInclusive="true" />
             <action
                 android:id="@+id/action_exercises_list_to_start_check_in"
-                app:destination="@id/check_in_graph" />
+                app:destination="@id/check_in_graph"
+                app:enterAnim="@anim/check_in_up"
+                app:popExitAnim="@anim/check_in_down"/>
         </fragment>
 
         <fragment
