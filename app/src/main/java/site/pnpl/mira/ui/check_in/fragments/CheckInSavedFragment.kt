@@ -1,6 +1,5 @@
 package site.pnpl.mira.ui.check_in.fragments
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -22,6 +21,7 @@ import site.pnpl.mira.ui.check_in.CheckInSavedViewModel
 import site.pnpl.mira.ui.check_in.customview.BubbleView
 import site.pnpl.mira.ui.exercise.customview.ItemExercise
 import site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment
+import site.pnpl.mira.ui.extensions.getParcelableCompat
 import site.pnpl.mira.utils.MiraDateFormat
 import javax.inject.Inject
 
@@ -44,12 +44,8 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
         _binding = FragmentCheckInSavedBinding.bind(view)
         callbackKey = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
 
-        checkIn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            findNavController().currentBackStackEntry?.arguments?.getParcelable(CHECK_IN_KEY, CheckIn::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            findNavController().currentBackStackEntry?.arguments?.getParcelable(CHECK_IN_KEY)
-        }
+        checkIn = findNavController().currentBackStackEntry?.arguments?.getParcelableCompat(CHECK_IN_KEY)
+
 
         setClickListener()
         initScrollBubbleView()

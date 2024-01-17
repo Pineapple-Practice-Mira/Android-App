@@ -1,6 +1,5 @@
 package site.pnpl.mira.ui.exercise.fragments
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -13,6 +12,7 @@ import site.pnpl.mira.databinding.FragmentExerciseDetailsBinding
 import site.pnpl.mira.models.ScreenUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment
 import site.pnpl.mira.ui.exercise.viewpager.ExerciseVPAdapter
+import site.pnpl.mira.ui.extensions.getParcelableArrayListCompat
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment.Companion.SCREENS_KEY
 import java.util.ArrayList
 import javax.inject.Inject
@@ -26,6 +26,7 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
 
     @Inject lateinit var settingsProvider: SettingsProvider
     private var callbackKey: String? = null
+    private var screens: ArrayList<ScreenUI>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,22 +34,17 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
         App.instance.appComponent.inject(this)
         callbackKey = findNavController().currentBackStackEntry?.arguments?.getString(CheckInSavedFragment.CALLBACK_KEY)
 
-        val screens = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelableArrayList(SCREENS_KEY, ScreenUI::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getParcelableArrayList(SCREENS_KEY)
-        }
+        screens = arguments?.getParcelableArrayListCompat(SCREENS_KEY)
 
-        screens!!.sortBy { it.sequenceNumber }
+        screens?.sortBy { it.sequenceNumber }
 
-        initViewPager(screens)
-        setViewPagerListener(screens)
+        initViewPager()
+        setViewPagerListener()
         setOnClickListeners()
     }
 
-    private fun initViewPager(screens: ArrayList<ScreenUI>) {
-        adapter = ExerciseVPAdapter(requireActivity(), screens)
+    private fun initViewPager() {
+        adapter = ExerciseVPAdapter(requireActivity(), screens!!)
         viewPager = binding.viewPager
         viewPager.adapter = adapter
 
@@ -56,14 +52,14 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
         adapter.registerAdapterDataObserver(binding.indicator.adapterDataObserver)
     }
 
-    private fun setViewPagerListener(screens: ArrayList<ScreenUI>) {
+    private fun setViewPagerListener() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 with(binding) {
                     btnPrevious.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
-                    btnNext.visibility = if (position == screens.size - 1) View.INVISIBLE else View.VISIBLE
-                    btnSkip2.visibility = if (position == screens.size - 1) View.VISIBLE else View.INVISIBLE
+                    btnNext.visibility = if (position == screens!!.size - 1) View.INVISIBLE else View.VISIBLE
+                    btnSkip2.visibility = if (position == screens!!.size - 1) View.VISIBLE else View.INVISIBLE
                 }
             }
         })

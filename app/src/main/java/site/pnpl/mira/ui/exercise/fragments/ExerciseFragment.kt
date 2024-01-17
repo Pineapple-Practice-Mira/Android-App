@@ -1,6 +1,5 @@
 package site.pnpl.mira.ui.exercise.fragments
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -18,6 +17,7 @@ import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLB
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment.Companion.EXERCISE_KEY
 import site.pnpl.mira.ui.exercise.customview.EmotionButton
+import site.pnpl.mira.ui.extensions.getParcelableCompat
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment.Companion.SCREENS_KEY
 import site.pnpl.mira.utils.GlideListener
 import javax.inject.Inject
@@ -41,12 +41,7 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
 
         callbackKey = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
 
-        exerciseUI = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(EXERCISE_KEY, ExerciseUI::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getParcelable(EXERCISE_KEY)
-        }
+        exerciseUI = arguments?.getParcelableCompat(EXERCISE_KEY)
 
 
         exerciseUI?.let {

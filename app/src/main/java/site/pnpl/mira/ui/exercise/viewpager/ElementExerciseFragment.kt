@@ -8,16 +8,20 @@ import com.bumptech.glide.Glide
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentExerciseElementBinding
 import site.pnpl.mira.models.ScreenUI
+import site.pnpl.mira.ui.extensions.getParcelableCompat
 import site.pnpl.mira.utils.GlideListener
 
-class ElementExerciseFragment(private val screenUI: ScreenUI) : Fragment(R.layout.fragment_exercise_element) {
+class ElementExerciseFragment() : Fragment(R.layout.fragment_exercise_element) {
 
     private var _binding: FragmentExerciseElementBinding? = null
     private val binding: FragmentExerciseElementBinding get() = _binding!!
+    private var screenUI: ScreenUI? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentExerciseElementBinding.bind(view)
+
+        screenUI = arguments?.getParcelableCompat(KEY_SCREENS)
 
         showProgressBar(true)
         setContent()
@@ -25,12 +29,12 @@ class ElementExerciseFragment(private val screenUI: ScreenUI) : Fragment(R.layou
 
     private fun setContent() {
         binding.apply {
-            text.text = screenUI.text
-            title.text = screenUI.title
+            text.text = screenUI?.text
+            title.text = screenUI?.title
 
             Glide.with(requireContext())
                 .asGif()
-                .load(screenUI.animationLink)
+                .load(screenUI?.animationLink)
 //                .thumbnail(Glide.with(requireContext()).asGif().load(R.drawable.progress_bar).fitCenter())
                 .listener(GlideListener.OnCompletedGif {
                     showProgressBar(false)
@@ -47,4 +51,9 @@ class ElementExerciseFragment(private val screenUI: ScreenUI) : Fragment(R.layou
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        const val KEY_SCREENS = "screens"
+    }
 }
+
