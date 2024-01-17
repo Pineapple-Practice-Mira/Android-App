@@ -101,7 +101,7 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
                     onSuccess(exercise as ExerciseUI)
                 }
                 apiResult.doOnError {
-                    onError(it)
+                    onError()
                 }
             }
         }
@@ -118,7 +118,7 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
         }
     }
 
-    private fun onError(it: String?) {
+    private fun onError() {
         binding.introExercise.apply {
             setState(ItemExercise.State.ERROR_WITH_REFRESH)
             setRefreshClickListener {
@@ -128,7 +128,10 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     }
 
     private fun navigateToExercise(exerciseUI: ExerciseUI) {
-        val extras = bundleOf(Pair(EXERCISE_KEY, exerciseUI))
+        val extras = bundleOf(
+            Pair(EXERCISE_KEY, exerciseUI),
+            Pair(CALLBACK_KEY, CALLBACK_EXERCISES)
+        )
         findNavController().navigate(R.id.action_exercises_list_to_exercise, extras)
     }
 

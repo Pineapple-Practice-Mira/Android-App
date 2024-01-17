@@ -20,6 +20,7 @@ class ItemExercise @JvmOverloads constructor(
     private val binding: ItemExerciseBinding
 
     init {
+        background = null
         binding = ItemExerciseBinding.bind(inflate(context, R.layout.item_exercise, this))
     }
 

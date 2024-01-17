@@ -7,6 +7,7 @@ import site.pnpl.mira.di.modules.RemoteModule
 import site.pnpl.mira.di.modules.RepositoryModule
 import site.pnpl.mira.ui.MainActivity
 import site.pnpl.mira.ui.check_in.CheckInDetailsViewModel
+import site.pnpl.mira.ui.check_in.CheckInSavedViewModel
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsItemFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInFeelFragment
@@ -65,5 +66,6 @@ interface AppComponent {
     fun inject(exercisesListFragment: ExercisesListFragment)
     fun inject(exerciseFragment: ExerciseFragment)
     fun inject(exerciseDetailsFragment: ExerciseDetailsFragment)
+    fun inject(checkInSavedViewModel: CheckInSavedViewModel)
 
 }

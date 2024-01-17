@@ -139,5 +139,7 @@
     <string name="error_loading_exercise">Не удалось загрузить :(</string>
     <string name="exercise_start_subhead">Подходит при состояниях</string>
     <string name="start">Начать</string>
+    <string name="button_close">Закрыть</string>
+    <string name="image_view_content_exercise_preview">Exercise preview</string>
 
 </resources>

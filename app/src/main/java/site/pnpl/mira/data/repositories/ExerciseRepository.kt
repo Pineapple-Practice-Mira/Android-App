@@ -1,19 +1,24 @@
 package site.pnpl.mira.data.repositories
 
+import site.pnpl.mira.data.database.exercises.ExerciseDao
+import site.pnpl.mira.data.database.exercises.ExerciseEntity
 import site.pnpl.mira.data.models.ApiResult
 import site.pnpl.mira.data.remote.MiraApi
 import site.pnpl.mira.data.remote.dto.emotions.EmotionDtoItem
 import site.pnpl.mira.data.remote.dto.exercises.ExerciseDto
+import site.pnpl.mira.data.remote.dto.exercises.ExerciseDtoList
 import site.pnpl.mira.data.remote.dto.exercises.ScreenDto
 import site.pnpl.mira.models.ExerciseUI
 import site.pnpl.mira.models.ScreenUI
 import javax.inject.Inject
+import kotlin.random.Random
 
 class ExerciseRepository @Inject constructor(
-    private val retrofitService: MiraApi
+    private val retrofitService: MiraApi,
+    private val exerciseDao: ExerciseDao
 ) {
 
-    suspend fun getIntroExercise(): ApiResult<Any> =
+    suspend fun getIntroExerciseFromApi(): ApiResult<Any> =
         try {
             val response = retrofitService.getIntroExercise()
             if (response.isSuccessful && response.body() != null) {
@@ -24,6 +29,71 @@ class ExerciseRepository @Inject constructor(
         } catch (e: Exception) {
             ApiResult.Error(e.toString())
         }
+
+    suspend fun getExerciseListByEmotionId(emotionId: Int): ApiResult<Any> =
+        try {
+            val response = retrofitService.getExercisesByEmotionId(emotionId, true)
+
+            if (response.isSuccessful && response.body() != null) {
+                val exerciseDtoList = response.body() as ExerciseDtoList
+
+                if (exerciseDtoList.isEmpty()) {
+                    ApiResult.Error("Exercises for emotion id $emotionId not found")
+                }
+
+                ApiResult.Success(exerciseDtoList)
+            } else {
+                ApiResult.Error("Response error from server")
+            }
+
+        } catch (e: Exception) {
+            ApiResult.Error(e.toString())
+        }
+
+    suspend fun getRandomExercise(exercises: ExerciseDtoList): ApiResult<Any> {
+        val nonOpenedExercises = exercises.toMutableList()
+        nonOpenedExercises.removeIf { isOpenExercise(it.id) }
+
+        val exerciseDto = if (nonOpenedExercises.isEmpty()) {
+            exercises[Random.nextInt(0, exercises.size)]
+        } else {
+            nonOpenedExercises[Random.nextInt(0, nonOpenedExercises.size)]
+        }
+        return getExerciseById(exerciseDto.id)
+    }
+
+    suspend fun getExerciseById(id: Int): ApiResult<Any> =
+        try {
+            val response = retrofitService.getExercisesById(id)
+
+            if (response.isSuccessful && response.body() != null) {
+                val exerciseDto = response.body() as ExerciseDto
+                openExercise(exerciseDto.id)
+                ApiResult.Success(exerciseDto.toExerciseUI())
+            } else {
+                ApiResult.Error("Response error from server")
+            }
+        } catch (e: Exception) {
+            ApiResult.Error(e.toString())
+        }
+
+
+    private fun isOpenExercise(exerciseId: Int): Boolean {
+        val exercise = exerciseDao.getExerciseById(exerciseId)
+        if (exercise != null && exercise.isOpened == 1) {
+            return true
+        }
+        return false
+    }
+
+    private fun openExercise(exerciseId: Int) {
+        exerciseDao.insert(
+            ExerciseEntity(
+                exerciseId = exerciseId,
+                isOpened = 1
+            )
+        )
+    }
 }
 
 fun ExerciseDto.toExerciseUI(): ExerciseUI =

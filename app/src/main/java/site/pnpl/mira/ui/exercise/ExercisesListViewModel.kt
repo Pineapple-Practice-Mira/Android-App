@@ -26,7 +26,7 @@ class ExercisesListViewModel : ViewModel() {
 
     fun getExerciseIntro() {
         viewModelScope.launch(Dispatchers.IO) {
-            _exerciseInto.emit(repository.getIntroExercise())
+            _exerciseInto.emit(repository.getIntroExerciseFromApi())
         }
     }
 

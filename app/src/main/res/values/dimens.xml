@@ -16,5 +16,6 @@
     <dimen name="item_exercise_progress_bar_size">28dp</dimen>
     <dimen name="button_close_size">40dp</dimen>
     <dimen name="emotion_container_height_exersice_start">38dp</dimen>
+    <dimen name="progress_bar_size">50dp</dimen>
     <item name="item_exercise_image_background_corner_radius" type="dimen" format="float">9.16</item>
 </resources>

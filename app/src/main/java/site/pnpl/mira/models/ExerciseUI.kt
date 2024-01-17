@@ -12,4 +12,5 @@ data class ExerciseUI(
     val previewImageLink: String,
     val emotionsId: List<Int>,
     val screens: List<ScreenUI>,
+    val isOpened: Boolean = false
 ) : Parcelable
