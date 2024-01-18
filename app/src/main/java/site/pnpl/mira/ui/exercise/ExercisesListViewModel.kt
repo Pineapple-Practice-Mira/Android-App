@@ -14,8 +14,11 @@ import javax.inject.Inject
 
 class ExercisesListViewModel : ViewModel() {
 
-    private val _exerciseInto: MutableSharedFlow<ApiResult<Any>> = MutableSharedFlow()
-    val exerciseIntro: SharedFlow<ApiResult<Any>> = _exerciseInto.asSharedFlow()
+    private val _selectedExercise: MutableSharedFlow<ApiResult<Any>> = MutableSharedFlow()
+    val selectedExercise: SharedFlow<ApiResult<Any>> = _selectedExercise.asSharedFlow()
+
+    private val _exerciseList: MutableSharedFlow<ApiResult<Any>> = MutableSharedFlow()
+    val exerciseList: SharedFlow<ApiResult<Any>> = _exerciseList.asSharedFlow()
 
     @Inject
     lateinit var repository: ExerciseRepository
@@ -24,9 +27,15 @@ class ExercisesListViewModel : ViewModel() {
         App.instance.appComponent.inject(this)
     }
 
-    fun getExerciseIntro() {
+    fun getExerciseList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _exerciseInto.emit(repository.getIntroExerciseFromApi())
+            _exerciseList.emit(repository.getAllExercisesFromApi())
+        }
+    }
+
+    fun getExerciseById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _selectedExercise.emit(repository.getExerciseById(id))
         }
     }
 

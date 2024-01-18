@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_exercise_height"
     android:layout_margin="4dp"
-    app:cardElevation="@dimen/cardview_default_elevation"
+    app:cardElevation="@dimen/item_exercise_elevation"
     app:cardCornerRadius="@dimen/item_exercise_corner_radius"
     app:cardBackgroundColor="@color/item_exercise_background_color_state">
 

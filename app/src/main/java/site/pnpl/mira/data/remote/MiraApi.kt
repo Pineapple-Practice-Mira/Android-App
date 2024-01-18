@@ -26,4 +26,11 @@ interface MiraApi {
     suspend fun getExercisesById(
         @Path("id") id : Int,
     ): Response<ExerciseDto>
+
+    @GET("exercise/")
+    suspend fun getAllExercises(
+        @Query("include_intro") includeIntro: Boolean,
+        @Query("published_only") publishedOnly: Boolean
+    ): Response<ExerciseDtoList>
+
 }

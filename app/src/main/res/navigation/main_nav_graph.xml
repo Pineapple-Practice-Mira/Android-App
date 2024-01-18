@@ -181,6 +181,8 @@
             <action
                 android:id="@+id/action_checkInFragment_to_checkInCompleted"
                 app:destination="@id/checkInCompleted"
+                app:exitAnim="@anim/check_in_down"
+                app:popExitAnim="@anim/check_in_down"
                 app:popUpTo="@id/checkInFragment"
                 app:popUpToInclusive="true" />
         </fragment>
@@ -204,6 +206,7 @@
                 android:id="@+id/action_check_in_saved_to_exercise_fragment"
                 app:destination="@id/exerciseFragment"
                 app:enterAnim="@anim/check_in_up"
+                app:exitAnim="@anim/check_in_down"
                 app:popExitAnim="@anim/check_in_down"
                 app:popUpTo="@id/check_in_graph"
                 app:popUpToInclusive="true" />
@@ -250,6 +253,7 @@
             android:id="@+id/action_exercises_list_to_exercise"
             app:destination="@id/exerciseFragment"
             app:enterAnim="@anim/check_in_up"
+            app:exitAnim="@anim/check_in_down"
             app:popExitAnim="@anim/check_in_down" />
         <action
             android:id="@+id/action_exercises_list_to_home"
@@ -276,6 +280,7 @@
     <action
         android:id="@+id/action_exercise_details_fragment_to_home"
         app:destination="@id/navigation_home"
+        app:exitAnim="@anim/check_in_down"
         app:popUpTo="@id/navigation_home"
         app:popUpToInclusive="true"
         />
@@ -283,6 +288,7 @@
     <action
         android:id="@+id/action_exercise_details_fragment_to_exercise_list"
         app:destination="@id/exersicesList"
+        app:exitAnim="@anim/check_in_down"
         app:popUpTo="@id/exersicesList"
         app:popUpToInclusive="true"/>
     </fragment>

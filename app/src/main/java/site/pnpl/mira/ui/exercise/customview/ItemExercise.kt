@@ -18,6 +18,7 @@ class ItemExercise @JvmOverloads constructor(
 ) : CardView(context, attributeSet, defStyleAttr) {
 
     private val binding: ItemExerciseBinding
+    private var state = State.NORMAL
 
     init {
         background = null
@@ -25,6 +26,7 @@ class ItemExercise @JvmOverloads constructor(
     }
 
     fun setState(state: State, exerciseName: String = "") {
+        this.state = state
         when (state) {
             State.LOADING -> {
                 isEnabled = false
@@ -87,7 +89,7 @@ class ItemExercise @JvmOverloads constructor(
                 }
                 binding.name.apply {
                     text = exerciseName
-                    setTextColor(ResourcesCompat.getColorStateList(context.resources, R.color.primary, context.theme))
+                    setTextColor(ResourcesCompat.getColorStateList(context.resources, R.color.dark, context.theme))
                 }
             }
         }
@@ -101,7 +103,9 @@ class ItemExercise @JvmOverloads constructor(
 
     fun setRefreshClickListener(listener: () -> Unit) {
         binding.icon.setOnClickListener {
-            listener()
+            if (state == State.ERROR_WITH_REFRESH) {
+                listener()
+            }
         }
     }
 

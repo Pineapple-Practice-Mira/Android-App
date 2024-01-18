@@ -31,7 +31,7 @@ data class ExerciseDto(
     @SerializedName("published")
     val published: Boolean,
     @SerializedName("screens")
-    val screens: List<ScreenDto>,
+    val screens: List<ScreenDto>?,
     @SerializedName("title")
     val title: String
 )

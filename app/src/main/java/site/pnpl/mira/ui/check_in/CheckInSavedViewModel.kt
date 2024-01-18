@@ -29,7 +29,7 @@ class CheckInSavedViewModel : ViewModel() {
 
     fun getExerciseByEmotionId(emotionId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val exerciseDtoListResult = exerciseRepository.getExerciseListByEmotionId(emotionId)
+            val exerciseDtoListResult = exerciseRepository.getExercisesListByEmotionId(emotionId)
             exerciseDtoListResult.doOnSuccess { exerciseDtoList ->
                 exerciseDtoList as ExerciseDtoList
                 _exerciseFlow.emit(exerciseRepository.getRandomExercise(exerciseDtoList))
