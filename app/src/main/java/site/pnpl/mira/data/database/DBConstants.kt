@@ -5,4 +5,5 @@ object DBConstants {
     const val VERSION = 1
     const val TABLE_NAME_CHECK_IN = "check_in_table"
     const val TABLE_NAME_EMOTION = "emotion_table"
+    const val TABLE_NAME_EXERCISES = "exercise_table"
 }

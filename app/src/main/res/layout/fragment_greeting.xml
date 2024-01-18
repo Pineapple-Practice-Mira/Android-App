@@ -90,22 +90,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="@dimen/greeting_button_1_bias" />
 
-    <View
+    <LinearLayout
         android:id="@+id/blackout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white_alpha30"
-        android:visibility="gone"/>
+        android:translationZ="5dp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true">
 
-    <site.pnpl.mira.ui.customview.PopUpLoading
-        android:id="@+id/popUpLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:alpha="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <site.pnpl.mira.ui.customview.PopUpLoading
+            android:id="@+id/popUpLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:alpha="0"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

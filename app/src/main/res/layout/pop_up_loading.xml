@@ -9,7 +9,8 @@
         android:id="@+id/popUpDialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
+        android:translationZ="2dp"
         android:background="@drawable/pop_up_dialog_background"
         android:elevation="6dp">
 

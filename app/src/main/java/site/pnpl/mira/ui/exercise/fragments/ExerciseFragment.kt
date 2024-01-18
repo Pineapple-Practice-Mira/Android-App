@@ -1,6 +1,5 @@
 package site.pnpl.mira.ui.exercise.fragments
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -14,9 +13,13 @@ import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentExerciseBinding
 import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.models.ExerciseUI
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment.Companion.EXERCISE_KEY
 import site.pnpl.mira.ui.exercise.customview.EmotionButton
+import site.pnpl.mira.ui.extensions.getParcelableCompat
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment.Companion.SCREENS_KEY
+import site.pnpl.mira.utils.GlideListener
 import javax.inject.Inject
 
 class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
@@ -26,6 +29,7 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
     @Inject lateinit var emotionProvider: EmotionProvider
 
     private var exerciseUI: ExerciseUI? = null
+    private var callbackKey: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,12 +39,10 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
 
         setClickListener()
 
-        exerciseUI = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(EXERCISE_KEY, ExerciseUI::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getParcelable(EXERCISE_KEY)
-        }
+        callbackKey = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
+
+        exerciseUI = arguments?.getParcelableCompat(EXERCISE_KEY)
+
 
         exerciseUI?.let {
             setContentOnUi(it)
@@ -53,9 +55,14 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
     }
 
     private fun setContentOnUi(exerciseUI: ExerciseUI) {
+        showProgressBar(true)
         binding.apply {
             Glide.with(requireContext())
                 .load(exerciseUI.previewImageLink)
+//                .thumbnail(Glide.with(requireContext()).load(R.drawable.progress_bar))
+                .listener(GlideListener.OnCompletedDrawable{
+                    showProgressBar(false)
+                })
                 .into(preview)
 
             exerciseName.text = exerciseUI.name
@@ -82,13 +89,23 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
 
     private fun setClickListener() {
         binding.close.setOnClickListener {
-            findNavController().popBackStack()
+            when (callbackKey) {
+                CALLBACK_HOME -> findNavController().navigate(R.id.action_exercise_fragment_to_home)
+                else -> findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
+            }
         }
 
         binding.startButton.setOnClickListener {
-            val bundle = bundleOf(Pair(SCREENS_KEY, exerciseUI?.screens))
+            val bundle = bundleOf(
+                Pair(SCREENS_KEY, exerciseUI?.screens),
+                Pair(CALLBACK_KEY, callbackKey)
+            )
             findNavController().navigate(R.id.action_exerciseFragment_to_exerciseDetailsFragment, bundle)
         }
+    }
+
+    private fun showProgressBar(value: Boolean) {
+        binding.progressBar.isVisible = value
     }
 
     override fun onDestroyView() {

@@ -139,5 +139,13 @@
     <string name="error_loading_exercise">Не удалось загрузить :(</string>
     <string name="exercise_start_subhead">Подходит при состояниях</string>
     <string name="start">Начать</string>
+    <string name="button_close">Закрыть</string>
+    <string name="image_view_content_exercise_preview">Exercise preview</string>
+    <string name="label_exercise_not_found">Сейчас упражнений не нашлось</string>
+    <string name="label_empty">Пока что здесь пусто\nНачни записывать свои ощущения ежедневно, чтобы получать доступ к упражнениям</string>
+    <string name="label_exercise_loading_error">Не удалось загрузить данные\nВозможно, проблема с интернет-соединением</string>
+    <string name="update"><u>Обновить</u></string>
+    <string name="pop_up_loading_body_2">Не удалось загрузить упражнение</string>
+    <string name="pop_up_loading_button_2">Закрыть</string>
 
 </resources>

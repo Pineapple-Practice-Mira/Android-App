@@ -1,6 +1,5 @@
 package site.pnpl.mira.ui.check_in.fragments
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -11,6 +10,7 @@ import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInDetailsBinding
 import site.pnpl.mira.models.CheckInUI
 import site.pnpl.mira.ui.check_in.viewpager.DetailAdapter
+import site.pnpl.mira.ui.extensions.getParcelableArrayListCompat
 import site.pnpl.mira.ui.extensions.setCurrentItem
 
 class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
@@ -32,12 +32,7 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
         with(findNavController().currentBackStackEntry?.arguments) {
             this?.let {
                 position = getInt(POSITION_KEY)
-                checkIns = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    getParcelableArrayList(LIST_OF_CHECK_IN_KEY, CheckInUI::class.java)
-                } else {
-                    @Suppress("DEPRECATION")
-                    getParcelableArrayList(LIST_OF_CHECK_IN_KEY)
-                }
+                checkIns = getParcelableArrayListCompat(LIST_OF_CHECK_IN_KEY)
             }
         }
 
@@ -49,7 +44,6 @@ class CheckInDetailsFragment : Fragment(R.layout.fragment_check_in_details) {
             adapter = DetailAdapter(this@CheckInDetailsFragment, checkIns!!, onArrowClickListener)
             isUserInputEnabled = false
             setCurrentItem(position!!, false)
-            println("initViewPager position: $position checkIns: $checkIns")
         }
     }
 

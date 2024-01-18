@@ -6,6 +6,7 @@ import site.pnpl.mira.data.repositories.CheckInRepository
 import site.pnpl.mira.data.repositories.EmotionRepository
 import site.pnpl.mira.data.database.check_in.dao.CheckInDao
 import site.pnpl.mira.data.database.emotions.EmotionDao
+import site.pnpl.mira.data.database.exercises.ExerciseDao
 import site.pnpl.mira.data.remote.MiraApi
 import site.pnpl.mira.data.repositories.ExerciseRepository
 import javax.inject.Singleton
@@ -15,13 +16,16 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideCheckInRepository(checkInDao: CheckInDao) = CheckInRepository(checkInDao)
+    fun provideCheckInRepository(checkInDao: CheckInDao) =
+        CheckInRepository(checkInDao)
 
     @Singleton
     @Provides
-    fun provideEmotionRepository(retrofitService: MiraApi, emotionDao: EmotionDao) = EmotionRepository(retrofitService, emotionDao)
+    fun provideEmotionRepository(retrofitService: MiraApi, emotionDao: EmotionDao) =
+        EmotionRepository(retrofitService, emotionDao)
 
     @Singleton
     @Provides
-    fun provideExerciseRepository(retrofitService: MiraApi) = ExerciseRepository(retrofitService)
+    fun provideExerciseRepository(retrofitService: MiraApi, exerciseDao: ExerciseDao) =
+        ExerciseRepository(retrofitService, exerciseDao)
 }

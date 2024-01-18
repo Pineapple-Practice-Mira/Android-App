@@ -24,7 +24,7 @@ class GreetingViewModel: ViewModel() {
 
     fun getIntroExercise() {
         viewModelScope.launch(Dispatchers.IO) {
-            produceResult(repository.getIntroExercise())
+            produceResult(repository.getIntroExerciseFromApi())
         }
     }
 

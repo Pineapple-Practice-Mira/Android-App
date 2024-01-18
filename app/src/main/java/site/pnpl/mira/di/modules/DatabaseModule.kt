@@ -28,4 +28,13 @@ class DatabaseModule {
             DBConstants.NAME
         ).build().emotionDao()
 
+    @Singleton
+    @Provides
+    fun provideExerciseDao(context: Context) =
+        Room.databaseBuilder(
+            context,
+            MiraDatabase::class.java,
+            DBConstants.NAME
+        ).build().exerciseDao()
+
 }
