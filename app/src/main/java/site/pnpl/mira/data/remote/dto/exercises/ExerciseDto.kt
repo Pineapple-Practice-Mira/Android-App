@@ -4,6 +4,9 @@ package site.pnpl.mira.data.remote.dto.exercises
 import com.google.gson.annotations.SerializedName
 import site.pnpl.mira.data.remote.dto.emotions.EmotionDtoItem
 
+
+class ExerciseDtoList : ArrayList<ExerciseDto>()
+
 data class ExerciseDto(
     @SerializedName("created_at")
     val createdAt: String,
@@ -28,7 +31,7 @@ data class ExerciseDto(
     @SerializedName("published")
     val published: Boolean,
     @SerializedName("screens")
-    val screens: List<ScreenDto>,
+    val screens: List<ScreenDto>?,
     @SerializedName("title")
     val title: String
 )

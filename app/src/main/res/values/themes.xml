@@ -129,6 +129,9 @@
     <style name="Links16Primary" parent="WixMadeforDisplayMedium">
         <item name="android:textColor">@color/primary</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:translationY">-1.92sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
     <style name="Buttons16" parent="WixMadeforDisplaySimiBold">

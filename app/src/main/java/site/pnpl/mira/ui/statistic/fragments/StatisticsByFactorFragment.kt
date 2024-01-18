@@ -21,6 +21,7 @@ import site.pnpl.mira.models.FactorData
 import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
 import site.pnpl.mira.ui.customview.ActionBar
+import site.pnpl.mira.ui.extensions.getParcelableCompat
 import site.pnpl.mira.ui.statistic.StatisticByFactorViewModel
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_FACTOR_DATA
 import site.pnpl.mira.ui.statistic.fragments.StatisticsFragment.Companion.KEY_TRANSITION
@@ -54,12 +55,7 @@ class StatisticsByFactorFragment : Fragment(R.layout.fragment_statistics_by_fact
         super.onViewCreated(view, savedInstanceState)
         App.instance.appComponent.inject(this)
 
-        val fd: FactorData? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            savedInstanceState?.getParcelable(KEY_SAVED_FACTOR_DATA, FactorData::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            savedInstanceState?.getParcelable(KEY_SAVED_FACTOR_DATA)
-        }
+        val fd: FactorData? = savedInstanceState?.getParcelableCompat(KEY_SAVED_FACTOR_DATA)
         if (fd != null) {
             factorData = fd
         }

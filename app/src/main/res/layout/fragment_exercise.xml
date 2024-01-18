@@ -50,14 +50,26 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.45" />
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:src="@drawable/progress_bar"
+        app:layout_constraintTop_toTopOf="@id/preview"
+        app:layout_constraintStart_toStartOf="@id/preview"
+        app:layout_constraintEnd_toEndOf="@id/preview"
+        app:layout_constraintBottom_toBottomOf="@id/preview"/>
+
     <ImageView
         android:id="@+id/preview"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toTopOf="@id/imageViewBarrier"
         app:layout_constraintEnd_toEndOf="@id/end"
         app:layout_constraintStart_toStartOf="@id/start"
-        app:layout_constraintTop_toBottomOf="@id/exerciseName" />
+        app:layout_constraintTop_toBottomOf="@id/exerciseName"
+        android:contentDescription="@string/image_view_content_exercise_preview" />
 
     <TextView
         android:id="@+id/subhead"
@@ -86,7 +98,8 @@
             android:id="@+id/emotionContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
         </LinearLayout>
     </HorizontalScrollView>
 

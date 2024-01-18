@@ -40,6 +40,7 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
 
         binding.popUpLoading.doOnLayout {
             yPositionLoading = it.y
+            binding.blackout.isVisible = false
         }
 
         setTextName()
@@ -114,7 +115,6 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
 
     private fun startLoading() {
         with(binding.popUpLoading) {
-
             y = screenHeight.toFloat()
             enableProgressBar(true)
             animate()

@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.R
@@ -20,8 +24,13 @@ import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLB
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.exercise.customview.EmotionButton
 import site.pnpl.mira.ui.customview.BottomBar
+import site.pnpl.mira.ui.exercise.recyclerview.ExerciseAdapter
 import site.pnpl.mira.ui.exercise.ExercisesListViewModel
 import site.pnpl.mira.ui.exercise.customview.ItemExercise
+import site.pnpl.mira.ui.exercise.recyclerview.SpacingItemDecoration
+import site.pnpl.mira.ui.extensions.getParcelableArrayListCompat
+import site.pnpl.mira.ui.extensions.screenHeight
+import site.pnpl.mira.utils.ANIMATION_DURATION
 import javax.inject.Inject
 
 class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
@@ -33,7 +42,12 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     @Inject
     lateinit var emotionProvider: EmotionProvider
 
-    private var exerciseIntro: ExerciseUI? = null
+    private var exercises: ArrayList<ExerciseUI> = arrayListOf()
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ExerciseAdapter
+    private val selectedButtons: MutableList<Int> = mutableListOf()
+    private var yPositionLoading: Float = 0f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,16 +55,86 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
         App.instance.appComponent.inject(this)
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
 
-        initBottomBar()
-        createEmotionButtons()
-        checkNeedRequest()
-        responseListener()
+        binding.popUpLoading.doOnLayout {
+            yPositionLoading = it.y
+            binding.blackout.isVisible = false
+        }
 
+        initProgressBar()
+        checkNeedRequest()
+        initBottomBar()
+        initRecyclerView()
+        responseListener()
+        setClickListeners()
+    }
+
+    private fun initProgressBar() {
+        Glide.with(requireContext())
+            .asGif()
+            .load(R.drawable.progress_bar)
+            .into(binding.progressLoading)
+    }
+
+    private fun initRecyclerView() {
+        adapter = ExerciseAdapter(itemClickListener)
+        recyclerView = binding.recyclerView.apply {
+            this.adapter = this@ExercisesListFragment.adapter
+            addItemDecoration(SpacingItemDecoration(paddingTopInDp = 8))
+        }
+    }
+
+    private val itemClickListener = object : ExerciseAdapter.ItemClickListener {
+        override fun onClick(exerciseUI: ExerciseUI) {
+            getExercisesById(exerciseUI)
+        }
+    }
+
+    private fun getExercisesById(exerciseUI: ExerciseUI) {
+        startLoadingExerciseAnimation()
+        viewModel.getExerciseById(exerciseUI.id)
+    }
+
+    private fun startLoadingExerciseAnimation() {
+        binding.apply {
+            popUpLoading.apply {
+                y = screenHeight.toFloat()
+                enableProgressBar(true)
+                animate()
+                    .alpha(1.0f)
+                    .y(yPositionLoading)
+                    .setDuration(ANIMATION_DURATION)
+                    .start()
+            }
+            blackout.isVisible = true
+        }
+    }
+
+    private fun stopLoadingExerciseAnimation() {
+        binding.apply {
+            popUpLoading.apply {
+                enableProgressBar(false)
+                setBody(getString(R.string.pop_up_loading_body_2))
+                setTextButton(getString(R.string.pop_up_loading_button_2))
+                setButtonClickListener {
+                    animate()
+                        .y(screenHeight.toFloat())
+                        .alpha(0f)
+                        .setDuration(ANIMATION_DURATION)
+                        .withEndAction {
+                            blackout.isVisible = false
+                        }
+                        .start()
+                }
+            }
+        }
     }
 
     private fun checkNeedRequest() {
-        if (exerciseIntro != null) {
-            onSuccess(exerciseIntro!!)
+        if (exercises.isEmpty()) {
+            exercises = arguments?.getParcelableArrayListCompat(EXERCISES_LIST_KEY) ?: arrayListOf()
+        }
+        if (exercises.isNotEmpty()) {
+            onSuccess(exercises)
         } else {
             putRequests()
         }
@@ -82,54 +166,150 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
                 }
                 binding.emotionContainer.addView(emotionButton)
             }
+            binding.emotionContainer.scheduleLayoutAnimation()
         }
     }
 
     private fun filterExercisesList(emotionButton: EmotionButton) {
-        println(emotionButton.emotionId)
+        if (emotionButton.isSelected) {
+            selectedButtons.add(emotionButton.emotionId)
+        } else {
+            selectedButtons.remove(emotionButton.emotionId)
+        }
+
+        if (selectedButtons.isEmpty()) {
+            adapter.submitList(exercises.filter { !it.isIntro })
+            showNoticeNotFounded(false)
+        } else {
+            if (exercises.isNotEmpty()) {
+                val filteredExercises =
+                    exercises.filter { exercise ->
+                        exercise.emotionsId.any { it in selectedButtons }
+                    }
+
+                adapter.submitList(filteredExercises)
+                showNoticeNotFounded(filteredExercises.isEmpty())
+            }
+        }
+        recyclerView.apply {
+//            smoothScrollToPosition(0)
+            scheduleLayoutAnimation()
+        }
+    }
+
+    private fun showNoticeNotFounded(value: Boolean) {
+        binding.notice.text = getString(R.string.label_exercise_not_found)
+        binding.notice.isVisible = value
     }
 
     private fun putRequests() {
-        binding.introExercise.setState(ItemExercise.State.LOADING)
-        viewModel.getExerciseIntro()
+        binding.apply {
+            showProgressBar(true)
+            notice.isVisible = false
+            introExercise.setState(ItemExercise.State.LOADING)
+        }
+        viewModel.getExerciseList()
+    }
+
+    private fun showProgressBar(value: Boolean) {
+        binding.progressLoading.isVisible = value
     }
 
     private fun responseListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.exerciseIntro.collect { apiResult ->
-                apiResult.doOnSuccess { exercise ->
-                    onSuccess(exercise as ExerciseUI)
+        val scope = viewLifecycleOwner.lifecycleScope
+
+        scope.launch {
+            viewModel.exerciseList.collect { apiResult ->
+                showProgressBar(false)
+                apiResult.doOnSuccess { exercises ->
+                    @Suppress("UNCHECKED_CAST")
+                    onSuccess(exercises as ArrayList<ExerciseUI>)
                 }
                 apiResult.doOnError {
-                    onError(it)
+                    onError()
+                }
+            }
+        }
+
+        scope.launch {
+            viewModel.selectedExercise.collect { apiResult ->
+                apiResult.doOnSuccess {
+                    navigateToExercise(it as ExerciseUI)
+                }
+
+                apiResult.doOnError {
+                    stopLoadingExerciseAnimation()
                 }
             }
         }
     }
 
-    private fun onSuccess(exercise: ExerciseUI) {
-        exerciseIntro = exercise
+    private fun onSuccess(exercises: ArrayList<ExerciseUI>) {
+        this.exercises = exercises
+
+        exercises.find { it.isIntro }.apply {
+            this?.let {
+                setContentToExerciseIntro(it)
+            }
+        }
+        val filteredExercises = exercises.filter { !it.isIntro }
+
+        if (filteredExercises.isEmpty()) {
+            binding.notice.apply {
+                text = getString(R.string.label_empty)
+                isVisible = true
+            }
+            return
+        }
+
+        adapter.submitList(filteredExercises)
+        createEmotionButtons()
+    }
+
+    private fun setContentToExerciseIntro(exercise: ExerciseUI) {
         binding.introExercise.apply {
             setState(ItemExercise.State.NORMAL, exercise.name)
             setImage(exercise.previewImageLink)
             setClickListener {
-                navigateToExercise(exercise)
+                getExercisesById(exercise)
             }
         }
     }
 
-    private fun onError(it: String?) {
-        binding.introExercise.apply {
-            setState(ItemExercise.State.ERROR_WITH_REFRESH)
-            setRefreshClickListener {
+    private fun onError() {
+        binding.apply {
+            introExercise.apply {
+                setState(ItemExercise.State.ERROR)
+            }
+
+            notice.apply {
+                text = getString(R.string.label_exercise_loading_error)
+                isVisible = true
+            }
+            update.isVisible = true
+        }
+    }
+
+    private fun navigateToExercise(exerciseUI: ExerciseUI) {
+        val extras = bundleOf(
+            Pair(EXERCISE_KEY, exerciseUI),
+            Pair(CALLBACK_KEY, CALLBACK_EXERCISES)
+        )
+        findNavController().navigate(R.id.action_exercises_list_to_exercise, extras)
+    }
+
+    private fun setClickListeners() {
+        binding.apply {
+            update.setOnClickListener {
+                it.isVisible = false
                 putRequests()
             }
         }
     }
 
-    private fun navigateToExercise(exerciseUI: ExerciseUI) {
-        val extras = bundleOf(Pair(EXERCISE_KEY, exerciseUI))
-        findNavController().navigate(R.id.action_exercises_list_to_exercise, extras)
+    override fun onPause() {
+        super.onPause()
+        arguments = bundleOf(Pair(EXERCISES_LIST_KEY, exercises))
     }
 
     override fun onDestroyView() {
@@ -139,5 +319,6 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
 
     companion object {
         const val EXERCISE_KEY = "exercise_key"
+        const val EXERCISES_LIST_KEY = "exercises_list"
     }
 }

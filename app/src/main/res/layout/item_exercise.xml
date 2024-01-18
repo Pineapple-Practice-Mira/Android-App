@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainContainer"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_exercise_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:cardElevation="@dimen/cardview_default_elevation"
+    android:layout_margin="4dp"
+    app:cardElevation="@dimen/item_exercise_elevation"
     app:cardCornerRadius="@dimen/item_exercise_corner_radius"
     app:cardBackgroundColor="@color/item_exercise_background_color_state">
 
@@ -23,7 +24,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guideline"/>
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            android:contentDescription="@string/image_view_content_exercise_preview" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

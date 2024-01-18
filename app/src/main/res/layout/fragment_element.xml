@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:src="@drawable/progress_bar"
+        app:layout_constraintTop_toTopOf="@id/animation"
+        app:layout_constraintStart_toStartOf="@id/animation"
+        app:layout_constraintEnd_toEndOf="@id/animation"
+        app:layout_constraintBottom_toBottomOf="@id/animation"/>
+
     <ImageView
         android:id="@+id/animation"
         android:layout_width="0dp"
