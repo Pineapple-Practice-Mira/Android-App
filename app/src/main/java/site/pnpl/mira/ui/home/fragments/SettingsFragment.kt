@@ -18,6 +18,8 @@ import site.pnpl.mira.BuildConfig
 import site.pnpl.mira.R
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentSettingsBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
 import java.io.File
 import javax.inject.Inject
@@ -27,8 +29,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
     private var savedName = ""
     private var newName = ""
 
@@ -70,11 +72,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun setClickListeners() {
         with(binding) {
             close.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_CLOSE)
                 close.isClickable = false
                 findNavController().popBackStack()
             }
 
             save.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_SAVE_NAME)
                 savedName = newName
                 settingsProvider.saveName(savedName)
                 save.isEnabled = false
@@ -82,10 +86,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
 
             about.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_ABOUT)
                 aboutClicked()
             }
 
             share.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_SHARE)
                 shareClicked()
             }
         }

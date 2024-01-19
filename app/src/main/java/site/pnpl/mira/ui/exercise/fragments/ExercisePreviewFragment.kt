@@ -10,8 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.databinding.FragmentExerciseBinding
+import site.pnpl.mira.databinding.FragmentExercisePreviewBinding
 import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.ExerciseUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
@@ -22,18 +24,19 @@ import site.pnpl.mira.ui.greeting.fragments.GreetingFragment.Companion.SCREENS_K
 import site.pnpl.mira.utils.GlideListener
 import javax.inject.Inject
 
-class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
-    private var _binding: FragmentExerciseBinding? = null
+class ExercisePreviewFragment : Fragment(R.layout.fragment_exercise_preview) {
+    private var _binding: FragmentExercisePreviewBinding? = null
     private val binding get() = _binding!!
 
     @Inject lateinit var emotionProvider: EmotionProvider
+    @Inject lateinit var analytics: Analytics
 
     private var exerciseUI: ExerciseUI? = null
     private var callbackKey: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentExerciseBinding.bind(view)
+        _binding = FragmentExercisePreviewBinding.bind(view)
         App.instance.appComponent.inject(this)
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
 
@@ -89,6 +92,7 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
 
     private fun setClickListener() {
         binding.close.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_EXERCISE_PREVIEW_CLOSE)
             when (callbackKey) {
                 CALLBACK_HOME -> findNavController().navigate(R.id.action_exercise_fragment_to_home)
                 else -> findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
@@ -96,6 +100,7 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
         }
 
         binding.startButton.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_EXERCISE_START)
             val bundle = bundleOf(
                 Pair(SCREENS_KEY, exerciseUI?.screens),
                 Pair(CALLBACK_KEY, callbackKey)

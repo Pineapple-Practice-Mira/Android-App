@@ -18,6 +18,8 @@ import site.pnpl.mira.data.models.doOnError
 import site.pnpl.mira.data.models.doOnSuccess
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentGreetingBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.ExerciseUI
 import site.pnpl.mira.ui.extensions.screenHeight
 import site.pnpl.mira.ui.greeting.GreetingViewModel
@@ -29,6 +31,7 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
     private var _binding: FragmentGreetingBinding? = null
     private val binding get() = _binding!!
     @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
 
     private val viewModel: GreetingViewModel by viewModels()
     private var yPositionLoading: Float = 0f
@@ -104,10 +107,12 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
 
     private fun setClickListener() {
         binding.greeting.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_GREETING_START)
             startLoading()
         }
 
         binding.skip.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_GREETING_SKIP)
             settingsProvider.firstLaunchCompleted()
             findNavController().navigate(R.id.action_greeting_to_home)
         }

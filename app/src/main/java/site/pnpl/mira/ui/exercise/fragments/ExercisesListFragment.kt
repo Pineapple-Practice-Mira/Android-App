@@ -19,6 +19,9 @@ import site.pnpl.mira.data.models.doOnError
 import site.pnpl.mira.data.models.doOnSuccess
 import site.pnpl.mira.databinding.FragmentExercisesListBinding
 import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
+import site.pnpl.mira.domain.analitycs.EventParameter
 import site.pnpl.mira.models.ExerciseUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
@@ -41,6 +44,8 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
 
     @Inject
     lateinit var emotionProvider: EmotionProvider
+    @Inject
+    lateinit var analytics: Analytics
 
     private var exercises: ArrayList<ExerciseUI> = arrayListOf()
 
@@ -271,6 +276,7 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
             setState(ItemExercise.State.NORMAL, exercise.name)
             setImage(exercise.previewImageLink)
             setClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_EXERCISES_LIST_CLICK_INTRO)
                 getExercisesById(exercise)
             }
         }
@@ -291,6 +297,13 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     }
 
     private fun navigateToExercise(exerciseUI: ExerciseUI) {
+        analytics.sendEvent(
+            AnalyticsEvent.NAME_EXERCISES_LIST_CLICK_INTRO,
+            listOf(
+                EventParameter(AnalyticsEvent.PARAMETER_EXERCISE_ID, exerciseUI.id),
+                EventParameter(AnalyticsEvent.PARAMETER_EXERCISE_NAME, exerciseUI.name),
+            )
+        )
         val extras = bundleOf(
             Pair(EXERCISE_KEY, exerciseUI),
             Pair(CALLBACK_KEY, CALLBACK_EXERCISES)

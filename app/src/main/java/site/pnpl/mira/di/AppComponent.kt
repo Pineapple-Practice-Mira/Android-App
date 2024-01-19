@@ -1,6 +1,7 @@
 package site.pnpl.mira.di
 
 import dagger.Component
+import site.pnpl.mira.di.modules.AnalyticsModule
 import site.pnpl.mira.di.modules.DatabaseModule
 import site.pnpl.mira.di.modules.DomainModule
 import site.pnpl.mira.di.modules.RemoteModule
@@ -11,8 +12,11 @@ import site.pnpl.mira.ui.check_in.CheckInSavedViewModel
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsItemFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInFeelFragment
+import site.pnpl.mira.ui.check_in.fragments.CheckInFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment
-import site.pnpl.mira.ui.exercise.fragments.ExerciseFragment
+import site.pnpl.mira.ui.customview.ActionBar
+import site.pnpl.mira.ui.customview.BottomBar
+import site.pnpl.mira.ui.exercise.fragments.ExercisePreviewFragment
 import site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment
 import site.pnpl.mira.ui.exercise.ExercisesListViewModel
 import site.pnpl.mira.ui.exercise.fragments.ExerciseDetailsFragment
@@ -38,7 +42,8 @@ import javax.inject.Singleton
         DomainModule::class,
         DatabaseModule::class,
         RemoteModule::class,
-        RepositoryModule::class
+        RepositoryModule::class,
+        AnalyticsModule::class
     ]
 )
 interface AppComponent {
@@ -64,8 +69,11 @@ interface AppComponent {
     fun inject(checkInStatisticAdapter: CheckInStatisticAdapter)
     fun inject(greetingViewModel: GreetingViewModel)
     fun inject(exercisesListFragment: ExercisesListFragment)
-    fun inject(exerciseFragment: ExerciseFragment)
+    fun inject(exerciseFragment: ExercisePreviewFragment)
     fun inject(exerciseDetailsFragment: ExerciseDetailsFragment)
     fun inject(checkInSavedViewModel: CheckInSavedViewModel)
+    fun inject(checkInFragment: CheckInFragment)
+    fun inject(actionBar: ActionBar)
+    fun inject(bottomBar: BottomBar)
 
 }

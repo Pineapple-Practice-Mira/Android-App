@@ -8,6 +8,7 @@ import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.FragmentCheckInFeelingBinding
 import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.domain.analitycs.Analytics
 import site.pnpl.mira.models.EmotionUI
 import site.pnpl.mira.ui.check_in.customview.EmotionView
 import javax.inject.Inject
@@ -21,8 +22,8 @@ class CheckInFeelFragment(
     private val emotionsButtons = mutableListOf<EmotionView>()
     private var emotionId = -1
 
-    @Inject
-    lateinit var emotionProvider: EmotionProvider
+    @Inject lateinit var emotionProvider: EmotionProvider
+    @Inject lateinit var analytics: Analytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
