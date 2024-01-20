@@ -216,9 +216,9 @@
 
     <fragment
         android:id="@+id/exerciseFragment"
-        android:name="site.pnpl.mira.ui.exercise.fragments.ExerciseFragment"
+        android:name="site.pnpl.mira.ui.exercise.fragments.ExercisePreviewFragment"
         android:label="ExerciseFragment"
-        tools:layout="@layout/fragment_exercise">
+        tools:layout="@layout/fragment_exercise_preview">
 
         <action
             android:id="@+id/action_exerciseFragment_to_exerciseDetailsFragment"

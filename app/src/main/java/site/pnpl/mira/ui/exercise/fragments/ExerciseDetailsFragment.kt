@@ -7,8 +7,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import site.pnpl.mira.App
 import site.pnpl.mira.R
-import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentExerciseDetailsBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.ScreenUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment
 import site.pnpl.mira.ui.exercise.viewpager.ExerciseVPAdapter
@@ -24,7 +25,7 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
     private lateinit var adapter: ExerciseVPAdapter
     private lateinit var viewPager: ViewPager2
 
-    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
     private var callbackKey: String? = null
     private var screens: ArrayList<ScreenUI>? = null
 
@@ -86,6 +87,7 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
     }
 
     private fun navigateToBackStack() {
+        analytics.sendEvent(AnalyticsEvent.NAME_EXERCISE_CLOSE)
         when (callbackKey) {
             CheckInSavedFragment.CALLBACK_HOME -> findNavController().navigate(R.id.action_exercise_details_fragment_to_home)
             else -> findNavController().navigate(R.id.action_exercise_details_fragment_to_exercise_list)

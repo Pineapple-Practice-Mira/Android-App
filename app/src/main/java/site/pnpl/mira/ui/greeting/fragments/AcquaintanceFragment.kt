@@ -11,6 +11,8 @@ import site.pnpl.mira.ui.greeting.viewpager.VpAdapter
 import site.pnpl.mira.R
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentAcquaintanceBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.ScreenUI
 import site.pnpl.mira.ui.extensions.getParcelableArrayListCompat
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment.Companion.SCREENS_KEY
@@ -24,8 +26,8 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
     private lateinit var adapter: VpAdapter
     private lateinit var viewPager: ViewPager2
 
-    @Inject
-    lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
     private var screens: ArrayList<ScreenUI>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,10 +81,12 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
             }
 
             btnSkip.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_GREETING_COMPLETE_VIA_BUTTON)
                 navigateToHome()
             }
 
             btnSkip2.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_GREETING_COMPLETE)
                 navigateToHome()
             }
         }

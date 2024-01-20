@@ -15,6 +15,9 @@ import site.pnpl.mira.data.models.doOnError
 import site.pnpl.mira.data.models.doOnSuccess
 import site.pnpl.mira.databinding.FragmentCheckInSavedBinding
 import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
+import site.pnpl.mira.domain.analitycs.EventParameter
 import site.pnpl.mira.models.ExerciseUI
 import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.ui.check_in.CheckInSavedViewModel
@@ -30,7 +33,10 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
     private var _binding: FragmentCheckInSavedBinding? = null
     private val binding: FragmentCheckInSavedBinding get() = _binding!!
 
-    @Inject lateinit var emotionProvider: EmotionProvider
+    @Inject
+    lateinit var emotionProvider: EmotionProvider
+    @Inject
+    lateinit var analytics: Analytics
     private val viewModel: CheckInSavedViewModel by viewModels()
 
     private var exerciseCache: ExerciseUI? = null
@@ -89,6 +95,13 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
             setState(ItemExercise.State.NORMAL, exercise.name)
             setImage(exercise.previewImageLink)
             setClickListener {
+                analytics.sendEvent(
+                    AnalyticsEvent.NAME_CHECK_IN_EXERCISE_CLICK,
+                    listOf(
+                        EventParameter(AnalyticsEvent.PARAMETER_EXERCISE_ID, exercise.id),
+                        EventParameter(AnalyticsEvent.PARAMETER_EXERCISE_NAME, exercise.name),
+                    )
+                )
                 navigateToExercise(exercise)
             }
         }
@@ -107,6 +120,7 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
         binding.exercise.apply {
             setState(ItemExercise.State.ERROR_WITH_REFRESH)
             setRefreshClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_EXERCISE_REFRESH_CLICK)
                 putRequests()
             }
         }
@@ -115,9 +129,11 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
     private fun setClickListener() {
         binding.apply {
             close.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_SAVED_CLOSE)
                 navigateByKey(callbackKey)
             }
             later.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_SAVED_CLOSE_VIA_BUTTON)
                 navigateByKey(callbackKey)
             }
         }

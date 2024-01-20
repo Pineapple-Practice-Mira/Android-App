@@ -14,6 +14,8 @@ import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentInterNameBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME
 import site.pnpl.mira.utils.ANIMATION_TIME_INPUT_NAME_ALPHA
 import site.pnpl.mira.utils.MIN_LENGTH_IN_INPUT_NAME
@@ -23,8 +25,8 @@ class InterNameFragment : Fragment(R.layout.fragment_inter_name) {
     private var _binding: FragmentInterNameBinding? = null
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,11 +53,13 @@ class InterNameFragment : Fragment(R.layout.fragment_inter_name) {
             }
 
             confirm.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_INTER_NAME_CONFIRM)
                 settingsProvider.saveName(name)
                 navigateToNextFragment()
             }
 
             skip.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_INTER_NAME_SKIP)
                 navigateToNextFragment()
             }
         }
