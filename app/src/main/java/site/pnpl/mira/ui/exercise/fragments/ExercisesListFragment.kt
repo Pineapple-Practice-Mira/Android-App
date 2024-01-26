@@ -19,6 +19,7 @@ import site.pnpl.mira.data.models.doOnError
 import site.pnpl.mira.data.models.doOnSuccess
 import site.pnpl.mira.databinding.FragmentExercisesListBinding
 import site.pnpl.mira.domain.EmotionProvider
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.domain.analitycs.Analytics
 import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.domain.analitycs.EventParameter
@@ -42,10 +43,9 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
 
     private val viewModel: ExercisesListViewModel by viewModels()
 
-    @Inject
-    lateinit var emotionProvider: EmotionProvider
-    @Inject
-    lateinit var analytics: Analytics
+    @Inject lateinit var emotionProvider: EmotionProvider
+    @Inject lateinit var analytics: Analytics
+    @Inject lateinit var settingsProvider: SettingsProvider
 
     private var exercises: ArrayList<ExerciseUI> = arrayListOf()
 
@@ -155,7 +155,13 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
 
                 BottomBar.Button.EXERCISES_LIST -> {}
                 BottomBar.Button.CHECK_IN -> {
-                    findNavController().navigate(R.id.action_exercises_list_to_start_check_in, bundleOf(Pair(CALLBACK_KEY, CALLBACK_EXERCISES)))
+                    if (!settingsProvider.isMakeFirstCheckIn()) {
+                        analytics.sendEvent(AnalyticsEvent.NAME_EXERCISES_LIST_FIRST_CHECK_IN)
+                    }
+                    findNavController().navigate(
+                        R.id.action_exercises_list_to_start_check_in,
+                        bundleOf(Pair(CALLBACK_KEY, CALLBACK_EXERCISES))
+                    )
                 }
             }
         }

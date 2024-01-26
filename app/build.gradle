@@ -17,9 +17,10 @@ android {
         targetSdk 34
         versionCode 1
         //global_version.number_sprint.version_in_sprint
-        versionName "0.6.2"
+        versionName "0.6.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        archivesBaseName = "mira-v$versionName"
     }
 
     buildTypes {
@@ -27,9 +28,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
+            versionNameSuffix "-release"
         }
         debug {
             debuggable true
+            versionNameSuffix "-debug"
         }
     }
     compileOptions {

@@ -45,9 +45,9 @@ class ExerciseRepository @Inject constructor(
 
         return if (result is ApiResult.Success) {
             val exercises = mutableListOf<ExerciseUI>()
-            (result.value as ExerciseDtoList).toListExerciseUI().forEach {
-                if (isOpenExercise(it.id)) {
-                    exercises.add(it)
+            (result.value as ExerciseDtoList).toListExerciseUI().forEach { exerciseUI ->
+                if (isOpenExercise(exerciseUI.id) || exerciseUI.isIntro ) {
+                    exercises.add(exerciseUI)
                 }
             }
             ApiResult.Success(exercises)
@@ -132,7 +132,6 @@ fun ExerciseDtoList.toListExerciseUI(): List<ExerciseUI> =
 fun ExerciseDto.toExerciseUI(): ExerciseUI =
     ExerciseUI(id = id,
         name = name,
-        title = title,
         description = description,
         previewImageLink = previewImageLink,
         emotionsId = emotions.toListInteger(),

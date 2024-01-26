@@ -9,17 +9,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import site.pnpl.mira.App
 import site.pnpl.mira.data.repositories.CheckInRepository
-import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import site.pnpl.mira.data.database.check_in.entity.asCheckInUI
 import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.models.CheckInUI
-import site.pnpl.mira.models.FactorsList
 import site.pnpl.mira.models.asCheckIn
 import site.pnpl.mira.utils.Event
-import site.pnpl.mira.utils.MiraDateFormat
-import java.util.Calendar
 import javax.inject.Inject
-import kotlin.random.Random
 
 class HomeViewModel : ViewModel() {
 
@@ -73,29 +68,29 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun insertListOfCheckIns() {
-        val list = mutableListOf<CheckIn>()
-        viewModelScope.launch {
-            repeat(50) {
-                val date = Calendar.getInstance().apply {
-                    timeInMillis = System.currentTimeMillis()
-                    add(Calendar.DAY_OF_YEAR, -it)
-                }.timeInMillis
-
-                val checkIn = CheckIn(
-                    id = 0,
-                    emotionId = emotionProvider.emotions[Random.nextInt(0, emotionProvider.emotions.size - 1)].id,
-                    factorId = FactorsList.factors[Random.nextInt(0, FactorsList.factors.size - 1)].id,
-                    exercisesId = 0,
-                    note = "",
-                    createdAt = MiraDateFormat(date).convertToDataTimeISO8601(),
-                    createdAtLong = date,
-                    editedAt = "",
-                    isSynchronized = 0
-                )
-                list.add(checkIn)
-            }
-            repository.insertListOfCheckIns(list)
-        }
-    }
+//    fun insertListOfCheckIns() {
+//        val list = mutableListOf<CheckIn>()
+//        viewModelScope.launch {
+//            repeat(50) {
+//                val date = Calendar.getInstance().apply {
+//                    timeInMillis = System.currentTimeMillis()
+//                    add(Calendar.DAY_OF_YEAR, -it)
+//                }.timeInMillis
+//
+//                val checkIn = CheckIn(
+//                    id = 0,
+//                    emotionId = emotionProvider.emotions[Random.nextInt(0, emotionProvider.emotions.size - 1)].id,
+//                    factorId = FactorsList.factors[Random.nextInt(0, FactorsList.factors.size - 1)].id,
+//                    exercisesId = 0,
+//                    note = "",
+//                    createdAt = MiraDateFormat(date).convertToDataTimeISO8601(),
+//                    createdAtLong = date,
+//                    editedAt = "",
+//                    isSynchronized = 0
+//                )
+//                list.add(checkIn)
+//            }
+//            repository.insertListOfCheckIns(list)
+//        }
+//    }
 }
