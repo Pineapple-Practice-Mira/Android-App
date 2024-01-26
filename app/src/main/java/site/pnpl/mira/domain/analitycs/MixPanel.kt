@@ -1,6 +1,5 @@
 package site.pnpl.mira.domain.analitycs
 
 object MixPanel {
-    const val TOKEN = "08ea0847a60bb5e2991640570852d4d6"
-
+    const val TOKEN = "532e8f88fe3274f59a168c986369fac1"
 }

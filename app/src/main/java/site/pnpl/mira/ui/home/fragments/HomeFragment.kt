@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
@@ -366,9 +365,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_OPEN)
                 findNavController().navigate(R.id.action_home_to_setting)
             }
-            binding.hi.setOnClickListener {
-                createFakeCheckIns()
-            }
         }
     }
 
@@ -432,11 +428,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .y(targetY)
             .setDuration(MOUNTAINS_ANIMATION_DURATION)
             .start()
-    }
-
-    private fun createFakeCheckIns() {
-        viewModel.insertListOfCheckIns()
-        Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {

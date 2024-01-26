@@ -147,9 +147,11 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
                 this@CheckInFragment.emotionId = emotionId
                 viewPager.setCurrentItem(viewPager.currentItem + 1, DURATION_TRANSITION)
                 binding.bubbleView.scrollUp()
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_FEELING_FINISH)
             } else {
                 viewPager.setCurrentItem(viewPager.currentItem - 1, DURATION_TRANSITION)
                 binding.bubbleView.scrollDown()
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_FACTOR_RETURN)
             }
         }
     }

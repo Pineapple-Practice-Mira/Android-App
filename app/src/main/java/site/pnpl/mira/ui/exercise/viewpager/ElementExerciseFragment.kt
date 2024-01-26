@@ -23,11 +23,13 @@ class ElementExerciseFragment() : Fragment(R.layout.fragment_exercise_element) {
 
         screenUI = arguments?.getParcelableCompat(KEY_SCREENS)
 
-        showProgressBar(true)
+        println("position ${screenUI?.sequenceNumber} onViewCreated()")
+
         setContent()
     }
 
     private fun setContent() {
+        showProgressBar(true)
         binding.apply {
             text.text = screenUI?.text
             title.text = screenUI?.title
@@ -47,7 +49,12 @@ class ElementExerciseFragment() : Fragment(R.layout.fragment_exercise_element) {
         binding.progressBar.isVisible = value
     }
 
+    override fun onResume() {
+        super.onResume()
+        println("position ${screenUI?.sequenceNumber} onResume()")
+    }
     override fun onDestroyView() {
+        println("position ${screenUI?.sequenceNumber} onDestroyView()")
         super.onDestroyView()
         _binding = null
     }
