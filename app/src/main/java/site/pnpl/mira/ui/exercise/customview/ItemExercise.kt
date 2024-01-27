@@ -96,6 +96,7 @@ class ItemExercise @JvmOverloads constructor(
     }
 
     fun setClickListener(listener: () -> Unit) {
+        binding.icon.setOnClickListener { listener() }
         setOnClickListener {
             listener()
         }

@@ -47,7 +47,7 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
     }
 
     private fun initViewPager() {
-        adapter = VpAdapter(requireActivity(), screens!!)
+        adapter = VpAdapter(this, screens!!)
         viewPager = binding.viewPager
         viewPager.adapter = adapter
 

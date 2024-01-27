@@ -3,7 +3,6 @@ package site.pnpl.mira.ui.greeting.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
@@ -94,7 +93,7 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
                     .start()
             }
         }
-        Toast.makeText(requireContext(), errorText, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), errorText, Toast.LENGTH_SHORT).show()
     }
 
     private fun setTextName() {

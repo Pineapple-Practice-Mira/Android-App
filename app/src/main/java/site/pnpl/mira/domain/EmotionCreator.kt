@@ -21,6 +21,8 @@ class EmotionCreator @Inject constructor(
     private val emotionProvider: EmotionProvider
 ) {
 
+    var loadingState: LoadingState<Any> = LoadingState.Loading
+
     private val directoryToSaveEmoji: String
         get() {
             val dir = File("${context.filesDir}$DIRECTORY_FOR_EMOJI")
@@ -32,6 +34,12 @@ class EmotionCreator @Inject constructor(
         applicationScope.launch {
             val emotionsApi = getEmotionListFromApi()
             val emotionsDb = getEmotionListFromDb().toMutableList()
+
+            if (emotionsApi.isEmpty() && emotionsDb.isEmpty()) {
+                loadingState = LoadingState.Error("")
+                return@launch
+            }
+            loadingState = LoadingState.Success
 
             emotionsApi.forEach { emotion ->
                 if (!emotionsDb.remove(emotion)) {
@@ -102,6 +110,14 @@ class EmotionCreator @Inject constructor(
     companion object {
         const val DIRECTORY_FOR_EMOJI = "/emoji/"
     }
+
+
+}
+
+sealed class LoadingState<out T> {
+    object Success : LoadingState<Any>()
+    data class Error(val error: String): LoadingState<Any>()
+    object Loading : LoadingState<Any>()
 }
 
 fun String.parseFileName(): String {

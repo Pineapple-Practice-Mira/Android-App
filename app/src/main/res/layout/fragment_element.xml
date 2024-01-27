@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragmentElement"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentElement"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -12,50 +12,50 @@
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
         android:src="@drawable/progress_bar"
-        app:layout_constraintTop_toTopOf="@id/animation"
-        app:layout_constraintStart_toStartOf="@id/animation"
+        app:layout_constraintBottom_toBottomOf="@id/animation"
         app:layout_constraintEnd_toEndOf="@id/animation"
-        app:layout_constraintBottom_toBottomOf="@id/animation"/>
+        app:layout_constraintStart_toStartOf="@id/animation"
+        app:layout_constraintTop_toTopOf="@id/animation" />
 
     <ImageView
         android:id="@+id/animation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@drawable/gif_greeting"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/title"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/gif_greeting" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Tittle\n dfhdjfsdsdsdsd dsdsdsd"
         style="@style/TitleBold18Primary"
-        android:textAlignment="center"
-        app:layout_constraintVertical_bias="0.566"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <TextView
-        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem/random"
-        android:layout_marginTop="20dp"
-        style="@style/Body14Dark"
         android:textAlignment="center"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constrainedWidth="true"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.566"
+        tools:text="Tittle\n dfhdjfsdsdsdsd dsdsdsd" />
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title">
 
+        <TextView
+            android:id="@+id/text"
+            style="@style/Body14Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            tools:text="@tools:sample/lorem/random" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

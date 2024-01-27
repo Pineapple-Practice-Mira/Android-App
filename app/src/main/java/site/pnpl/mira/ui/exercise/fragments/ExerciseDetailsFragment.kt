@@ -47,7 +47,7 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
     }
 
     private fun initViewPager() {
-        adapter = ExerciseVPAdapter(requireActivity(), screens!!)
+        adapter = ExerciseVPAdapter(this, screens!!)
         viewPager = binding.viewPager
         viewPager.adapter = adapter
 

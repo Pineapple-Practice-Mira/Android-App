@@ -1,5 +1,7 @@
 package site.pnpl.mira.ui
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -53,11 +55,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun exitDoubleTap() {
         if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-            finish()
+            closeApp()
         } else {
             Toast.makeText(this, resources.getString(R.string.alert_double_tap_exit), Toast.LENGTH_SHORT).show()
         }
         backPressed = System.currentTimeMillis()
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+
+        val newOverride = Configuration(newBase?.resources?.configuration)
+        newOverride.fontScale = 1.0f
+        applyOverrideConfiguration(newOverride)
+
+        super.attachBaseContext(newBase)
+    }
+
+    fun closeApp() {
+        finish()
     }
 
     companion object {

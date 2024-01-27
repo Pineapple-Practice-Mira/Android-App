@@ -132,7 +132,7 @@
     <string name="about_app">О приложении</string>
     <string name="label_exercise">Упражнения</string>
     <string name="exercise_sub_head">Выполняй упражнения, чтобы улучшить свое эмоциональное состояние</string>
-    <string name="pop_up_loading_body_1">Сейчас не удалось загрузить Знакомство</string>
+    <string name="pop_up_loading_body_1">Сейчас не удалось\n загрузить Знакомство</string>
     <string name="pop_up_loading_button_1">Пока пропустить</string>
     <string name="imageview_content_progress_bar">Анимация загрузки</string>
     <string name="loading_exercise">Идет загрузка упражнения...</string>
@@ -147,5 +147,8 @@
     <string name="update"><u>Обновить</u></string>
     <string name="pop_up_loading_body_2">Не удалось загрузить упражнение</string>
     <string name="pop_up_loading_button_2">Закрыть</string>
+    <string name="pop_up_loading_body_3">Не получилось загрузить контент приложения. Проверь подключение
+к интернету или попробуй позже</string>
+    <string name="pop_up_error_loading">Загрузка не удалась</string>
 
 </resources>
