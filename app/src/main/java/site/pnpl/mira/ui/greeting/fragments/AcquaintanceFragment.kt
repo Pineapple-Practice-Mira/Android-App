@@ -11,6 +11,9 @@ import site.pnpl.mira.ui.greeting.viewpager.VpAdapter
 import site.pnpl.mira.R
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentAcquaintanceBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
+import site.pnpl.mira.domain.analitycs.EventParameter
 import site.pnpl.mira.models.ScreenUI
 import site.pnpl.mira.ui.extensions.getParcelableArrayListCompat
 import site.pnpl.mira.ui.greeting.fragments.GreetingFragment.Companion.SCREENS_KEY
@@ -24,9 +27,10 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
     private lateinit var adapter: VpAdapter
     private lateinit var viewPager: ViewPager2
 
-    @Inject
-    lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
     private var screens: ArrayList<ScreenUI>? = null
+    private var maxPosition = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +47,7 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
     }
 
     private fun initViewPager() {
-        adapter = VpAdapter(requireActivity(), screens!!)
+        adapter = VpAdapter(this, screens!!)
         viewPager = binding.viewPager
         viewPager.adapter = adapter
 
@@ -54,6 +58,15 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
     private fun setViewPagerListener() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+
+                if (position > maxPosition) {
+                    analytics.sendEvent(
+                        AnalyticsEvent.NAME_GREETING_PROGRESS,
+                        listOf(EventParameter(AnalyticsEvent.PARAMETER_STEP, position))
+                    )
+                    maxPosition = position
+                }
+
                 super.onPageSelected(position)
                 with(binding) {
                     btnPrevious.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
@@ -79,10 +92,18 @@ class AcquaintanceFragment : Fragment(R.layout.fragment_acquaintance) {
             }
 
             btnSkip.setOnClickListener {
+                if (viewPager.currentItem == screens!!.size - 1) {
+                    analytics.sendEvent(AnalyticsEvent.NAME_GREETING_COMPLETE_VIA_BUTTON)
+                } else {
+                    analytics.sendEvent(
+                        AnalyticsEvent.NAME_GREETING_PROGRESS,
+                        listOf(EventParameter(AnalyticsEvent.PARAMETER_SKIP, viewPager.currentItem)))
+                }
                 navigateToHome()
             }
 
             btnSkip2.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_GREETING_COMPLETE)
                 navigateToHome()
             }
         }

@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
@@ -22,6 +21,8 @@ import site.pnpl.mira.R
 import site.pnpl.mira.domain.SelectedPeriod
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentHomeBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.CheckInUI
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment
 import site.pnpl.mira.ui.check_in.fragments.CheckInDetailsFragment.Companion.LIST_OF_CHECK_IN_KEY
@@ -61,6 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     @Inject lateinit var settingsProvider: SettingsProvider
     @Inject lateinit var selectedPeriod: SelectedPeriod
+    @Inject lateinit var analytics: Analytics
 
     /**
      * Флаг, если фрагмент не убивался - отправляем запрос в БД в onStart, если первый инстанс в onViewCreated
@@ -360,10 +362,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setClickListeners() {
         binding.root.doOnLayout {
             binding.settings.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_OPEN)
                 findNavController().navigate(R.id.action_home_to_setting)
-            }
-            binding.hi.setOnClickListener {
-                createFakeCheckIns()
             }
         }
     }
@@ -428,11 +428,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .y(targetY)
             .setDuration(MOUNTAINS_ANIMATION_DURATION)
             .start()
-    }
-
-    private fun createFakeCheckIns() {
-        viewModel.insertListOfCheckIns()
-        Toast.makeText(requireContext(), "Чек-ины добавлены! Перезайди на страницу", Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {

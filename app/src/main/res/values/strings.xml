@@ -81,7 +81,7 @@
     <string name="pop_up_check_in_left">Остаться</string>
     <string name="pop_up_check_in_right">Закрыть</string>
     <string name="label_check_in_saved_1">Все записи и статистика доступны на главном экране приложения.</string>
-    <string name="label_check_in_saved_2">Под твоё состояние подобрано особое упражнение. Ты можешь выполнить его сейчас или позже из раздела «Упражнения».</string>
+    <string name="label_check_in_saved_2">Под твое состояние подобрано особое упражнение. После загрузки оно появится в разделе «Упражнения», и ты сможешь выполнить его в любой момент.</string>
     <string name="button_later">Позже</string>
     <string name="button_execute_exercises">Выполнить упражнение</string>
     <string name="bubble_5">Сегодня, %1$s, я чувствую %2$s. Основная причина – %3$s.</string>
@@ -132,7 +132,7 @@
     <string name="about_app">О приложении</string>
     <string name="label_exercise">Упражнения</string>
     <string name="exercise_sub_head">Выполняй упражнения, чтобы улучшить свое эмоциональное состояние</string>
-    <string name="pop_up_loading_body_1">Сейчас не удалось загрузить Знакомство</string>
+    <string name="pop_up_loading_body_1">Сейчас не удалось\n загрузить Знакомство</string>
     <string name="pop_up_loading_button_1">Пока пропустить</string>
     <string name="imageview_content_progress_bar">Анимация загрузки</string>
     <string name="loading_exercise">Идет загрузка упражнения...</string>
@@ -147,5 +147,8 @@
     <string name="update"><u>Обновить</u></string>
     <string name="pop_up_loading_body_2">Не удалось загрузить упражнение</string>
     <string name="pop_up_loading_button_2">Закрыть</string>
+    <string name="pop_up_loading_body_3">Не получилось загрузить контент приложения. Проверь подключение
+к интернету или попробуй позже</string>
+    <string name="pop_up_error_loading">Загрузка не удалась</string>
 
 </resources>

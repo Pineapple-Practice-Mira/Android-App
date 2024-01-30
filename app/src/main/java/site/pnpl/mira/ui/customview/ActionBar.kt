@@ -11,10 +11,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
+import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ActionBarBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.utils.MiraDateFormat
 import java.util.Calendar
+import javax.inject.Inject
 
 class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
 
@@ -23,8 +27,12 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     private lateinit var dateRangePicker: MaterialDatePicker<Pair<Long, Long>>
 
+    @Inject
+    lateinit var analytics: Analytics
+
     init {
-        _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
+            _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
+        App.instance.appComponent.inject(this)
     }
 
     fun initDatePicker(startPeriod: Long, endPeriod: Long) {
@@ -62,6 +70,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
                 binding.statistic.setColorFilter(ContextCompat.getColor(context, R.color.secondary))
                 binding.statistic.isClickable = false
             }
+
             DisplayMode.STATISTIC_SECOND -> {
                 binding.calendar.isEnabled = false
                 binding.statistic.setColorFilter(ContextCompat.getColor(context, R.color.secondary))
@@ -72,12 +81,18 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     fun setActionBarClickListener(listener: (Button) -> Unit) {
         with(binding) {
-            statistic.setOnClickListener { listener(Button.STATISTIC) }
+            statistic.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_ACTION_BAR_STATISTIC)
+                listener(Button.STATISTIC)
+            }
             selector.setOnClickListener {
                 selector.isSelected = !selector.isSelected
                 listener(Button.SELECT_ALL)
             }
-            delete.setOnClickListener { listener(Button.DELETE) }
+            delete.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_ACTION_BAR_DELETE_CHECK_INS)
+                listener(Button.DELETE)
+            }
         }
     }
 
@@ -87,6 +102,8 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     fun setCalendarPeriodSelectionListener(childFragmentManager: FragmentManager, listener: (Pair<Long, Long>) -> Unit) {
         binding.calendar.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_ACTION_BAR_CALENDAR_OPEN)
+
             dateRangePicker.show(childFragmentManager, DATE_PICKER_TAG)
 
             dateRangePicker.addOnPositiveButtonClickListener { periods ->
@@ -120,7 +137,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
                 changeAlphaAnimation(period, REMOVE_MODE_INACTIVE_ALPHA)
             }
         }
-        if(!value) {
+        if (!value) {
             binding.selector.isSelected = false
         }
     }

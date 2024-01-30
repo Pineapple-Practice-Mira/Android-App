@@ -32,12 +32,15 @@ class ExerciseAdapter(
         }
     }
 
-    class ViewHolder(val itemExercise: View) : RecyclerView.ViewHolder(itemExercise) {
+    inner class ViewHolder(val itemExercise: View) : RecyclerView.ViewHolder(itemExercise) {
 
         fun init(exerciseUI: ExerciseUI) {
             itemExercise as ItemExercise
             itemExercise.setImage(exerciseUI.previewImageLink)
             itemExercise.setState(ItemExercise.State.NORMAL, exerciseUI.name)
+            itemExercise.setClickListener {
+                listener.onClick(exerciseUI)
+            }
         }
     }
 

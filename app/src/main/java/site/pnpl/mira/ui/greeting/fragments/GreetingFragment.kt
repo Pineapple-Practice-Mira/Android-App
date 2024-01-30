@@ -3,7 +3,6 @@ package site.pnpl.mira.ui.greeting.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
@@ -18,6 +17,8 @@ import site.pnpl.mira.data.models.doOnError
 import site.pnpl.mira.data.models.doOnSuccess
 import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.databinding.FragmentGreetingBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.ExerciseUI
 import site.pnpl.mira.ui.extensions.screenHeight
 import site.pnpl.mira.ui.greeting.GreetingViewModel
@@ -29,6 +30,7 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
     private var _binding: FragmentGreetingBinding? = null
     private val binding get() = _binding!!
     @Inject lateinit var settingsProvider: SettingsProvider
+    @Inject lateinit var analytics: Analytics
 
     private val viewModel: GreetingViewModel by viewModels()
     private var yPositionLoading: Float = 0f
@@ -91,7 +93,7 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
                     .start()
             }
         }
-        Toast.makeText(requireContext(), errorText, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), errorText, Toast.LENGTH_SHORT).show()
     }
 
     private fun setTextName() {
@@ -104,10 +106,12 @@ class GreetingFragment : Fragment(R.layout.fragment_greeting) {
 
     private fun setClickListener() {
         binding.greeting.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_GREETING_START)
             startLoading()
         }
 
         binding.skip.setOnClickListener {
+            analytics.sendEvent(AnalyticsEvent.NAME_GREETING_SKIP)
             settingsProvider.firstLaunchCompleted()
             findNavController().navigate(R.id.action_greeting_to_home)
         }

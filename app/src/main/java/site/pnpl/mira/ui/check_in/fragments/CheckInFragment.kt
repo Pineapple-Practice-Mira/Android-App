@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.data.database.check_in.entity.CheckIn
 import site.pnpl.mira.databinding.FragmentCheckInBinding
+import site.pnpl.mira.domain.analitycs.Analytics
+import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.check_in.CheckInViewModel
 import site.pnpl.mira.ui.check_in.customview.BubbleView
@@ -19,6 +22,7 @@ import site.pnpl.mira.ui.check_in.viewpager.Adapter
 import site.pnpl.mira.ui.extensions.setCurrentItem
 import site.pnpl.mira.utils.MiraDateFormat
 import site.pnpl.mira.ui.customview.PopUpDialog
+import javax.inject.Inject
 
 class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     private var _binding: FragmentCheckInBinding? = null
@@ -30,26 +34,40 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
     private var emotionId = -1
     private var checkIn: CheckIn? = null
 
+    @Inject
+    lateinit var analytics: Analytics
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        App.instance.appComponent.inject(this)
+        _binding = FragmentCheckInBinding.bind(view)
         _binding = FragmentCheckInBinding.bind(view)
         initViewPager()
 
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)
 
-        viewModel.isSaved.observe(viewLifecycleOwner) {
-            val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
-            findNavController()
-                .navigate(
-                    R.id.action_checkInFragment_to_checkInCompleted,
-                    bundleOf(
-                        Pair(CALLBACK_KEY, key),
-                        Pair(CHECK_IN_KEY, checkIn)
-                    )
-                )
-        }
+        responseListener()
         initBubbleView()
         initPopUpDialog()
+
+    }
+
+    private fun responseListener() {
+        viewModel.isSaved.observe(viewLifecycleOwner) {
+            val key = findNavController().currentBackStackEntry?.arguments?.getString(CALLBACK_KEY)
+            navigateByKey(key)
+        }
+    }
+
+    private fun navigateByKey(key: String?) {
+        findNavController()
+            .navigate(
+                R.id.action_checkInFragment_to_checkInCompleted,
+                bundleOf(
+                    Pair(CALLBACK_KEY, key),
+                    Pair(CHECK_IN_KEY, checkIn)
+                )
+            )
     }
 
     private fun initBubbleView() {
@@ -79,6 +97,12 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
 
     private fun initPopUpDialog() {
         binding.close.setOnClickListener {
+            analytics.sendEvent(
+                if (viewPager.currentItem == 0)
+                    AnalyticsEvent.NAME_CHECK_IN_FEELING_CLOSE
+                else
+                    AnalyticsEvent.NAME_CHECK_IN_FACTOR_CLOSE
+            )
             val popUpDialog = PopUpDialog.Builder()
                 .title(resources.getString(R.string.pop_up_check_in_title))
                 .content(resources.getString(R.string.pop_up_check_in_content))
@@ -94,12 +118,24 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
 
     private val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
         override fun onClick(popUpDialog: PopUpDialog) {
+            analytics.sendEvent(
+                if (viewPager.currentItem == 0)
+                    AnalyticsEvent.NAME_CHECK_IN_FEELING_CLOSE_NO
+                else
+                    AnalyticsEvent.NAME_CHECK_IN_FACTOR_CLOSE_NO
+            )
             popUpDialog.dismiss()
         }
     }
 
     private val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
         override fun onClick(popUpDialog: PopUpDialog) {
+            analytics.sendEvent(
+                if (viewPager.currentItem == 0)
+                    AnalyticsEvent.NAME_CHECK_IN_FEELING_CLOSE_YES
+                else
+                    AnalyticsEvent.NAME_CHECK_IN_FACTOR_CLOSE_YES
+            )
             findNavController().popBackStack()
         }
 
@@ -111,15 +147,18 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
                 this@CheckInFragment.emotionId = emotionId
                 viewPager.setCurrentItem(viewPager.currentItem + 1, DURATION_TRANSITION)
                 binding.bubbleView.scrollUp()
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_FEELING_FINISH)
             } else {
                 viewPager.setCurrentItem(viewPager.currentItem - 1, DURATION_TRANSITION)
                 binding.bubbleView.scrollDown()
+                analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_FACTOR_RETURN)
             }
         }
     }
 
     private val onSaveClickListener = object : OnSaveClickListener {
         override fun onClick(factorId: Int, note: String) {
+            analytics.sendEvent(AnalyticsEvent.NAME_CHECK_IN_COMPLETE)
             checkIn = CheckIn(
                 emotionId = emotionId,
                 factorId = factorId,
@@ -129,7 +168,6 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
             )
             viewModel.saveCheckIn(checkIn!!)
         }
-
     }
 
     private val onEmotionClickListener = object : OnEmotionClickListener {
@@ -140,7 +178,6 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
             }
             binding.bubbleView.setMessageInRightBubble(message)
         }
-
     }
 
     override fun onDestroyView() {
