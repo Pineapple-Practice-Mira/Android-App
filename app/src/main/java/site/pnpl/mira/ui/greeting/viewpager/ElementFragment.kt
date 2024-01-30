@@ -30,7 +30,7 @@ class ElementFragment() : Fragment(R.layout.fragment_element) {
             text.text = screenUI!!.text
             title.text = screenUI!!.title
             showProgressBar(true)
-            Glide.with(requireContext())
+            Glide.with(this@ElementFragment)
                 .asGif()
                 .load(screenUI!!.animationLink)
                 .listener(gifLoaderListener)

@@ -31,7 +31,7 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
     lateinit var analytics: Analytics
 
     init {
-        _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
+            _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
         App.instance.appComponent.inject(this)
     }
 

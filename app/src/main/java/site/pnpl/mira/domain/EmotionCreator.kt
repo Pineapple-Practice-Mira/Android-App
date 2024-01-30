@@ -39,7 +39,6 @@ class EmotionCreator @Inject constructor(
                 loadingState = LoadingState.Error("")
                 return@launch
             }
-            loadingState = LoadingState.Success
 
             emotionsApi.forEach { emotion ->
                 if (!emotionsDb.remove(emotion)) {
@@ -51,6 +50,7 @@ class EmotionCreator @Inject constructor(
                 deleteEmotionsFromBd(emotionsDb)
             }
             emotionProvider.init()
+            loadingState = LoadingState.Success
         }
     }
 

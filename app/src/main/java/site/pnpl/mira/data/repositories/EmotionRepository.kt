@@ -30,7 +30,10 @@ class EmotionRepository @Inject constructor(
         emotionDao.insertEmotions(listOf(emotion.toEmotionEntity()))
 
     fun deleteEmotions(emotions: List<EmotionDataModel>) {
-        emotionDao.deleteEmotions(emotions.map { it.toEmotionEntity() })
+        println("deleteEmotions: $emotions")
+        val emotionEntity = emotions.map { it.toEmotionEntity() }
+        println("emotionEntity $emotionEntity")
+        emotionDao.deleteEmotions(emotionEntity)
     }
 
     fun openEmotion(emotionId: Int) {
@@ -41,8 +44,7 @@ class EmotionRepository @Inject constructor(
 
 fun EmotionDataModel.toEmotionEntity(): EmotionEntity =
     EmotionEntity(
-        id = 0,
-        emotionId = emotionId,
+        id = emotionId,
         name = name,
         nameGenitive = nameGenitive,
         remoteEmojiLink = remoteEmojiLink,
@@ -53,7 +55,7 @@ fun EmotionDataModel.toEmotionEntity(): EmotionEntity =
 
 fun EmotionEntity.toEmotionDataModel(): EmotionDataModel =
     EmotionDataModel(
-        emotionId = emotionId,
+        emotionId = id,
         name = name,
         nameGenitive = nameGenitive,
         remoteEmojiLink = remoteEmojiLink,
@@ -71,5 +73,4 @@ fun EmotionDtoItem.toEmotionDataModel(): EmotionDataModel =
         localEmojiLink = "",
         isPositive = isPositive,
         isOpened = false
-
     )

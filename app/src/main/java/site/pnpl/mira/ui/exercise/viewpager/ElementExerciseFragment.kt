@@ -35,7 +35,7 @@ class ElementExerciseFragment() : Fragment(R.layout.fragment_exercise_element) {
             text.text = screenUI?.text
             title.text = screenUI?.title
 
-            Glide.with(requireContext())
+            Glide.with(this@ElementExerciseFragment)
                 .asGif()
                 .load(screenUI?.animationLink)
                 .listener(gifLoaderListener)

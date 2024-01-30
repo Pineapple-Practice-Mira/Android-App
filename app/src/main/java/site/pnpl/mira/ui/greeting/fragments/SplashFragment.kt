@@ -24,7 +24,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     lateinit var settingsProvider: SettingsProvider
     @Inject
     lateinit var emotionCreator: EmotionCreator
-    private var errorPopUpDialog: PopUpDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,16 +34,14 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     }
 
     private fun startAnimation() {
-        println("startAnimation()")
         val gifDrawable = GifDrawable(resources, R.drawable.gif_logo).apply {
             //Вызывается после каждого цикла проигрывания GIF
             addAnimationListener { completedAnimationLoop ->
                 if (completedAnimationLoop == 0) {
-                    println("emotionCreator.loadingState ${emotionCreator.loadingState}")
                     when (emotionCreator.loadingState) {
                         is LoadingState.Loading -> {}
                         is LoadingState.Success -> navigate()
-                        is LoadingState.Error -> if (errorPopUpDialog == null) {
+                        is LoadingState.Error ->  {
                             this.stop()
                             displayErrorPopUp()
                         }
@@ -52,7 +49,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                 }
             }
         }
-
         binding.animation.setImageDrawable(gifDrawable)
     }
 

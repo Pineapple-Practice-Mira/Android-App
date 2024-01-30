@@ -9,13 +9,14 @@ import site.pnpl.mira.data.database.DBConstants
 @Entity(
     tableName = DBConstants.TABLE_NAME_EMOTION,
     indices = [Index(
-        value = ["emotion_id"],
+        value = ["id"],
         unique = true
     )]
 )
 data class EmotionEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "emotion_id") val emotionId: Int,
+//    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+//    @ColumnInfo(name = "emotion_id") val emotionId: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "name_genitive") val nameGenitive: String,
     @ColumnInfo(name = "remote_emoji_link") val remoteEmojiLink: String,
