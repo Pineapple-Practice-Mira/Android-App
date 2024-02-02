@@ -32,26 +32,45 @@ class EmotionCreator @Inject constructor(
 
     fun update() {
         applicationScope.launch {
-            val emotionsApi = getEmotionListFromApi()
+
             val emotionsDb = getEmotionListFromDb().toMutableList()
+            if (emotionsDb.isNotEmpty()) {
+                if (isEmojiCompleteness(emotionsDb)) {
+                    emotionProvider.init()
+                    loadingState = LoadingState.Success
+                }
+            }
+
+            val emotionsApi = getEmotionListFromApi()
 
             if (emotionsApi.isEmpty() && emotionsDb.isEmpty()) {
                 loadingState = LoadingState.Error("")
                 return@launch
             }
 
-            emotionsApi.forEach { emotion ->
-                if (!emotionsDb.remove(emotion)) {
-                    saveEmotion(emotion)
+            if (emotionsApi.isNotEmpty()) {
+                emotionsApi.forEach { emotion ->
+                    if (!emotionsDb.remove(emotion)) {
+                        saveEmotion(emotion)
+                    }
+                }
+                if (emotionsDb.isNotEmpty()) {
+                    deleteEmotionsFromBd(emotionsDb)
                 }
             }
 
-            if (emotionsDb.isNotEmpty()) {
-                deleteEmotionsFromBd(emotionsDb)
-            }
             emotionProvider.init()
             loadingState = LoadingState.Success
         }
+    }
+
+    private suspend fun isEmojiCompleteness(emotions: MutableList<EmotionDataModel>): Boolean {
+        emotions.forEach { emotion ->
+            if (loadEmoji(emotion.remoteEmojiLink) == null) {
+                return false
+            }
+        }
+        return true
     }
 
     private fun deleteEmotionsFromBd(emotions: List<EmotionDataModel>) {
@@ -116,7 +135,7 @@ class EmotionCreator @Inject constructor(
 
 sealed class LoadingState<out T> {
     object Success : LoadingState<Any>()
-    data class Error(val error: String): LoadingState<Any>()
+    data class Error(val error: String) : LoadingState<Any>()
     object Loading : LoadingState<Any>()
 }
 

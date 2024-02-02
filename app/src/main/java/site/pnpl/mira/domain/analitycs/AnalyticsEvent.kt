@@ -24,13 +24,13 @@ class AnalyticsEvent {
             NAME_CHECK_IN_FEELING_FINISH,
             NAME_CHECK_IN_SAVED_CLOSE,
             NAME_CHECK_IN_SAVED_CLOSE_VIA_BUTTON,
+            NAME_EXERCISES_LIST_CLICK_INTRO,
+            NAME_EXERCISES_LIST_FIRST_CHECK_IN,
+            NAME_EXERCISES_LIST_OPEN_EXERCISE,
             NAME_EXERCISE_CLOSE,
             NAME_EXERCISE_PREVIEW_CLOSE,
             NAME_EXERCISE_PROGRESS,
             NAME_EXERCISE_START,
-            NAME_EXERCISES_LIST_CLICK_INTRO,
-            NAME_EXERCISES_LIST_FIRST_CHECK_IN,
-            NAME_EXERCISES_LIST_OPEN_EXERCISE,
             NAME_GREETING_COMPLETE,
             NAME_GREETING_COMPLETE_VIA_BUTTON,
             NAME_GREETING_PROGRESS,
@@ -38,6 +38,8 @@ class AnalyticsEvent {
             NAME_GREETING_START,
             NAME_INTER_NAME_CONFIRM,
             NAME_INTER_NAME_SKIP,
+            NAME_REQUEST_ERROR,
+            NAME_REQUEST_SUCCESS,
             NAME_SETTINGS_ABOUT,
             NAME_SETTINGS_CLOSE,
             NAME_SETTINGS_OPEN,
@@ -56,6 +58,9 @@ class AnalyticsEvent {
             PARAMETER_EXERCISE_NAME,
             PARAMETER_SKIP,
             PARAMETER_STEP,
+            PARAMETER_REQUEST_ERROR_BODY,
+            PARAMETER_REQUEST_URL,
+            PARAMETER_RESPONSE_TIME
         ]
     )
     @Retention(AnnotationRetention.SOURCE)
@@ -80,13 +85,13 @@ class AnalyticsEvent {
         const val NAME_CHECK_IN_FEELING_FINISH = "checkin_feeling_finish"
         const val NAME_CHECK_IN_SAVED_CLOSE = "checkin_close"
         const val NAME_CHECK_IN_SAVED_CLOSE_VIA_BUTTON = "workout_close"
+        const val NAME_EXERCISES_LIST_CLICK_INTRO = "workout_onboarding"
+        const val NAME_EXERCISES_LIST_FIRST_CHECK_IN = "workout_checkin"
+        const val NAME_EXERCISES_LIST_OPEN_EXERCISE = "workout_go"
         const val NAME_EXERCISE_CLOSE = "workout_finish"
         const val NAME_EXERCISE_PREVIEW_CLOSE = "workout_button_close"
         const val NAME_EXERCISE_PROGRESS = "workout"
         const val NAME_EXERCISE_START = "workout_button_start"
-        const val NAME_EXERCISES_LIST_CLICK_INTRO = "workout_onboarding"
-        const val NAME_EXERCISES_LIST_FIRST_CHECK_IN = "workout_checkin"
-        const val NAME_EXERCISES_LIST_OPEN_EXERCISE = "workout_go"
         const val NAME_GREETING_COMPLETE = "onboarding_finish"
         const val NAME_GREETING_COMPLETE_VIA_BUTTON = "onboarding_finish_via_button"
         const val NAME_GREETING_PROGRESS = "onboarding"
@@ -94,6 +99,8 @@ class AnalyticsEvent {
         const val NAME_GREETING_START = "onboarding_start"
         const val NAME_INTER_NAME_CONFIRM = "name_confirm"
         const val NAME_INTER_NAME_SKIP = "name_skip"
+        const val NAME_REQUEST_ERROR = "request_error"
+        const val NAME_REQUEST_SUCCESS = "request_success"
         const val NAME_SETTINGS_ABOUT = "settings_project"
         const val NAME_SETTINGS_CLOSE = "settings_button_cross"
         const val NAME_SETTINGS_OPEN = "settings"
@@ -104,6 +111,9 @@ class AnalyticsEvent {
         const val PARAMETER_EMOTION_NAME = "emotion_name"
         const val PARAMETER_EXERCISE_ID = "exercise_id"
         const val PARAMETER_EXERCISE_NAME = "exercise_name"
+        const val PARAMETER_REQUEST_ERROR_BODY = "request_error_body"
+        const val PARAMETER_REQUEST_URL = "request_url"
+        const val PARAMETER_RESPONSE_TIME = "response_time"
         const val PARAMETER_SKIP = "skip"
         const val PARAMETER_STEP = "step"
     }

@@ -9,6 +9,7 @@ import site.pnpl.mira.data.database.emotions.EmotionDao
 import site.pnpl.mira.data.database.exercises.ExerciseDao
 import site.pnpl.mira.data.remote.MiraApi
 import site.pnpl.mira.data.repositories.ExerciseRepository
+import site.pnpl.mira.domain.analitycs.Analytics
 import javax.inject.Singleton
 
 @Module
@@ -21,8 +22,8 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideEmotionRepository(retrofitService: MiraApi, emotionDao: EmotionDao) =
-        EmotionRepository(retrofitService, emotionDao)
+    fun provideEmotionRepository(retrofitService: MiraApi, emotionDao: EmotionDao, analytics: Analytics) =
+        EmotionRepository(retrofitService, emotionDao, analytics)
 
     @Singleton
     @Provides

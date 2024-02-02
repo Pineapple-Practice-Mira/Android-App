@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         HideNavigationBars.hide(window, binding.root)
-        emotionProvider.init()
+//        emotionProvider.init()
     }
 
     @Inject

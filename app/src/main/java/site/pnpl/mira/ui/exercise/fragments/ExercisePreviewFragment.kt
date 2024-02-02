@@ -94,8 +94,8 @@ class ExercisePreviewFragment : Fragment(R.layout.fragment_exercise_preview) {
         binding.close.setOnClickListener {
             analytics.sendEvent(AnalyticsEvent.NAME_EXERCISE_PREVIEW_CLOSE)
             when (callbackKey) {
-                CALLBACK_HOME -> findNavController().navigate(R.id.action_exercise_fragment_to_home)
-                else -> findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
+                CALLBACK_HOME ->  findNavController().popBackStack(R.id.navigation_home, inclusive = false) //findNavController().navigate(R.id.action_exercise_fragment_to_home)
+                else -> findNavController().popBackStack(R.id.exersicesList, inclusive = false) //findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
             }
         }
 

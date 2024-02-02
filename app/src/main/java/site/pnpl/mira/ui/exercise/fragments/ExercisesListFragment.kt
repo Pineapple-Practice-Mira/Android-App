@@ -50,7 +50,13 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     private var exercises: ArrayList<ExerciseUI> = arrayListOf()
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ExerciseAdapter
+
+    private val itemClickListener = object : ExerciseAdapter.ItemClickListener {
+        override fun onClick(exerciseUI: ExerciseUI) {
+            getExercisesById(exerciseUI)
+        }
+    }
+    private val adapter = ExerciseAdapter(itemClickListener)
     private val selectedButtons: MutableList<Int> = mutableListOf()
     private var yPositionLoading: Float = 0f
 
@@ -81,18 +87,13 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     }
 
     private fun initRecyclerView() {
-        adapter = ExerciseAdapter(itemClickListener)
         recyclerView = binding.recyclerView.apply {
             this.adapter = this@ExercisesListFragment.adapter
             addItemDecoration(SpacingItemDecoration(paddingTopInDp = 8))
         }
     }
 
-    private val itemClickListener = object : ExerciseAdapter.ItemClickListener {
-        override fun onClick(exerciseUI: ExerciseUI) {
-            getExercisesById(exerciseUI)
-        }
-    }
+
 
     private fun getExercisesById(exerciseUI: ExerciseUI) {
         startLoadingExerciseAnimation()
