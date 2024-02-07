@@ -33,6 +33,8 @@ class App : Application() {
         applicationScope.coroutineContext.cancelChildren()
     }
 
+
+
     companion object {
         lateinit var instance: App
             private set

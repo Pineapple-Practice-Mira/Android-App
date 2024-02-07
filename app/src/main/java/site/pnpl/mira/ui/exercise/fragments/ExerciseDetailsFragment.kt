@@ -107,8 +107,9 @@ class ExerciseDetailsFragment : Fragment(R.layout.fragment_exercise_details) {
 
     private fun navigateToBackStack() {
         when (callbackKey) {
-            CheckInSavedFragment.CALLBACK_HOME -> findNavController().popBackStack(R.id.navigation_home, inclusive = false) //findNavController().navigate(R.id.action_exercise_details_fragment_to_home)
-            else -> findNavController().popBackStack(R.id.exersicesList, inclusive = false) //findNavController().navigate(R.id.action_exercise_details_fragment_to_exercise_list)
+            CheckInSavedFragment.CALLBACK_HOME ->  findNavController().popBackStack(R.id.navigation_home, inclusive = false) //findNavController().navigate(R.id.action_exercise_fragment_to_home)
+            CheckInSavedFragment.CALLBACK_EXERCISES_NON_UPDATE -> findNavController().popBackStack(R.id.exersicesList, inclusive = false)
+            else ->  findNavController().navigate(R.id.action_exercise_details_fragment_to_exercise_list)
         }
     }
 

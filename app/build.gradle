@@ -12,12 +12,13 @@ android {
     compileSdk 34
 
     defaultConfig {
+        manifestPlaceholders = [appLabel:"@string/default_name"]
         applicationId 'site.pnpl.mira'
         minSdk 25
         targetSdk 34
         versionCode 1
         //global_version.number_sprint.version_in_sprint
-        versionName "0.6.12"
+        versionName "0.6.13"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "mira-v$versionName"
@@ -46,6 +47,25 @@ android {
         viewBinding = true
         buildConfig = true
     }
+
+    flavorDimensions "version"
+
+
+    productFlavors {
+        versel {
+            dimension "version"
+            applicationIdSuffix ".versel"
+            versionNameSuffix "-versel"
+            manifestPlaceholders = [appLabel:"@string/app_name"]
+        }
+        ip {
+            dimension "version"
+            applicationIdSuffix ".ip"
+            versionNameSuffix "-ip"
+            manifestPlaceholders = [appLabel:"@string/app_name_ip"]
+        }
+    }
+
 }
 
 dependencies {

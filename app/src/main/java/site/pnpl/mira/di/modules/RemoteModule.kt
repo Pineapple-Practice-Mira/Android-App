@@ -42,5 +42,5 @@ class RemoteModule {
 
     @Singleton
     @Provides
-    fun provideApodApi(retrofit: Retrofit): MiraApi = retrofit.create(MiraApi::class.java)
+    fun provideMiraApi(retrofit: Retrofit): MiraApi = retrofit.create(MiraApi::class.java)
 }

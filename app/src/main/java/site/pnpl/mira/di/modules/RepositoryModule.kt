@@ -22,8 +22,8 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideEmotionRepository(retrofitService: MiraApi, emotionDao: EmotionDao, analytics: Analytics) =
-        EmotionRepository(retrofitService, emotionDao, analytics)
+    fun provideEmotionRepository(retrofitService: MiraApi, emotionDao: EmotionDao) =
+        EmotionRepository(retrofitService, emotionDao)
 
     @Singleton
     @Provides

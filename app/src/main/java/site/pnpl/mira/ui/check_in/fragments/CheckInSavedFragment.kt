@@ -35,6 +35,7 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
 
     @Inject
     lateinit var emotionProvider: EmotionProvider
+
     @Inject
     lateinit var analytics: Analytics
     private val viewModel: CheckInSavedViewModel by viewModels()
@@ -110,7 +111,10 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
     private fun navigateToExercise(exerciseUI: ExerciseUI) {
         val extras = bundleOf(
             Pair(ExercisesListFragment.EXERCISE_KEY, exerciseUI),
-            Pair(CALLBACK_KEY, callbackKey)
+            Pair(
+                CALLBACK_KEY,
+                if (callbackKey == CALLBACK_HOME) callbackKey else CALLBACK_EXERCISES_UPDATE
+            )
         )
         findNavController().navigate(R.id.action_check_in_saved_to_exercise_fragment, extras)
     }
@@ -141,7 +145,7 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
 
     private fun navigateByKey(key: String?) {
         when (key) {
-            CALLBACK_EXERCISES -> findNavController().navigate(R.id.action_checkInCompleted_to_exercises_list)
+            CALLBACK_EXERCISES_NON_UPDATE -> findNavController().navigate(R.id.action_checkInCompleted_to_exercises_list)
             else -> findNavController().navigate(R.id.action_checkInCompleted_to_navigation_home)
         }
     }
@@ -174,7 +178,8 @@ class CheckInSavedFragment : Fragment(R.layout.fragment_check_in_saved) {
     companion object {
         const val CALLBACK_KEY = "CALLBACK_KEY"
         const val CALLBACK_HOME = "HOME"
-        const val CALLBACK_EXERCISES = "EXERCISES"
+        const val CALLBACK_EXERCISES_NON_UPDATE = "EXERCISES_NON_UPDATE"
+        const val CALLBACK_EXERCISES_UPDATE = "EXERCISES_UPDATE"
         const val CHECK_IN_KEY = "CHECK_IN"
     }
 }
