@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Мира</string>
-    <string name="app_name_ip">Мира (ip)</string>
+    <string name="app_name_ip">Мира</string>
     <string name="default_name">Мира</string>
 
     <string name="acquaintance_title_1">Привет,\n меня зовут Мира</string>
@@ -152,5 +152,10 @@
     <string name="pop_up_loading_body_3">Не получилось загрузить контент приложения. Проверь подключение
 к интернету или попробуй позже</string>
     <string name="pop_up_error_loading">Загрузка не удалась</string>
+    <string name="loading_data">загружаем данные...</string>
+    <string name="shared_text">Познакомьтесь с приложением «Мира» – трекером эмоций с возможностью выполнять особые упражнения для улучшения своего состояния https://mira-mobile-app.vercel.app/</string>
+    <string name="pop_up_home_title_after_delete">Записи удалены</string>
+    <string name="pop_up_home_content_after_delete">Выбранные записи удалены\nс твоего устройства</string>
+    <string name="pop_up_home_button_after_delete">Закрыть окно</string>
 
 </resources>

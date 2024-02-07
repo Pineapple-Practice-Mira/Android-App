@@ -32,6 +32,7 @@ class InterNameFragment : Fragment(R.layout.fragment_inter_name) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentInterNameBinding.bind(view)
         App.instance.appComponent.inject(this)
+        settingsProvider.saveFirstStartMonth(System.currentTimeMillis())
 
         // Анимация Солнца и гор
         startAnimBackground()

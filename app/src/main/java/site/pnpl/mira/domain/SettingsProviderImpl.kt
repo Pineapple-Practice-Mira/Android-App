@@ -34,11 +34,25 @@ class SettingsProviderImpl @Inject constructor(context: Context) : SettingsProvi
         }
     }
 
+    override fun saveFirstStartMonth(millis: Long) {
+        if (!preference.contains(FIELD_AT_FIRST_START_MONTH)) {
+            preference.edit().apply {
+                putLong(FIELD_AT_FIRST_START_MONTH, millis)
+                apply()
+            }
+        }
+    }
+
+    override fun getFirstStartMonth(): Long =
+        preference.getLong(FIELD_AT_FIRST_START_MONTH, System.currentTimeMillis())
+
+
     companion object {
         private const val FILE_NAME = "settings"
         private const val FIELD_AT_NAME = "name"
         private const val FILED_AT_FIRST_LAUNCH = "first_launch"
         private const val FIELD_AT_CREATED_FIRST_CHECK_IN = "created_first_check_in"
+        private const val FIELD_AT_FIRST_START_MONTH = "first_start_month"
     }
 
 }
