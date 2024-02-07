@@ -9,6 +9,7 @@ import site.pnpl.mira.data.database.emotions.EmotionDao
 import site.pnpl.mira.data.database.exercises.ExerciseDao
 import site.pnpl.mira.data.remote.MiraApi
 import site.pnpl.mira.data.repositories.ExerciseRepository
+import site.pnpl.mira.domain.analitycs.Analytics
 import javax.inject.Singleton
 
 @Module

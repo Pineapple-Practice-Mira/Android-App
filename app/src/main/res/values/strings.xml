@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Мира</string>
+    <string name="app_name_ip">Мира (ip)</string>
+    <string name="default_name">Мира</string>
 
     <string name="acquaintance_title_1">Привет,\n меня зовут Мира</string>
     <string name="acquaintance_text_1">Я рада познакомиться с тобой!\n\n

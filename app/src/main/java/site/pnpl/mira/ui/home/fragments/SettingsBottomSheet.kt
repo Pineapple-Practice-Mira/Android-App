@@ -25,6 +25,6 @@ class SettingsBottomSheet : BottomSheetDialogFragment(R.layout.fragment_bottom_s
     }
     companion object {
         const val TAG = "ModalBottomSheet"
-        const val URL = "https://www.pnpl.site/"
+        const val URL = "https://mira-mobile-app.vercel.app/"
     }
 }

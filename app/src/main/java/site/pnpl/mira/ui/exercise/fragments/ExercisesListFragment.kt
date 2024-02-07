@@ -24,7 +24,7 @@ import site.pnpl.mira.domain.analitycs.Analytics
 import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.domain.analitycs.EventParameter
 import site.pnpl.mira.models.ExerciseUI
-import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES_NON_UPDATE
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.exercise.customview.EmotionButton
 import site.pnpl.mira.ui.customview.BottomBar
@@ -50,7 +50,13 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     private var exercises: ArrayList<ExerciseUI> = arrayListOf()
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ExerciseAdapter
+
+    private val itemClickListener = object : ExerciseAdapter.ItemClickListener {
+        override fun onClick(exerciseUI: ExerciseUI) {
+            getExercisesById(exerciseUI)
+        }
+    }
+    private val adapter = ExerciseAdapter(itemClickListener)
     private val selectedButtons: MutableList<Int> = mutableListOf()
     private var yPositionLoading: Float = 0f
 
@@ -81,18 +87,13 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     }
 
     private fun initRecyclerView() {
-        adapter = ExerciseAdapter(itemClickListener)
         recyclerView = binding.recyclerView.apply {
             this.adapter = this@ExercisesListFragment.adapter
             addItemDecoration(SpacingItemDecoration(paddingTopInDp = 8))
         }
     }
 
-    private val itemClickListener = object : ExerciseAdapter.ItemClickListener {
-        override fun onClick(exerciseUI: ExerciseUI) {
-            getExercisesById(exerciseUI)
-        }
-    }
+
 
     private fun getExercisesById(exerciseUI: ExerciseUI) {
         startLoadingExerciseAnimation()
@@ -160,7 +161,7 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
                     }
                     findNavController().navigate(
                         R.id.action_exercises_list_to_start_check_in,
-                        bundleOf(Pair(CALLBACK_KEY, CALLBACK_EXERCISES))
+                        bundleOf(Pair(CALLBACK_KEY, CALLBACK_EXERCISES_NON_UPDATE))
                     )
                 }
             }
@@ -312,7 +313,7 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
         )
         val extras = bundleOf(
             Pair(EXERCISE_KEY, exerciseUI),
-            Pair(CALLBACK_KEY, CALLBACK_EXERCISES)
+            Pair(CALLBACK_KEY, CALLBACK_EXERCISES_NON_UPDATE)
         )
         findNavController().navigate(R.id.action_exercises_list_to_exercise, extras)
     }

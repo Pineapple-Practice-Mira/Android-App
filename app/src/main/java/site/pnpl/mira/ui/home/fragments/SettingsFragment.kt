@@ -103,13 +103,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun shareClicked() {
-        val url = "https://ссылка_на_наш_лэндинг.net"
+        val url = "https://mira-mobile-app.vercel.app/"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val imageUri = FileProvider.getUriForFile(requireContext(), "${BuildConfig.APPLICATION_ID}.provider", getAssetsFile("mira2.png"))
             val share = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, url)
-                putExtra(Intent.EXTRA_TITLE, "Посмотри какое замечательное приложение!")
+                putExtra(Intent.EXTRA_TITLE, "Мира!")
                 data = imageUri
                 clipData = ClipData.newRawUri(null, imageUri)
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION

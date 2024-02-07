@@ -340,6 +340,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setRemoveMode(value: Boolean) {
         with(binding) {
             actionBar.setRemoveMode(value)
+            bottomBar.setRemoveMode(value)
             if (value) {
                 changeAlphaAnimation(settings, REMOVE_MODE_ACTIVE_ALPHA)
                 changeAlphaAnimation(hi, REMOVE_MODE_ACTIVE_ALPHA)

@@ -15,6 +15,7 @@ import site.pnpl.mira.domain.EmotionProvider
 import site.pnpl.mira.domain.analitycs.Analytics
 import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.models.ExerciseUI
+import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_EXERCISES_NON_UPDATE
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_HOME
 import site.pnpl.mira.ui.check_in.fragments.CheckInSavedFragment.Companion.CALLBACK_KEY
 import site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment.Companion.EXERCISE_KEY
@@ -94,8 +95,9 @@ class ExercisePreviewFragment : Fragment(R.layout.fragment_exercise_preview) {
         binding.close.setOnClickListener {
             analytics.sendEvent(AnalyticsEvent.NAME_EXERCISE_PREVIEW_CLOSE)
             when (callbackKey) {
-                CALLBACK_HOME -> findNavController().navigate(R.id.action_exercise_fragment_to_home)
-                else -> findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
+                CALLBACK_HOME ->  findNavController().popBackStack(R.id.navigation_home, inclusive = false) //findNavController().navigate(R.id.action_exercise_fragment_to_home)
+                CALLBACK_EXERCISES_NON_UPDATE -> findNavController().popBackStack(R.id.exersicesList, inclusive = false)
+                else ->  findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
             }
         }
 

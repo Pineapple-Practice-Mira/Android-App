@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.IntDef
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.BottomBarBinding
@@ -46,6 +47,10 @@ class BottomBar constructor(context: Context, attributeSet: AttributeSet) : Cons
                 listener(Button.CHECK_IN)
             }
         }
+    }
+
+    fun setRemoveMode(value: Boolean) {
+        binding.nonActive.isVisible = value
     }
 
     override fun onDetachedFromWindow() {
