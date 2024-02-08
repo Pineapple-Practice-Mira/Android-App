@@ -14,10 +14,10 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import site.pnpl.mira.App
 import site.pnpl.mira.R
 import site.pnpl.mira.databinding.ActionBarBinding
+import site.pnpl.mira.domain.SettingsProvider
 import site.pnpl.mira.domain.analitycs.Analytics
 import site.pnpl.mira.domain.analitycs.AnalyticsEvent
 import site.pnpl.mira.utils.MiraDateFormat
-import java.util.Calendar
 import javax.inject.Inject
 
 class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
@@ -30,17 +30,18 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
     @Inject
     lateinit var analytics: Analytics
 
+    @Inject
+    lateinit var settingsProvider: SettingsProvider
+
     init {
-            _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
+        _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
         App.instance.appComponent.inject(this)
     }
 
     fun initDatePicker(startPeriod: Long, endPeriod: Long) {
         val endConstraint = System.currentTimeMillis()
-        val startConstraint = Calendar.getInstance().apply {
-            timeInMillis = endConstraint
-            add(Calendar.MONTH, -3)
-        }.timeInMillis
+
+        val startConstraint = settingsProvider.getFirstStartMonth()
 
         dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
             .setTitleText(resources.getString(R.string.calendar_tittle))

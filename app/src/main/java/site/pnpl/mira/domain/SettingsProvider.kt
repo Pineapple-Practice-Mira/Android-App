@@ -12,4 +12,7 @@ interface SettingsProvider {
     fun isMakeFirstCheckIn(): Boolean
 
     fun firstCheckInCreated()
+
+    fun saveFirstStartMonth(millis: Long)
+    fun getFirstStartMonth(): Long
 }

@@ -18,7 +18,7 @@ android {
         targetSdk 34
         versionCode 1
         //global_version.number_sprint.version_in_sprint
-        versionName "0.6.13"
+        versionName "0.6.17"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "mira-v$versionName"

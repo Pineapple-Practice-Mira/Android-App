@@ -217,6 +217,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (isSelectAll) isSelectAll = false
         initPropertyRV()
         animateMountains()
+        showAfterDeletePopUpDialog()
+    }
+
+    private fun showAfterDeletePopUpDialog() {
+        val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
+            override fun onClick(popUpDialog: PopUpDialog) {
+                popUpDialog.dismiss()
+            }
+        }
+
+        val popUpDialog = PopUpDialog.Builder()
+            .title(resources.getString(R.string.pop_up_home_title_after_delete))
+            .content(resources.getString(R.string.pop_up_home_content_after_delete))
+            .leftButtonText(resources.getString(R.string.pop_up_home_button_after_delete))
+            .leftButtonListener(popUpDialogClickListenerLeft)
+            .animationType(PopUpDialog.AnimationType.RIGHT)
+            .build()
+        popUpDialog.show(childFragmentManager, PopUpDialog.TAG)
     }
 
     /**

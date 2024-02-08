@@ -1,6 +1,8 @@
 package site.pnpl.mira.domain
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -22,6 +24,8 @@ class EmotionCreator @Inject constructor(
 ) {
 
     var loadingState: LoadingState<Any> = LoadingState.Loading
+    private val _loadComplete = MutableLiveData<Boolean>()
+    val loadComplete : LiveData<Boolean> = _loadComplete
 
     private val directoryToSaveEmoji: String
         get() {
@@ -36,8 +40,7 @@ class EmotionCreator @Inject constructor(
             val emotionsDb = getEmotionListFromDb().toMutableList()
             if (emotionsDb.isNotEmpty()) {
                 if (isEmojiCompleteness(emotionsDb)) {
-                    emotionProvider.init()
-                    loadingState = LoadingState.Success
+                    createEmotionsCompleted()
                 }
             }
 
@@ -59,9 +62,14 @@ class EmotionCreator @Inject constructor(
                 }
             }
 
-            emotionProvider.init()
-            loadingState = LoadingState.Success
+            createEmotionsCompleted()
         }
+    }
+
+    private fun createEmotionsCompleted() {
+        emotionProvider.init()
+        loadingState = LoadingState.Success
+        _loadComplete.postValue(true)
     }
 
     private suspend fun isEmojiCompleteness(emotions: MutableList<EmotionDataModel>): Boolean {

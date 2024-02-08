@@ -3,6 +3,8 @@ package site.pnpl.mira.ui.greeting.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.animation.AnimationUtils
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import pl.droidsonroids.gif.GifDrawable
 import site.pnpl.mira.App
@@ -22,8 +24,10 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     @Inject
     lateinit var settingsProvider: SettingsProvider
+
     @Inject
     lateinit var emotionCreator: EmotionCreator
+    private var isAnimationEnd = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,6 +35,11 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         _binding = FragmentSplashBinding.bind(view)
 
         startAnimation()
+        emotionCreator.loadComplete.observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete && isAnimationEnd) {
+                navigate()
+            }
+        }
     }
 
     private fun startAnimation() {
@@ -38,18 +47,40 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             //Вызывается после каждого цикла проигрывания GIF
             addAnimationListener { completedAnimationLoop ->
                 if (completedAnimationLoop == 0) {
+                    isAnimationEnd = true
+                    stop()
                     when (emotionCreator.loadingState) {
-                        is LoadingState.Loading -> {}
+                        is LoadingState.Loading -> setLoadingMode()
                         is LoadingState.Success -> navigate()
-                        is LoadingState.Error ->  {
-                            this.stop()
-                            displayErrorPopUp()
-                        }
+                        is LoadingState.Error -> displayErrorPopUp()
                     }
                 }
             }
         }
         binding.animation.setImageDrawable(gifDrawable)
+    }
+
+    private fun setLoadingMode() {
+
+        binding.logo.apply {
+            this.isVisible = true
+            alpha = 0f
+            animate()
+                .alpha(1f)
+                .setDuration(ANIMATION_DURATION)
+                .withEndAction {
+                    alpha = 1f
+                }
+                .start()
+        }
+
+        binding.loadingView.apply {
+            this@apply.isVisible = true
+            startAnimation(
+                AnimationUtils.loadAnimation(requireContext(), R.anim.loadview_anim)
+            )
+        }
+
     }
 
     private fun displayErrorPopUp() {
@@ -91,5 +122,9 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val ANIMATION_DURATION = 500L
     }
 }

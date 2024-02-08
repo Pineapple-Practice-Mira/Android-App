@@ -28,14 +28,25 @@ class DomainModule(val context: Context, val applicationScope: CoroutineScope) {
 
     @Singleton
     @Provides
-    fun provideSelectedPeriod(): SelectedPeriod {
+    fun provideSelectedPeriod(settingsProvider: SettingsProvider): SelectedPeriod {
         val endPeriod = System.currentTimeMillis()
-        var startPeriod: Long
-        Calendar.getInstance().apply {
-            timeInMillis = endPeriod
+
+        val firstDayMonthInFirstStart = Calendar.getInstance().apply {
+            timeInMillis = settingsProvider.getFirstStartMonth()
+            set(Calendar.DAY_OF_MONTH, 1)
+        }.timeInMillis
+
+        val endDateWithOffset = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
             add(Calendar.DAY_OF_YEAR, OFFSET_DAYS_FOR_DEFAULT_PERIOD)
-            startPeriod = timeInMillis
+        }.timeInMillis
+
+        val startPeriod = if (endDateWithOffset < firstDayMonthInFirstStart) {
+            firstDayMonthInFirstStart
+        } else {
+            endDateWithOffset
         }
+
         return SelectedPeriod(startPeriod, endPeriod)
     }
 

@@ -61,7 +61,7 @@ class ExercisePreviewFragment : Fragment(R.layout.fragment_exercise_preview) {
     private fun setContentOnUi(exerciseUI: ExerciseUI) {
         showProgressBar(true)
         binding.apply {
-            Glide.with(requireContext())
+            Glide.with(this@ExercisePreviewFragment)
                 .load(exerciseUI.previewImageLink)
 //                .thumbnail(Glide.with(requireContext()).load(R.drawable.progress_bar))
                 .listener(GlideListener.OnCompletedDrawable{
@@ -76,19 +76,22 @@ class ExercisePreviewFragment : Fragment(R.layout.fragment_exercise_preview) {
 
     private fun hideUIElements() {
         binding.apply {
-            emotionScrollView.isVisible = false
+            emotionContainer.isVisible = false
             subhead.isVisible = false
         }
     }
 
     private fun createEmotionButtons(exerciseUI: ExerciseUI) {
+        val ids = mutableListOf<Int>()
         exerciseUI.emotionsId.forEach { emotionId ->
             val emotionButton = EmotionButton(requireContext(), emotionProvider.getName(emotionId), emotionId).apply {
                 isEnabled = false
                 isClickable = false
+                id = emotionId
             }
             binding.emotionContainer.addView(emotionButton)
         }
+        binding.flow.referencedIds = exerciseUI.emotionsId.toIntArray()
     }
 
     private fun setClickListener() {
