@@ -29,22 +29,20 @@ class ActionBar(context: Context, attributeSet: AttributeSet) : LinearLayout(con
 
     @Inject
     lateinit var analytics: Analytics
+
     @Inject
     lateinit var settingsProvider: SettingsProvider
 
     init {
-            _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
+        _binding = ActionBarBinding.bind(LayoutInflater.from(context).inflate(R.layout.action_bar, this))
         App.instance.appComponent.inject(this)
     }
 
     fun initDatePicker(startPeriod: Long, endPeriod: Long) {
         val endConstraint = System.currentTimeMillis()
-//        val startConstraint = Calendar.getInstance().apply {
-//            timeInMillis = endConstraint
-//            add(Calendar.MONTH, -3)
-//        }.timeInMillis
 
         val startConstraint = settingsProvider.getFirstStartMonth()
+
         dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
             .setTitleText(resources.getString(R.string.calendar_tittle))
             .setPositiveButtonText(resources.getString(R.string.calendar_positive_button))
