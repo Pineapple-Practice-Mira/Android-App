@@ -51,5 +51,23 @@
 - Single Activity
 - Navigation component
 <p align="left">
-  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/navigation.png" height="100">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/navigation.png" height="150">
+</p>
+
+- Coroutines
+- Glide
+- Gif-Drawable
+- Room
+- Retrofit
+- Analytics:
+  - MixPanel
+  - Firebase
+- Firebase Crashlytics
+- Dagger 2
+- Lottie Animation
+- MVVM (Pattern repository), for example:
+  [ExercisesRepository.kt](https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/app/src/main/java/site/pnpl/mira/data/repositories/ExerciseRepository.kt)
+  
+<p align="left">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/ExercisesRepository.png" height="200">
 </p>
