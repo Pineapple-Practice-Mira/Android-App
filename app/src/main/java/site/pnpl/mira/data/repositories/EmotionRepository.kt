@@ -5,7 +5,6 @@ import site.pnpl.mira.data.database.emotions.EmotionEntity
 import site.pnpl.mira.data.models.EmotionDataModel
 import site.pnpl.mira.data.remote.MiraApi
 import site.pnpl.mira.data.remote.dto.emotions.EmotionDtoItem
-import site.pnpl.mira.domain.analitycs.Analytics
 import javax.inject.Inject
 
 class EmotionRepository @Inject constructor(
@@ -31,9 +30,7 @@ class EmotionRepository @Inject constructor(
         emotionDao.insertEmotions(listOf(emotion.toEmotionEntity()))
 
     fun deleteEmotions(emotions: List<EmotionDataModel>) {
-        println("deleteEmotions: $emotions")
         val emotionEntity = emotions.map { it.toEmotionEntity() }
-        println("emotionEntity $emotionEntity")
         emotionDao.deleteEmotions(emotionEntity)
     }
 

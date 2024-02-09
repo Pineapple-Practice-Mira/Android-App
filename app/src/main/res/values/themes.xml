@@ -16,17 +16,6 @@
         <item name="colorPrimary">@color/primary</item>
     </style>
 
-    <style name="MiraDatePickerDayToday" parent="Widget.Material3.MaterialCalendar.Day.Today">
-        <item name="colorPrimary">@color/secondary</item>
-        <item name="strokeColor">@color/primary</item>
-        <item name="itemTextColor">@color/primary</item>
-    </style>
-
-    <style name="MiraDatePickerDaySelected">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="itemFillColor">@color/primary</item>
-    </style>
-
     <style name="pop_up_dialog_from_bottom" >
         <item name="android:windowEnterAnimation">@anim/pop_up_dialog_bottom_enter</item>
         <item name="android:windowExitAnimation">@anim/pop_up_dialog_bottom_exit</item>

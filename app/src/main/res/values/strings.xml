@@ -1,34 +1,7 @@
 <resources>
     <string name="app_name">Мира</string>
     <string name="app_name_ip">Мира</string>
-    <string name="default_name">Мира</string>
 
-    <string name="acquaintance_title_1">Привет,\n меня зовут Мира</string>
-    <string name="acquaintance_text_1">Я рада познакомиться с тобой!\n\n
-В этом приложении я буду другом и помощником в исследовании твоих эмоций.\n\n
-Давай сразу перейдем на ты – это важный аспект доверительного общения.</string>
-
-    <string name="acquaintance_title_2">Для чего\nэто приложение?</string>
-    <string name="acquaintance_text_2">На протяжении жизни мы все испытывем самые разные эмоции и не всегда замечаем, какие обстоятельства их вызывают.\n\n
-Чтобы лучше разобраться в себе и в своей жизни, научиться жить в гармонии с собой, было создано это пространство.</string>
-
-    <string name="acquaintance_title_3">Что мы будем\nделать?</string>
-    <string name="acquaintance_text_3">Будем разговаривать друг с другом.\n\n
-Ты будешь делиться со мной своими эмоциями.\n\n
-Я буду давать тебе особые упражнения, которые помогут разобраться в себе и найти гармонию.</string>
-
-    <string name="acquaintance_title_4">Как мы будем\nвзаимодействовать?</string>
-    <string name="acquaintance_text_4">В любой момент ты сможешь рассказать мне о своих эмоциях, ответив всего на 2 вопроса:\n\n
-Что ты чувствуешь?\n
-С чем это связано?\n\n
-После я смогу предложить тебе подходящую технику, а также всегда буду формировать статистику твоего состояния.</string>
-
-    <string name="acquaintance_title_5">Если у тебя\nесть диагноз</string>
-    <string name="acquaintance_text_5">Должна предупредить, что если у тебя есть подтвержденный диагноз психического или неврологического заболевания, то необходимо проконсультироваться со своим лечащим врачом.</string>
-
-    <string name="acquaintance_title_6">Вперед\nв приложение</string>
-    <string name="acquaintance_text_6">Помни, что эффект от подобных техник приходит не сразу.\n\n
-Пусть общение со мной войдет в привычку, и со временем ты более явно станешь ощущать позитивное влияние от нашего взаимодействия.</string>
     <string name="image_description_button_next">Следующая страница</string>
     <string name="image_description_button_previous">Предыдущая страница</string>
 
@@ -42,22 +15,6 @@
     <string name="to_greeting">Познакомиться</string>
     <string name="info_minimum_2_letter">минимум 2 символа</string>
     <string name="alert_double_tap_exit">Нажми дважды для выхода из приложения</string>
-    <string name="joy">радость</string>
-    <string name="calmness">спокойствие</string>
-    <string name="satisfaction">удовлетворение</string>
-    <string name="interest">интерес</string>
-    <string name="confidence">уверенность</string>
-    <string name="sympathy">симпатия</string>
-    <string name="delight">восхищение</string>
-    <string name="love">любовь</string>
-    <string name="sadness">грусть</string>
-    <string name="fatigue">усталость</string>
-    <string name="anxiety">тревога</string>
-    <string name="irritation">раздражение</string>
-    <string name="fear">страх</string>
-    <string name="depression">подавленность</string>
-    <string name="disappointment">разочарование</string>
-    <string name="anger">злость</string>
     <string name="tittle_who_do_you_feel">Как ты себя чувствуешь?</string>
     <string name="house">дом</string>
     <string name="job">работа</string>
@@ -77,19 +34,15 @@
     <string name="bubble_1">Выбери одно из чувств, которое ты сейчас испытываешь в большей степени, чем другие</string>
     <string name="bubble_2">…</string>
     <string name="bubble_3">"Я чувствую "</string>
-    <string name="bubble_4">Выбери один или несколько факторов, повлияших на твое состояние</string>
+    <string name="bubble_4">Выбери один фактор, который наиболее повлиял на твое состояние</string>
     <string name="pop_up_check_in_title">Закрыть окно</string>
     <string name="pop_up_check_in_content">Данные не будут сохранены. Ты точно хочешь прервать запись?</string>
     <string name="pop_up_check_in_left">Остаться</string>
     <string name="pop_up_check_in_right">Закрыть</string>
     <string name="label_check_in_saved_1">Все записи и статистика доступны на главном экране приложения.</string>
     <string name="label_check_in_saved_2">Под твое состояние подобрано особое упражнение. После загрузки оно появится в разделе «Упражнения», и ты сможешь выполнить его в любой момент.</string>
-    <string name="button_later">Позже</string>
-    <string name="button_execute_exercises">Выполнить упражнение</string>
     <string name="bubble_5">Сегодня, %1$s, я чувствую %2$s. Основная причина – %3$s.</string>
     <string name="bubble_6">Спасибо за доверие!</string>
-    <string name="sympathy_parent_case">симпатию</string>
-    <string name="anxiety_parent_case">тревогу</string>
     <string name="action_bar_date_label">Выбранный период</string>
     <string name="pop_up_home_title">Удаление записей</string>
     <string name="pop_up_home_content">Ты точно хочешь безвозвратно удалить выбранные записи?</string>
@@ -157,5 +110,7 @@
     <string name="pop_up_home_title_after_delete">Записи удалены</string>
     <string name="pop_up_home_content_after_delete">Выбранные записи удалены\nс твоего устройства</string>
     <string name="pop_up_home_button_after_delete">Закрыть окно</string>
+    <string name="pp_text">Проект разработан\nв рамках</string>
+    <string name="pp_text_logo">Pineapple\nPracttice</string>
 
 </resources>

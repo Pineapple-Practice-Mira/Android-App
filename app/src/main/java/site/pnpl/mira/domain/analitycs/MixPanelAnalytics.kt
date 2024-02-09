@@ -1,7 +1,6 @@
 package site.pnpl.mira.domain.analitycs
 
 import android.content.Context
-import android.os.Build
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import org.json.JSONObject
 import site.pnpl.mira.BuildConfig

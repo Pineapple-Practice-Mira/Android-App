@@ -41,7 +41,6 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
         super.onViewCreated(view, savedInstanceState)
         App.instance.appComponent.inject(this)
         _binding = FragmentCheckInBinding.bind(view)
-        _binding = FragmentCheckInBinding.bind(view)
         initViewPager()
 
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.dark_grey)

@@ -103,46 +103,46 @@
             android:layout_height="wrap_content"
             app:flow_horizontalGap="10dp"
             app:flow_horizontalStyle="packed"
-            app:flow_verticalGap="8dp"
             app:flow_verticalBias="0"
+            app:flow_verticalGap="8dp"
             app:flow_wrapMode="chain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toTopOf="@id/startButton"
-            app:layout_constraintEnd_toEndOf="@id/end"
-            app:layout_constraintStart_toStartOf="@id/start"
-            app:layout_constraintTop_toBottomOf="@id/emotionContainer">
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/startButton"
+        app:layout_constraintEnd_toEndOf="@id/end"
+        app:layout_constraintStart_toStartOf="@id/start"
+        app:layout_constraintTop_toBottomOf="@id/emotionContainer">
 
-            <TextView
-                android:id="@+id/description"
-                style="@style/Body14Dark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:text="@tools:sample/lorem/random" />
-
-        </ScrollView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/startButton"
-            style="@style/Button16White"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/description"
+            style="@style/Body14Dark"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
-            android:background="@drawable/button_background"
-            android:text="@string/start"
-            app:backgroundTint="@color/button_background_state"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/end"
-            app:layout_constraintStart_toStartOf="@id/start" />
+            android:textAlignment="center"
+            tools:text="Познакомся с мирой и узнай как работает приложение" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startButton"
+        style="@style/Button16White"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/button_background"
+        android:text="@string/start"
+        app:backgroundTint="@color/button_background_state"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end"
+        app:layout_constraintStart_toStartOf="@id/start" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
