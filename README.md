@@ -14,13 +14,42 @@
 Фиксация эмоций и мыслей, которые с ними связаны.
 
 <p align="left">
-<img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in_1.png" height="300">
-<img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in2.png" height="300">
-<img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in3.png" height="300">
-<img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in4.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in_1.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in2.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in3.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in4.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in5.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/check_in6.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/checn_in7.png" height="300">
 </p>
 
 ---
 
 ### - Статистика
-На основе сделанных записей Мира формирует статистику, которая поможет посмотреть на жизненную ситуацию со стороны
+На основе сделанных записей формируется статистика, которая поможет посмотреть на жизненную ситуацию со стороны
+
+<p align="left">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/statistics_1.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/statistics_2.png" height="300">
+</p>
+
+---
+
+### - Упражнения
+Мира подбирает психотерапевтическую технику, опираясь на ваше состояние. 
+Упражнения внимательно отобраны специалистом, проходятся за короткое время и имеют доказанную эффективность.
+
+<p align="left">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/exercises_1.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/exercies_2.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/exercises_3.png" height="300">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/exercises_4.png" height="300">
+</p>
+
+## Stack
+- Kotlin
+- Single Activity
+- Navigation component
+<p align="left">
+  <img src="https://github.com/Pineapple-Practice-Mira/Android-App/blob/master/screens/navigation.png" height="100">
+</p>
