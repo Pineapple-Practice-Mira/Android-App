@@ -42,7 +42,9 @@ class AnalyticsEvent {
             NAME_REQUEST_SUCCESS,
             NAME_SETTINGS_ABOUT,
             NAME_SETTINGS_CLOSE,
+            NAME_SETTINGS_FEEDBACK,
             NAME_SETTINGS_OPEN,
+            NAME_SETTINGS_OUR_SITE,
             NAME_SETTINGS_SAVE_NAME,
             NAME_SETTINGS_SHARE,
         ]
@@ -103,7 +105,9 @@ class AnalyticsEvent {
         const val NAME_REQUEST_SUCCESS = "request_success"
         const val NAME_SETTINGS_ABOUT = "settings_project"
         const val NAME_SETTINGS_CLOSE = "settings_button_cross"
+        const val NAME_SETTINGS_FEEDBACK = "settings_button_cross"
         const val NAME_SETTINGS_OPEN = "settings"
+        const val NAME_SETTINGS_OUR_SITE = "settings"
         const val NAME_SETTINGS_SAVE_NAME = "settings_name_save"
         const val NAME_SETTINGS_SHARE = "settings_share"
 

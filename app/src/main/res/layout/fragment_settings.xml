@@ -117,43 +117,93 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayout" />
 
-    <Button
-        android:id="@+id/about"
+    <LinearLayout
+        android:id="@+id/warningContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/warning_info_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/save">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_warning" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+
+        <TextView
+            style="@style/Notion12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notice_warning"
+            android:textColor="@color/primary" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/feedback"
         style="@style/Links16Primary"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="77dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:includeFontPadding="false"
+        android:text="@string/button_feedback"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/warningContainer" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ourSite"
+        style="@style/Links16Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:includeFontPadding="false"
-        android:text="@string/about_project"
+        android:text="@string/button_our_site"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/save" />
+        app:layout_constraintTop_toBottomOf="@id/feedback" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/share"
         style="@style/Links16Primary"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:includeFontPadding="false"
         android:text="@string/share"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/about" />
+        app:layout_constraintTop_toBottomOf="@id/ourSite" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ppConteiner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="30dp"
         android:background="@drawable/pp_logo_background"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
         app:layout_constraintBottom_toTopOf="@id/version"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,8 +1,8 @@
 package site.pnpl.mira.ui.extensions
 
+import androidx.fragment.app.Fragment
 import android.content.Context
 import android.content.res.Resources
-import androidx.fragment.app.Fragment
 
 val Context.screenHeight: Int
     get() = resources.displayMetrics.heightPixels

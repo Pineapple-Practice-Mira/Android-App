@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/check_in_frag_background">
+    android:background="@drawable/bottom_sheet_background">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/dragHandleDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/progressBar"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dragHandleDescription">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/progressLoading"
+            android:layout_width="@dimen/exercise_list_progress_bar_size"
+            android:layout_height="@dimen/exercise_list_progress_bar_size"
+            android:layout_gravity="center"
+            android:src="@drawable/progress_bar"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp"/>
+        android:layout_height="wrap_content"
+        android:minHeight="400dp"
+        android:nestedScrollingEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dragHandleDescription" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

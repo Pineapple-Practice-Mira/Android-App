@@ -1,12 +1,13 @@
 package site.pnpl.mira.data.remote.dto.exercises
 
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import site.pnpl.mira.data.remote.dto.emotions.EmotionDtoItem
 
-
+@Keep
 class ExerciseDtoList : ArrayList<ExerciseDto>()
-
+@Keep
 data class ExerciseDto(
     @SerializedName("created_at")
     val createdAt: String,

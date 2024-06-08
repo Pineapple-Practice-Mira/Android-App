@@ -100,6 +100,7 @@ class ExercisePreviewFragment : Fragment(R.layout.fragment_exercise_preview) {
             when (callbackKey) {
                 CALLBACK_HOME ->  findNavController().popBackStack(R.id.navigation_home, inclusive = false) //findNavController().navigate(R.id.action_exercise_fragment_to_home)
                 CALLBACK_EXERCISES_NON_UPDATE -> findNavController().popBackStack(R.id.exersicesList, inclusive = false)
+                //TODO: была ошибка: java.lang.IllegalArgumentException: Navigation action/destination site.pnpl.mira.ip:id/action_exercise_fragment_to_exercise_list cannot be found from the current destination Destination(site.pnpl.mira.ip:id/exersicesList) label=ExercisesListFragment class=site.pnpl.mira.ui.exercise.fragments.ExercisesListFragment
                 else ->  findNavController().navigate(R.id.action_exercise_fragment_to_exercise_list)
             }
         }

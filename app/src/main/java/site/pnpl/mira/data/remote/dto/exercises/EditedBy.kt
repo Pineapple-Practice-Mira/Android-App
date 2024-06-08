@@ -1,8 +1,10 @@
 package site.pnpl.mira.data.remote.dto.exercises
 
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class EditedBy(
     @SerializedName("email")
     val email: String,

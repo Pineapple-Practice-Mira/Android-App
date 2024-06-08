@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -85,9 +86,14 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 save.text = resources.getString(R.string.button_change_saved)
             }
 
-            about.setOnClickListener {
-                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_ABOUT)
-                aboutClicked()
+            feedback.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_FEEDBACK)
+                openModalSheetWithWebView(URL_FORM)
+            }
+
+            ourSite.setOnClickListener {
+                analytics.sendEvent(AnalyticsEvent.NAME_SETTINGS_FEEDBACK)
+                openModalSheetWithWebView(URL_SITE)
             }
 
             share.setOnClickListener {
@@ -97,8 +103,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 
-    private fun aboutClicked() {
-        val modalBottomSheet = SettingsBottomSheet()
+    private fun openModalSheetWithWebView(url: String) {
+        val modalBottomSheet = SettingsBottomSheet().apply {
+            arguments = bundleOf(SettingsBottomSheet.TAG to url)
+        }
         modalBottomSheet.show(childFragmentManager, SettingsBottomSheet.TAG)
     }
 
@@ -148,5 +156,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val URL_SITE = "https://mira-mobile-app.vercel.app/"
+        const val URL_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSeZG0UgUZA9qLBVdqybn6SoXvkH99viDjBhK0h1Yh_cDbbbxA/viewform"
     }
 }
