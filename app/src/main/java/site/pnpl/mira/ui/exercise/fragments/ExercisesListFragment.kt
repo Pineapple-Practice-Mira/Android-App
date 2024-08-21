@@ -47,7 +47,7 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     @Inject lateinit var analytics: Analytics
     @Inject lateinit var settingsProvider: SettingsProvider
 
-    private var exercises: ArrayList<ExerciseUI> = arrayListOf()
+//    private var exercises: ArrayList<ExerciseUI> = arrayListOf()
 
     private lateinit var recyclerView: RecyclerView
 
@@ -136,11 +136,8 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
     }
 
     private fun checkNeedRequest() {
-        if (exercises.isEmpty()) {
-            exercises = arguments?.getParcelableArrayListCompat(EXERCISES_LIST_KEY) ?: arrayListOf()
-        }
-        if (exercises.isNotEmpty()) {
-            onSuccess(exercises)
+        if (viewModel.exercises.isNotEmpty()) {
+            onSuccess(viewModel.exercises)
         } else {
             putRequests()
         }
@@ -190,12 +187,12 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
         }
 
         if (selectedButtons.isEmpty()) {
-            adapter.submitList(exercises.filter { !it.isIntro })
+            adapter.submitList(viewModel.exercises.filter { !it.isIntro })
             showNoticeNotFounded(false)
         } else {
-            if (exercises.isNotEmpty()) {
+            if (viewModel.exercises.isNotEmpty()) {
                 val filteredExercises =
-                    exercises.filter { exercise ->
+                    viewModel.exercises.filter { exercise ->
                         exercise.emotionsId.any { it in selectedButtons }
                     }
 
@@ -256,8 +253,8 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
         }
     }
 
-    private fun onSuccess(exercises: ArrayList<ExerciseUI>) {
-        this.exercises = exercises
+    private fun onSuccess(exercises: List<ExerciseUI>) {
+        viewModel.exercises = exercises.toMutableList()
 
         exercises.find { it.isIntro }.apply {
             this?.let {
@@ -325,11 +322,6 @@ class ExercisesListFragment : Fragment(R.layout.fragment_exercises_list) {
                 putRequests()
             }
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        arguments = bundleOf(Pair(EXERCISES_LIST_KEY, exercises))
     }
 
     override fun onDestroyView() {

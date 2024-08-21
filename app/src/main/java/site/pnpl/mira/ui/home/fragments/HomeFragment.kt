@@ -185,14 +185,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun showDeletePopUpDialog() {
         val popUpDialogClickListenerLeft = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
-                popUpDialog.dismiss()
+                popUpDialog.dismissAllowingStateLoss()
             }
         }
 
         val popUpDialogClickListenerRight = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
                 deleteCheckIns()
-                popUpDialog.dismiss()
+                popUpDialog.dismissAllowingStateLoss()
             }
         }
 

@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import site.pnpl.mira.App
 import site.pnpl.mira.data.models.ApiResult
 import site.pnpl.mira.data.repositories.ExerciseRepository
+import site.pnpl.mira.models.ExerciseUI
 import javax.inject.Inject
 
 class ExercisesListViewModel : ViewModel() {
@@ -19,6 +20,8 @@ class ExercisesListViewModel : ViewModel() {
 
     private val _exerciseList: MutableSharedFlow<ApiResult<Any>> = MutableSharedFlow()
     val exerciseList: SharedFlow<ApiResult<Any>> = _exerciseList.asSharedFlow()
+
+    var exercises = mutableListOf<ExerciseUI>()
 
     @Inject
     lateinit var repository: ExerciseRepository

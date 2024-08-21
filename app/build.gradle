@@ -16,9 +16,9 @@ android {
         applicationId 'site.pnpl.mira'
         minSdk 25
         targetSdk 34
-        versionCode 2
+        versionCode 4
         //global_version.number_sprint.version_in_sprint
-        versionName "1.0.1"
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "mira-v$versionName"
@@ -30,6 +30,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
             versionNameSuffix "-release"
+            ndk {
+                debugSymbolLevel = 'FULL' // или 'SYMBOL_TABLE'
+            }
         }
         debug {
             debuggable true

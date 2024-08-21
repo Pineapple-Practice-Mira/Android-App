@@ -32,23 +32,25 @@ class SettingsBottomSheet : BottomSheetDialogFragment(R.layout.fragment_bottom_s
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.loadUrl(url)
 
-            (dialog as BottomSheetDialog).behavior.state = STATE_COLLAPSED
+            (dialog as BottomSheetDialog).behavior.state = STATE_EXPANDED
 
-            val gestureDetector = GestureDetector(binding.webView.context, object : GestureDetector.SimpleOnGestureListener() {
-                override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+            val gestureDetector = GestureDetector(
+                binding.webView.context,
+                object : GestureDetector.SimpleOnGestureListener() {
+                    override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
 
-                    if (!binding.webView.canScrollVertically(-1) && distanceY < 0) {
-                        val behavior = (dialog as BottomSheetDialog).behavior
+                        if (!binding.webView.canScrollVertically(-1) && distanceY < 0) {
+                            val behavior = (dialog as BottomSheetDialog).behavior
 
-                        if (behavior.state == STATE_EXPANDED) {
-                            behavior.state = STATE_COLLAPSED
-                        } else if (behavior.state == STATE_COLLAPSED) {
-                            behavior.state = STATE_HIDDEN
+                            if (behavior.state == STATE_EXPANDED) {
+                                behavior.state = STATE_COLLAPSED
+                            } else if (behavior.state == STATE_COLLAPSED) {
+                                behavior.state = STATE_HIDDEN
+                            }
                         }
+                        return false
                     }
-                    return false
-                }
-            })
+                })
 
             binding.webView.setOnTouchListener { _, event ->
                 gestureDetector.onTouchEvent(event)

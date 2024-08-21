@@ -228,7 +228,7 @@ class CheckInDetailsItemFragment(
             if (it) {
                 val dialogClickListener = object : PopUpDialog.PopUpDialogClickListener {
                     override fun onClick(popUpDialog: PopUpDialog) {
-                        popUpDialog.dismiss()
+                        popUpDialog.dismissAllowingStateLoss()
                         findNavController().popBackStack()
                     }
                 }

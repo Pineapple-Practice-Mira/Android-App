@@ -86,7 +86,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     private fun displayErrorPopUp() {
         val leftButtonClickListener = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
-                popUpDialog.dismiss()
+                popUpDialog.dismissAllowingStateLoss()
                 emotionCreator.update()
                 startAnimation()
             }
@@ -94,7 +94,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
         val rightButtonClickListener = object : PopUpDialog.PopUpDialogClickListener {
             override fun onClick(popUpDialog: PopUpDialog) {
-                popUpDialog.dismiss()
+                popUpDialog.dismissAllowingStateLoss()
                 (requireActivity() as MainActivity).closeApp()
             }
         }

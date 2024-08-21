@@ -123,7 +123,7 @@ class CheckInFragment : Fragment(R.layout.fragment_check_in) {
                 else
                     AnalyticsEvent.NAME_CHECK_IN_FACTOR_CLOSE_NO
             )
-            popUpDialog.dismiss()
+            popUpDialog.dismissAllowingStateLoss()
         }
     }
 
