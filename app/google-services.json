@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "318232482484",
+    "project_id": "mira-56e48",
+    "storage_bucket": "mira-56e48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318232482484:android:a3f71b0dcfc17ceae57de1",
+        "android_client_info": {
+          "package_name": "site.pnpl.mira"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPsp0sMP9ykX9iH_A39SkTMIKs7UXoXAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318232482484:android:9b3d3c5d9313ae1de57de1",
+        "android_client_info": {
+          "package_name": "site.pnpl.mira.ip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPsp0sMP9ykX9iH_A39SkTMIKs7UXoXAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318232482484:android:dac30bda1c78c071e57de1",
+        "android_client_info": {
+          "package_name": "site.pnpl.mira.versel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPsp0sMP9ykX9iH_A39SkTMIKs7UXoXAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
